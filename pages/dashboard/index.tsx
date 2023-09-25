@@ -43,15 +43,8 @@ export default function App() {
   const router = useRouter()
   const app = useSelector((state: RootState) => state.app)
   const {viewSettings} = app
-  const [open, setOpen] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
 
   useEffect(() => {
@@ -70,7 +63,7 @@ export default function App() {
       <Box sx={{display: "flex"}}>
 
       </Box>
-      <Navbar open={open} />
+      <Navbar />
       <Box
         component="main"
         sx={{
