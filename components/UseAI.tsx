@@ -151,7 +151,9 @@ const UseAI = ({onGetMarkdown}: UseAIInterface) => {
         }
   
         console.log(data.result)
-        dispatch(appActions.updateMarkdown({text: data.result}))
+        dispatch(appActions.updateMarkdown({
+          ...markdown,
+          content: data.result}))
       } catch(error: any) {
         // Consider implementing your own error handling logic here
         console.error(error);
