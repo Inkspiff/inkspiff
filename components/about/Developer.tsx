@@ -43,7 +43,7 @@ const Developer = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                    <Typography variant="body1">
-                   Hi there! If you&apos;'e reading this, you&apos;'e probably like me—spending most of your days in your office, in front of a computer.
+                   Hi there! If you&apos;e reading this, you&apos;e probably like me—spending most of your days in your office, in front of a computer.
                    </Typography>
                    <Typography variant="body1">
                         
@@ -51,7 +51,7 @@ const Developer = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                    <Typography variant="body1">
-                   Hi there! If you&apos;'e reading this, you&apos;'e probably like me—spending most of your days in your office, in front of a computer.
+                   Hi there! If you&apos;e reading this, you&apos;e probably like me—spending most of your days in your office, in front of a computer.
                    </Typography>
                    <Typography variant="body1">
                         
