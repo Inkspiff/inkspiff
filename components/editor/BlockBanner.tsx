@@ -16,7 +16,7 @@ const BlockBanner = ({block}: PropTypes) => {
     return <Box component="div">
         {content.map((text, index) => {
             return <Box component="div"  key={index}>
-                {string}
+                {"Hello"}
             </Box>
         })}
     </Box>
