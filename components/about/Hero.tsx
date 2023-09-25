@@ -43,7 +43,7 @@ const Hero = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                    <Typography variant="body1">
-                   Hi there! If you're reading this, you're probably like me—spending most of your days in your office, in front of a computer.
+                   Hi there! If you&apos;re reading this, you&apos;re probably like me—spending most of your days in your office, in front of a computer.
                    </Typography>
                    <Typography variant="body1">
                         

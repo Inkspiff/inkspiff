@@ -24,7 +24,7 @@ const Features = () => {
         Your ultra-capable teammate.
         </Typography>
           <Typography >
-          Messy notes? Have Notion AI summarize what’s important and actionable. No need to jump back and forth between your notes and a separate AI app.
+          Messy notes? Have Notion AI summarize what&rsquo;s important and actionable. No need to jump back and forth between your notes and a separate AI app.
           </Typography>
       </Paper>
       <Grid container spacing={2}>
@@ -41,7 +41,7 @@ const Features = () => {
             <Typography variant="body1" sx={{
               mb: 2,
             }}>
-              Surface what's important from reseach sales calls & more
+              Surface what&apos;s important from reseach sales calls & more
             </Typography>
           </Paper>
         </Grid>
@@ -59,7 +59,7 @@ const Features = () => {
               mb: 2,
               p: 2,
             }}>
-              Surface what's important from reseach sales calls & more
+              Surface what&apos;s important from reseach sales calls & more
             </Typography>
           </Paper>
         </Grid>
@@ -76,7 +76,7 @@ const Features = () => {
             <Typography variant="body1" sx={{
               mb: 2
             }}>
-              Surface what's important from reseach sales calls & more
+              Surface what&apos;s important from reseach sales calls & more
             </Typography>
           </Paper>
         </Grid>

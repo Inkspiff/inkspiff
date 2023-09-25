@@ -12,14 +12,14 @@ const Developer = () => {
             <Typography variant="body1" component="h1" sx={{
                 fontSize: "32px",
                 mb: 1, 
-            }}>Who's talking?</Typography>
+            }}>Who&apos;s talking?</Typography>
              <Typography  sx={{
                 fontSize: "62px",
                 lineHeight: "70px",
                 fontWeight: 700,
                 letterSpacing: "0.01rem",
                 mb: 4,
-            }}>Inkspiff's Creator</Typography>
+            }}>Inkspiff&apos;s Creator</Typography>
 
             <Grid container spacing={4}>
                 <Grid item xs={12} sm={6}>
@@ -43,7 +43,7 @@ const Developer = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                    <Typography variant="body1">
-                   Hi there! If you're reading this, you're probably like me—spending most of your days in your office, in front of a computer.
+                   Hi there! If you&apos;'e reading this, you&apos;'e probably like me—spending most of your days in your office, in front of a computer.
                    </Typography>
                    <Typography variant="body1">
                         
@@ -51,7 +51,7 @@ const Developer = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                    <Typography variant="body1">
-                   Hi there! If you're reading this, you're probably like me—spending most of your days in your office, in front of a computer.
+                   Hi there! If you&apos;'e reading this, you&apos;'e probably like me—spending most of your days in your office, in front of a computer.
                    </Typography>
                    <Typography variant="body1">
                         
