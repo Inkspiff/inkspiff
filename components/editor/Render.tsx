@@ -3,27 +3,28 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { remark } from 'remark';
-import html from 'remark-html';
+// import { remark } from 'remark';
+// import html from 'remark-html';
 import { Truculenta } from "next/font/google";
 import { AnyAsyncThunk } from "@reduxjs/toolkit/dist/matchers";
-import { createFalse } from "typescript";
-import { Octokit } from "@octokit/rest";
+// import { createFalse } from "typescript";
+// import { Octokit } from "@octokit/rest";
 
 
 
 const Render = ( ) => {
   const app = useSelector((state: RootState) => state.app)
-  const editor = useSelector((state: RootState) => state.editor)
+  // const editor = useSelector((state: RootState) => state.editor)
 
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<any>();
   const [htmlContent, setHtmlContent] = useState<string>('');
 
-  const {blocks} = editor
-  const text = blocks.map(blocks => blocks.html).join("\n\n")
+  const {markdown} = app
+  const {content} = markdown
+  const text = content
 
-  const markdownString = text
+  // const markdownString = text
 
   // useEffect(() => {
 
@@ -49,38 +50,38 @@ const Render = ( ) => {
   useEffect(() => {
     const doYou = async () => {
        // Octokit.js
-    // https://github.com/octokit/core.js#readme
+      // https://github.com/octokit/core.js#readme
 
-    // Create an instance of Octokit.
-    // const octokit = new Octokit();
+      // Create an instance of Octokit.
+      // const octokit = new Octokit();
 
-    // Create an instance of Octokit with a personal access token.
-    const octokit = new Octokit({
-      auth: process.env.NEXT_PUBLIC_GITHUB_PAT
-    });
+      // Create an instance of Octokit with a personal access token.
+      //   const octokit = new Octokit({
+      //     auth: process.env.NEXT_PUBLIC_GITHUB_PAT
+      //   });
 
 
-      // Use the Octokit instance to call the 'markdown.render' method.
-      octokit.markdown.render({
-        text: text,
-        mode: 'markdown',
-      })
-      .then(response => {
-        // Get the HTML content from the response.
-        setHtmlContent(response.data);
-        // console.log(response.data)
-        setLoading(false)
-      })
-      .catch(error => {
-        console.error(error);
-        setLoading(false)
-      });
-   }
+      //     // Use the Octokit instance to call the 'markdown.render' method.
+      //     octokit.markdown.render({
+      //       text: text,
+      //       mode: 'markdown',
+      //     })
+      //     .then(response => {
+      //       // Get the HTML content from the response.
+      //       setHtmlContent(response.data);
+      //       // console.log(response.data)
+      //       setLoading(false)
+      //     })
+      //     .catch(error => {
+      //       console.error(error);
+      //       setLoading(false)
+      //     });
+    }
 
-   if (text.trim() !== "" ) {
-    setLoading(true);
-    doYou();
-   }
+    if (text.trim() !== "" ) {
+      setLoading(true);
+      doYou();
+    }
       
   }, [text])
   
