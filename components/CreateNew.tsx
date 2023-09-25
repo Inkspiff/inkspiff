@@ -43,7 +43,7 @@ const CreateNew = () => {
 
   const handleSelectedTemplate = (template: TemplateType) => {
     handleCreateNewMarkdown(
-      template.title, template.content
+      template.name, template.content
       )
     
   }
