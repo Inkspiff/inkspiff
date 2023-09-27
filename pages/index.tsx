@@ -76,7 +76,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function Home({ session, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   // const app = useSelector((state: RootState) => state.app)
 
-
+  console.log({session})
 
   return (
     <div>

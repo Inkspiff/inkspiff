@@ -47,7 +47,7 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
   // const { data: session } = useSession();
   const router = useRouter()
 
-  // console.log({session})
+  console.log({session})
 
   // if (session) {
   return (
@@ -164,8 +164,8 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
               <Box>
                 
               <Typography variant="h1" sx={{
-            mb: 2
-          }}>Login to your account </Typography>
+                mb: 2
+              }}>Login to your account </Typography>
 
                 <Typography
                   variant="body1"

@@ -35,6 +35,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
   if (session) {
+    console.log({session})
     const mdCollection = collection(db, 'markdowns')
 
     const q = query(mdCollection, where("userId", "==", session.user.id), orderBy("lastEdited", "desc"), limit(1))
@@ -114,7 +115,6 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
   //     }
   //   }
   // }, [])
-
 
 
 

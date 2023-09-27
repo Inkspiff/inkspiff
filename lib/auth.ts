@@ -29,17 +29,17 @@ export const authOptions: NextAuthOptions = {
     // ...add more providers here
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      const isAllowedToSignIn = true
-    if (isAllowedToSignIn) {
-      return '/'
-    } else {
-      // Return false to display a default error message
-      return false
-      // Or you can return a URL to redirect to:
-      // return '/unauthorized'
-    }
-    },
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   const isAllowedToSignIn = true
+    // if (isAllowedToSignIn) {
+    //   return '/editor'
+    // } else {
+    //   // Return false to display a default error message
+    //   return false
+    //   // Or you can return a URL to redirect to:
+    //   // return '/unauthorized'
+    // }
+    // },
     async jwt({ token, account, profile }) {
       // console.log({token, account, profile})
       // Persist the OAuth access_token to the token right after signin
@@ -53,10 +53,9 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         session.user = {...user}
       }
-
       
       return session
     }
   },
-  // secret: process.env.JWT_SECRET as string
+  secret: process.env.JWT_SECRET as string
 }
