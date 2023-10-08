@@ -5,6 +5,9 @@ import { FirestoreAdapter, FirebaseAdapterConfig, } from "@next-auth/firebase-ad
 // import {firestore} from "@/lib/db"
 import { cert } from "firebase-admin/app";
 
+const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY!);
+
+
 
 export const authOptions: NextAuthOptions = {
   // pages: {
@@ -14,7 +17,7 @@ export const authOptions: NextAuthOptions = {
     credential: cert({
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      privateKey,
     }),
   }),
   // Configure one or more authentication providers
