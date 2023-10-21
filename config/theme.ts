@@ -5,7 +5,7 @@ import { PaletteMode, } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 
 export const roboto = Roboto({
-  weight: ['300', '400', '500', '700'],
+  weight: ['100', '300', '400', '500', '700'],
   subsets: ['latin'],
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
@@ -22,46 +22,47 @@ const {mode} = palette
 
   return {
     typography: {
+      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
       h1: {
-        [theme.breakpoints.down('xl')]: {
+        [theme.breakpoints.up('xl')]: {
           fontSize: "4.78125rem",
           lineHeight: "4.875rem",
           
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.up('xs')]: {
           fontSize: "2.8125rem",
           lineHeight: "3.0625rem",
         },
       },
       h2: {
-        [theme.breakpoints.down('xl')]: {
+        [theme.breakpoints.up('xl')]: {
           fontSize: "2.8125rem",
           lineHeight: "3.0625rem",
           
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.up('xs')]: {
           fontSize: "2.25rem",
           lineHeight: "2.5rem",
         },
       },
       h3: {
         
-        [theme.breakpoints.down('xl')]: {
+        [theme.breakpoints.up('xl')]: {
           fontSize: "1.875rem",
           lineHeight: "2.125rem",
           
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.up('xs')]: {
           fontSize: "1.875rem",
           lineHeight: "2.125rem",
         },
       },
       h4: {
-        [theme.breakpoints.down('xl')]: {
+        [theme.breakpoints.up('xl')]: {
           fontSize: "2.8125rem",
           lineHeight: "3.0625rem",
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.up('xs')]: {
           fontSize: "2.25rem",
           lineHeight: "2.5rem",
         },

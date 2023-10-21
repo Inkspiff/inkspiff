@@ -37,21 +37,23 @@ const Hero = () => {
       }}>
       <Typography variant="h1" sx={{
         fontWeight: 700,
+        mb: 1,
       }}>
-        Your README.md files for Github, in seconds.
+        Create <span >great </span><span>readmes</span>, <br/>in <span>seconds.</span>
       </Typography>
       <Typography variant="body1" sx={{
   
         textAlign: "center",
-        fontWeight: 700,
+        fontWeight: 500,
         fontSize: "24px",
         maxWidth: {sm: "65%"},
         mx: "auto"
       }}>
-        Inkspill is the tool for creating markdown documents faster and better.
+        Inkspill is the tool for creating markdown files faster and better.
       </Typography>
       <Button variant="contained" onClick={handleCreateNew} sx={{
         my: 2,
+        fontWeight: 500
       }} size="small">Create New .md</Button>
       </Box>
       

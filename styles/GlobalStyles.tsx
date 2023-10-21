@@ -8,16 +8,16 @@ const GlobalStyles = (): JSX.Element => (
         width: 10px;
       }
       *::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
       }
       *::-webkit-scrollbar-thumb {
-        background-color: darkgrey;
+        background-color: #545454;
         /* outline: 1px solid slategrey; */
-        border-radius: 4px;
+        border-radius: 5px;
         width: 10px;
       }
       *::-webkit-scrollbar-thumb:hover {
-        background: rgba(67, 66, 88, 0.6);
+        background: #545454;
       }
       a {
         text-decoration: none;

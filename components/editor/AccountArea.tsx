@@ -182,7 +182,9 @@ export default function AccountArea() {
           <Divider sx={{
             mt: 1,
           }}/>
-          <List>
+          <List sx={{
+            py: 1
+          }}>
           {session && <ListItem sx={{
               p: 0,
               px: "4px",
@@ -192,6 +194,7 @@ export default function AccountArea() {
                 m: 0,
                 borderRadius: "4px",
               }}>
+                Logout
               </ListItemButton>
             </ListItem>}
           </List>
