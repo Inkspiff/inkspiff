@@ -4,7 +4,8 @@ import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import PaddedContainer from "@/components/layout/PaddedContainer"
-
+import Larry1 from "@/public/illustrations/DrawKit Larry Character Illustration/SVG/DrawKit Larry Character Illustration (2).svg"
+import Finn1 from "@/public/illustrations/DrawKit Vector Illustration Fun & Playful Finn Character/B&W/SVG/DrawKit Vector Illustration Fun & Playful Finn Character B&W (1).svg"
 
 const Hero = () => {
     return <Box>
@@ -37,7 +38,7 @@ const Hero = () => {
 
 
                     }}>
-                        {/* <Image src="/img/logo-black.png" alt="Developers" fill sizes="" /> */}
+                        <Image src={Larry1} alt="Developers" width={500} height={500} sizes="" />
 
                     </Box>
                 </Grid>

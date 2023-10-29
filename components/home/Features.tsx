@@ -1,122 +1,85 @@
 import React from 'react'
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import Button from "@mui/material/Button"
+import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Grid"
+import PaddedContainer from '@/components/layout/PaddedContainer'
+
+
+const LIST = [
+    {
+        title: "Zero markdown knwoledge",
+        desc: "AI-Driven Content Generation: Let our AI create well-structured, concise, and stylish readme files for your projects.",
+    },
+    // {
+    //     title: "Customization",
+    //     desc: "Tailor the content to suit your project's unique needs, tone, and style.",
+    // },
+    {
+        title: "Beautiful Templates",
+        desc: "Choose from a library of elegant readme templates to make your documentation stand out.",
+    },
+    {
+        title: "120X Faster",
+        desc: "Get your readme files ready in seconds, allowing you to focus on what truly matters – your code.",
+    },
+
+]
 
 const Features = () => {
 
   return (
     <Box sx={{
-      
-    //   outline: "1px solid black",
-      width: "100%",
-      overflow: "hidden",
-      px: {
-        xs: "2rem",
-        sm: "4rem",
-        md: "8rem"
-      },
-      py: 8,
-    }}>
-     
+        // bgcolor: "rgba(233, 233, 234)",
+      }}>
+      <PaddedContainer>
 
         <Typography variant="h2" sx={{
-            textAlign: "center",
-            fontWeight: 700,
-            maxWidth: "450px",
-            margin: "auto",
-            mb: 4,
-            mt: 4,
+          textAlign: "center",
+          mt: 4,
         }}>
-            Writing Markdown has never been easier.
+          Professional READMEs in seconds.
         </Typography>
-    
-      
-        <Grid container>
-        <Grid item sm={12} md={4} sx={{
-            outline: "1px solid black",
-            height: "100vh",
-        }}>
-            <Box>
-                <Typography variant="h3">AI READMEs</Typography>
-                <Typography variant="body1">
-                    It’s hard to move fast if you can’t find anything. Centralize all your knowledge in Notion.</Typography>
-                
-            </Box>
-        </Grid>
 
-        <Grid item sm={12} md={8} sx={{
-            outline: "1px solid black",
-            height: "100vh",
-        }}>
-            <Box sx={{
-                outline: '1px solid black',
-
+       
+          
+          <Grid container spacing={3} sx={{
+            // border: 1
+          }}>
+            {LIST.map((item, index) => {
+                return <Grid key={index} item xs={index === 0 ? 12 : 6}>
+                <Paper elevation={0} sx={{
+                    borderRadius: 2,
+                    bgcolor: 'action.hover',
+                    p: 3,
+                 
+                }}>
+                    <Typography variant='h6' sx={{
+                    mb: 1,
             }}>
-                
-                {/* image */}
-            </Box>
-        </Grid>
-
-
-
-        <Grid item sm={12} md={4} sx={{
-            outline: "1px solid black",
-            height: "100vh",
-        }}>
-            <Box>
-                <Typography variant="h3">Markdown Templates</Typography>
-                <Typography variant="body1">
-                    It’s hard to move fast if you can’t find anything. Centralize all your knowledge in Notion.</Typography>
-                
-            </Box>
-        </Grid>
-        <Grid item sm={12} md={8} sx={{
-            outline: "1px solid black",
-            height: "100vh",
+              {item.title}
+            </Typography>
+                <Typography  sx={{
+              
+            }}>
+              {item.desc}
+            </Typography>
+                </Paper>
+            </Grid>
+            })}
             
-        }}>
-            <Box sx={{
-                outline: '1px solid black',
-
-            }}>
-                
-                {/* image */}
-            </Box>
-        </Grid>
-
-
-
-        <Grid item sm={12} md={4} sx={{
-            outline: "1px solid black",
-            height: "100vh",
-        }}>
-            <Box>
-                <Typography variant="h3">Write Markdown</Typography>
-                <Typography variant="body1">
-                    It’s hard to move fast if you can’t find anything. Centralize all your knowledge in Notion.</Typography>
-                
-            </Box>
-        </Grid>
-        <Grid item sm={12} md={8} sx={{
-            outline: "1px solid black",
-            height: "100vh",
             
-        }}>
-            <Box sx={{
-                outline: '1px solid black',
+            
+          </Grid>
 
-            }}>
-                
-                {/* image */}
-            </Box>
-        </Grid>
+          
+          
         
-      </Grid>
-      
 
-    </Box>
+
+      </PaddedContainer>
+      </Box>
+
   )
 }
 

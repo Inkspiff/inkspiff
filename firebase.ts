@@ -21,7 +21,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-export const analytics = isSupported().then(yes => yes ? getAnalytics(app) : null);
+// export const analytics = isSupported().then(yes => yes ? getAnalytics(app) : null);
 
 export const db = getFirestore(app);
 // Get a reference to the storage service, which is used to create references in your storage bucket

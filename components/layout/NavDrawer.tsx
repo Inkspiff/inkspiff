@@ -13,8 +13,20 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded"
 import KeyboardArrowUpRoundedIcon from "@mui/icons-material/KeyboardArrowUpRounded"
 import Logo from "@/components/ui/Logo"
-import CancelRoundedIcon from "@mui/icons-material/CancelRounded"
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded"
+import Link from 'next/link';
 
+
+const NAV_ITEMS= [
+  {
+    title: "about",
+    link: "/about",
+  },
+  {
+    title: "feedback",
+    link: "/about",
+  }
+]
 
 
 export default function NavDrawer() {
@@ -45,17 +57,50 @@ export default function NavDrawer() {
     >
         <Box sx={{
             display: "flex",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            alignItems: "center",
+            px: 2, 
+            py: 2
         }}>
             <Logo type="both" />
 
-            <CancelRoundedIcon onClick={toggleDrawer(false)} />
+
+            <IconButton onClick={toggleDrawer(false)}>
+            <CloseRoundedIcon  />
+            </IconButton>
+            
         </Box>
 
         <Divider />
 
-      <List>
 
+
+      <List sx={{
+      p: 1
+      }}>
+        {NAV_ITEMS.map((item, index) => {
+          return <ListItem key={index}  sx={{
+            
+            textTransform: "capitalize",
+            // "&:hover": {
+            //   bgcolor: "action.hover"
+            // }
+          }}>
+            <Link href={item.link} style={{
+              display: "inline-block",
+              width: "100%"
+            }}>
+            <ListItemButton sx={{
+              p: 1.5,
+              px: 2,
+              borderRadius: "8px",
+            }}>
+            {item.title}
+            </ListItemButton>
+            </Link>
+            
+          </ListItem>
+        })}
         
       </List>
     </Box>
@@ -70,7 +115,7 @@ export default function NavDrawer() {
             <MenuRoundedIcon />
           </IconButton>
           <Drawer
-            anchor={'right'}
+            anchor={'top'}
             open={state}
             onClose={toggleDrawer(false)}
 

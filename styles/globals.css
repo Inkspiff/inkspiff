@@ -1,3 +1,10 @@
+@font-face {
+  font-family: RobotoMedium;
+  src: url("/fonts/Roboto-Medium.ttf");
+  format: ("ttf");
+  font-display: swap;
+}
+
 :root {
   --max-width: 1100px;
   --border-radius: 12px;

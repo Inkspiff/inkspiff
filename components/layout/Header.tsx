@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext} from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -17,22 +17,21 @@ import ThemeToggler from "@/components/appearance/ThemeToggler"
 import Logo from "@/components/ui/Logo"
 import Navbar from "@/components/layout/Navbar"
 import NavDrawer from "@/components/layout/NavDrawer"
+import { ThemeContext } from '@/context/ThemeContext';
 
 const HomeHeader = () => {
+  const { toggleTheme, theme} = useContext(ThemeContext);
+
+  const {palette, } = theme
+  const {mode } = palette
   
-  const { data: session } = useSession()
-
-  const router = useRouter()
-
-  const handleCreateNew = () => {
-    router.push("/create-new")
-  }
 
 
   return (
     <AppBar
       sx={{
         border: "none",
+        bgcolor: "transparent"
       }}
       elevation={0}
       variant="outlined"
@@ -43,34 +42,34 @@ const HomeHeader = () => {
           alignItems: "center",
           justifyContent: "space-between",
           width: '100%',
+          bgcolor: mode === 'light' ? 'rgba(255, 255, 255, 0.9)' : 'rgba(18, 18, 18, 0.9)',
+          backdropFilter: 'saturate(180%) blur(20px)',
+          
         }}
       >
         <Box sx={{
             display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+            alignItems: "center",
+            justifyContent: "space-between",
         }}>
+          <Link href={"/"}>
           <Logo type="both" size={30} sx={{
             mr: 1,
+            cursor: "pointer"
           }} />
+          </Link>
+          
 
          <Navbar />
+
+        
         </Box>
 
         <Box>
-        {!session && <Button variant="text" sx={{
-            display: {xs: "none", sm: "inline-flex" },
-            mr: 1,
-          }} size="small">
-            <Link href="/login">Log in</Link>
-          </Button>}
-          <Button variant="contained" onClick={handleCreateNew} sx={{
-            display: {xs: "none", sm: "inline-flex" },
-            mr: 1,
-          }} size="small">Create new .md</Button>
-          {/* <NavDrawer /> */}
+        
 
           <ThemeToggler />
+          <NavDrawer />
         </Box>
         
       </Toolbar>

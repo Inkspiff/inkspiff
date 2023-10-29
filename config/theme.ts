@@ -1,11 +1,20 @@
-import { Roboto } from 'next/font/google';
+import { Roboto, Raleway, Merriweather } from 'next/font/google';
 import { createTheme, responsiveFontSizes, Theme as MuiTheme, ThemeOptions,  } from '@mui/material/styles';
 import { amber, grey, red, deepOrange } from '@mui/material/colors';
 import { PaletteMode, } from '@mui/material';
 import { deepmerge } from '@mui/utils';
+import localFont from 'next/font/local'
+    
 
 export const roboto = Roboto({
   weight: ['100', '300', '400', '500', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  fallback: ['Helvetica', 'Arial', 'sans-serif'],
+});
+
+export const raleway = Raleway({
+  weight: ['100', '300', '400', '500', '600', '700'],
   subsets: ['latin'],
   display: 'swap',
   fallback: ['Helvetica', 'Arial', 'sans-serif'],
@@ -22,27 +31,31 @@ const {mode} = palette
 
   return {
     typography: {
-      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+      fontFamily: raleway.style.fontFamily,
       h1: {
+        
         [theme.breakpoints.up('xl')]: {
           fontSize: "4.78125rem",
           lineHeight: "4.875rem",
-          
+          fontFamily: raleway.style.fontFamily,
         },
         [theme.breakpoints.up('xs')]: {
           fontSize: "2.8125rem",
-          lineHeight: "3.0625rem",
+          lineHeight: raleway.style.fontFamily,
         },
       },
       h2: {
+        fontWeight: 600,
+        marginBottom: "32px",
         [theme.breakpoints.up('xl')]: {
           fontSize: "2.8125rem",
           lineHeight: "3.0625rem",
-          
+          fontFamily: raleway.style.fontFamily,
         },
         [theme.breakpoints.up('xs')]: {
           fontSize: "2.25rem",
           lineHeight: "2.5rem",
+          fontFamily: raleway.style.fontFamily,
         },
       },
       h3: {
@@ -59,18 +72,23 @@ const {mode} = palette
       },
       h4: {
         [theme.breakpoints.up('xl')]: {
-          fontSize: "2.8125rem",
+          fontSize: "2.25rem",
           lineHeight: "3.0625rem",
         },
         [theme.breakpoints.up('xs')]: {
-          fontSize: "2.25rem",
+          fontSize: "1.5rem",
           lineHeight: "2.5rem",
         },
       },
   
-      // body1: {
-      //   color: "#8b8b8b"
-      // }
+      body1: {
+        // color: "#8b8b8b"
+        fontFamily: raleway.style.fontFamily,
+      },
+      body2: {
+        // color: "#8b8b8b"
+        fontFamily: raleway.style.fontFamily,
+      }
     },
     components: {
       MuiCssBaseline: {
@@ -88,7 +106,7 @@ const {mode} = palette
       MuiToolbar: {
         styleOverrides: {
           root: {
-            background: theme.palette.background.default,
+            // background: theme.palette.background.default,
           }
         }
       },
@@ -112,6 +130,7 @@ const {mode} = palette
         }
       },
       MuiButton: {
+
         styleOverrides: {
           root: {
               borderRadius: "5px",
@@ -129,6 +148,7 @@ const {mode} = palette
           },
           contained: {
             fontWeight: 500,
+            boxShadow: "none",
               // background: theme.palette.text.primary,
               // [theme.breakpoints.down('sm')]: {
               //     fontSize: "1rem",
@@ -136,6 +156,7 @@ const {mode} = palette
               // "&:hover": {
               //   background: theme.palette.action.hover,
               // }
+              backgroundColor: theme.palette.mode === 'light' ? '#121212' : '#ffffff',
           },
           outlined: {
               border: `2px solid ${theme.palette.text.primary}`,

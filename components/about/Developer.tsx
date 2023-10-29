@@ -5,6 +5,8 @@ import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import PaddedContainer from "@/components/layout/PaddedContainer"
 
+import DevImg from "@/public/illustrations/Programmer-pana.svg"
+
 
 const Developer = () => {
     return <Box>
@@ -37,7 +39,7 @@ const Developer = () => {
 
 
                     }}>
-                        {/* <Image src="/img/logo-black.png" alt="Developers" fill sizes="" /> */}
+                        <Image src={DevImg} alt="Developers" fill sizes="" />
 
                     </Box>
                 </Grid>
