@@ -55,7 +55,7 @@ const WhyJoin = () => {
         <Grid container spacing={0}>
           {excuseAnswers.map((point, index) => {
             return (
-              <Grid key={index} item xs={12} md={index !== 0 && 6}>
+              <Grid key={index} item xs={12} md={12}>
                 <Paper
                   elevation={0}
                   sx={{

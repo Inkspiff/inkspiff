@@ -4,13 +4,12 @@ import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 
-import { db } from "@/firebase"
-import { collection, doc, serverTimestamp, addDoc } from "firebase/firestore";
-
 const Hero = () => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
+
+  const [added, setAdded] = useState(false)
 
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,45 +21,40 @@ const Hero = () => {
   }
 
   const handleJoin = async () => {
-    const docRef = collection(db, "waitlist");
-
-    const dataToSend = {
-        name,
-        email,
-    }
-
-    await addDoc(docRef, dataToSend)
-        .then( (data) => {
-            console.log({data})
-        })
-        .catch((err) => {
-            console.error('Error creating document:', err)
-        });
+    
+    // console.log({dataToSend})
 
 
-    // setLoading(true)
-    // const response = await fetch("/api/db/join-waitlist", {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     name: name,
-    //     email: email
-    //   })
-    // })
+    setLoading(true)
+    const response = await fetch("/api/db/join-waitlist", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      
+      method: "POST",
 
-    // setLoading(false)
+      body: JSON.stringify({
+        name: name,
+        email: email
+      })
+    })
 
-    // if (!response?.ok) {
-    //   // handle wahalas
-    // } 
+    setLoading(false)
 
-    // const json = await response.json()
+    if (!response?.ok) {
+      // handle wahalas
+      return
+    } 
 
-    // console.log({json})
+    setAdded(true)
+
+    const json = await response.json()
+
+    console.log({json})
     
   }
+
+
 
 
   return (
@@ -85,7 +79,7 @@ const Hero = () => {
           // minHeight: "60vh",
       }}>
           <Typography variant="h1" sx={{
-              fontWeight: 500,
+              // fontWeight: 500,
               mb: 4,
               mt: 4
           }}>
@@ -101,14 +95,19 @@ const Hero = () => {
           
            Join the waitlist! Create code documentation in seconds, collaborate with fellow developers, grow your work.
           </Typography>
+
+          {!added ? 
           <Box sx={{
             display: {xs: "flex"},
             flexDirection: "column",
             alignItems: "center"
           }}>
+
+
             <TextField id="name" 
             label="Name"
             variant="outlined"
+            disabled={loading}
             size="small"
               inputProps={{
                 onChange: handleNameChange
@@ -122,6 +121,7 @@ const Hero = () => {
             <TextField id="email" 
             label="Email"
             variant="outlined"
+            disabled={loading}
             size="small"
               inputProps={{
                 onChange: handleEmailChange
@@ -142,6 +142,22 @@ const Hero = () => {
                   fontWeight: 500
               }} size="small">Get early access</Button>
           </Box>
+          : 
+          <Box sx={{
+            border: "2px dashed #121212",
+            borderRadius: "16px",
+            width: "100%",
+            maxWidth: "400px",
+            height: "150px",
+            margin: "0 auto",
+            mb: 4,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+            <Typography variant="h4" component="p">All Done, Thanks.</Typography>
+          </Box>}
+          
 
        </Box>
 
@@ -155,7 +171,7 @@ const Hero = () => {
             lineHeight: "2rem",
             maxWidth: {sm: "450px"},
             mx: "auto"
-        }}>
+        }} >
             Are you tired of spending hours crafting documentation for your code projects? Do you wish there was a smarter, more efficient way to generate readme files and collaborate with your team on code documentation? Look no further—Inkspiff is here to revolutionize your code documentation workflow.
         </Typography>
       

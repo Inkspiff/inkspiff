@@ -8,17 +8,12 @@ import WhyJoin from "@/components/home/WhyJoin";
 import BottomActionCall from "@/components/home/BottomActionCall";
 import Quote from "@/components/home/Quote";
 import Hero from "@/components/home/Hero";
-
+import Footer from "@/components/layout/Footer";
 
 
 
 export default function Home() {
-  // const app = useSelector((state: RootState) => state.app)
 
-
-  const handleJoin = () => {
-    console.log("join")
-  }
 
   return (
     <div>
@@ -69,7 +64,7 @@ export default function Home() {
 
             <BottomActionCall />
 
-
+            <Footer />
       </Box>
     </div>
   );

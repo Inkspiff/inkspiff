@@ -1,10 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
+import { ThemeContext } from '@/context/ThemeContext';
 
 const BottomActionCall = () => {
+  const { toggleTheme, theme} = useContext(ThemeContext);
 
+  const {palette, } = theme
+  const {mode } = palette
+  
   
 
 
@@ -48,7 +53,11 @@ const BottomActionCall = () => {
           borderRadius: 4,
           // bgcolor: "white",
           // color: "#121212", 
-          
+          bgcolor: "white" ,
+          color:"#121212" ,
+          "&:hover": {
+            bgcolor: "#f0f0f0",
+          }
           }}>Join Inkspiffers</Button>
  
       

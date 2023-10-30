@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography"
 import PaddedContainer from "@/components/layout/PaddedContainer"
 import Join from "@/components/about/Join"
 
+import Larry10 from "@/public/illustrations/DrawKit Larry Character Illustration/SVG/DrawKit Larry Character Illustration (10).svg"
 
 const Inkspiff = () => {
     return <Box>
@@ -41,7 +42,7 @@ const Inkspiff = () => {
 
 
                     }}>
-                        {/* <Image src="/img/logo-black.png" alt="Developers" fill sizes="" /> */}
+                         <Image src={Larry10} alt="Developers" fill sizes="" />
 
                     </Box>
                 </Grid>

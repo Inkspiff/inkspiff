@@ -26,9 +26,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         await addDoc(docRef, dataToSend)
-            .then( (data) => {
-                console.log({data})
-                res.status(200).json(data)
+            .then( (docRef) => {
+                console.log("Successful")
+                res.status(200).json({id: docRef.id})
             })
             .catch((err) => {
                 console.error('Error creating document:', err);

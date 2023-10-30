@@ -33,15 +33,26 @@ const {mode} = palette
     typography: {
       fontFamily: raleway.style.fontFamily,
       h1: {
-        
+        fontWeight: 700,
         [theme.breakpoints.up('xl')]: {
           fontSize: "4.78125rem",
           lineHeight: "4.875rem",
           fontFamily: raleway.style.fontFamily,
         },
-        [theme.breakpoints.up('xs')]: {
+        [theme.breakpoints.up('md')]: {
+          fontSize: "3.78125rem",
+          lineHeight: "3.875rem",
+          fontFamily: raleway.style.fontFamily,
+        },
+        [theme.breakpoints.down('md')]: {
+          fontSize: "3.2125rem",
+          lineHeight: "3.3125rem",
+          fontFamily: raleway.style.fontFamily,
+        },
+        [theme.breakpoints.down('sm')]: {
           fontSize: "2.8125rem",
-          lineHeight: raleway.style.fontFamily,
+          lineHeight: "3.125rem",
+          fontFamily: raleway.style.fontFamily,
         },
       },
       h2: {

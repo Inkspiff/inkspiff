@@ -52,7 +52,7 @@ const Features = () => {
                     borderRadius: 2,
                     bgcolor: 'action.hover',
                     p: 3,
-                 
+                    height: "100%",
                 }}>
                     <Typography variant='h6' sx={{
                     mb: 1,
