@@ -1,9 +1,9 @@
-import { Roboto, Raleway, Merriweather } from 'next/font/google';
+import { Roboto, Raleway } from 'next/font/google';
 import { createTheme, responsiveFontSizes, Theme as MuiTheme, ThemeOptions,  } from '@mui/material/styles';
-import { amber, grey, red, deepOrange } from '@mui/material/colors';
+// import { amber, grey, red, deepOrange } from '@mui/material/colors';
 import { PaletteMode, } from '@mui/material';
 import { deepmerge } from '@mui/utils';
-import localFont from 'next/font/local'
+// import localFont from 'next/font/local'
     
 
 export const roboto = Roboto({
