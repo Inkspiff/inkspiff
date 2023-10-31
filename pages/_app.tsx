@@ -10,7 +10,6 @@ import GlobalStyles from '@/styles/GlobalStyles';
 import createEmotionCache from '@/config/createEmotionCache';
 import store from "@/store/index";
 import { Provider } from "react-redux";
-import { SessionProvider } from "next-auth/react"
 import '@/styles/render.css'
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -46,13 +45,11 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider>
       <Provider store={store}>
-      <SessionProvider session={pageProps.session}>
         
         <ThemeContextAdderCompForMui>
         <Component {...pageProps} />
         </ThemeContextAdderCompForMui>
       
-      </SessionProvider>
       
       </Provider>
       </ThemeProvider>

@@ -1,88 +1,25 @@
 import Head from "next/head";
-import { useState } from "react";
-import {useSelector} from "react-redux"
-import { RootState } from "@/store";
+import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
-import Hero from "@/components/home/Hero"
 import HomeHeader from "@/components/layout/Header"
-import Metrics from "@/components/home/Metrics"
-import Features from "@/components/home/Features"
-import BottomActionCall from "@/components/ui/BottomActionCall";
-import KeyPoints from "@/components/home/KeyPoints"
-import HomeFooter from "@/components/layout/Footer"
-import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { getServerSession } from "next-auth/next"
-import { getProviders } from "next-auth/react"
-import {authOptions} from "@/lib/auth"
-import { db } from "@/firebase"
-import { DocumentData, QuerySnapshot, collection, query, where, getDocs, orderBy, limit, } from "firebase/firestore";
+import Features from "@/components/home/Features";
+import PaddedContainer from "@/components/layout/PaddedContainer"
+import WhyJoin from "@/components/home/WhyJoin";
+import BottomActionCall from "@/components/home/BottomActionCall";
+import Quote from "@/components/home/Quote";
+import Hero from "@/components/home/Hero";
+import Footer from "@/components/layout/Footer";
 
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
-  
-  // If the user is already logged in, redirect.
-  // Note: Make sure not to redirect to the same page
-  // To avoid an infinite loop!
-  if (session) {
 
-    const markdownsCollection = collection(db, 'markdowns');
-    const q = query(markdownsCollection, where("allowedUsers", "array-contains", session.user.id), orderBy('lastEdited', 'desc'), limit(1));
+export default function Home() {
 
-    try {
-        const querySnapshot = await getDocs(q);
-  
-        if (!querySnapshot.empty) {
-            // There is at least one document matching the user ID
-            const markdownDoc = querySnapshot.docs[0];
-
-      
-
-            interface mdType extends DocumentData {
-              id: string
-            } 
-
-            const md: mdType = {
-                id: markdownDoc.id,
-                ...markdownDoc.data()
-            };
-            
-            // Process the account data as needed
-            console.log({md})
-            return { redirect: { destination: `/editor/${md.title.split(" ").join("-")}-${md.id}`} };
-            
-        } else {
-            // No account found for the user ID
-            console.log({ message: 'Markdown not found' });
-            return { redirect: { destination: `/create-new` } }
-        }
-    } catch (error) {
-        console.error('Error retrieving markdown:', error);
-    }
-    
-  }
-
-  const providers = await getProviders();
-  
-  return {
-    props: { 
-      session: session,
-      providers: providers ?? [] 
-    },
-  }
-}
-
-
-export default function Home({ session, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // const app = useSelector((state: RootState) => state.app)
-
-  console.log({session})
 
   return (
     <div>
       <Head>
-        <title>Inkspill - Create README files is seconds</title>
-        <link rel="icon" href="/dog.png" />
+        <title>Join the Inkspiff waiting list</title>
+        {/* <link rel="icon" href="/dog.png" /> */}
       </Head>
       <HomeHeader />
       <Box  component="main"
@@ -90,13 +27,45 @@ export default function Home({ session, providers }: InferGetServerSidePropsType
           mt: {sm: "64px", xs: "56px"},
         }}>
           
-      <Hero />
-      <Metrics />
-      <Features />
-      <KeyPoints />
-      <BottomActionCall />
+          <Hero />
+
+           
+            
+
+
+            <Features />
+
+            <Box>
+                <PaddedContainer sx={{
+                  py: 8
+                }}>
+                    <Typography sx={{
+                        pl: 2,
+                        borderLeft: "2px solid #121212",
+                        fontSize: {xs: "1.5rem", sm: "2rem"},
+                        fontWeight: 400,
+
+                    }}>
+                        At Inkspiff, we believe that creating comprehensive readme files and maintaining code documentation should be a breeze. That's why we've harnessed the power of generative AI and collaboration features to simplify the process and make it more enjoyable.
+                    </Typography>
+                </PaddedContainer>
+            </Box>
+    
+
+            <Quote
+            text="We got rid of nearly a dozen different tools because of what Inskpill does for us."
+            by="Precious Nwaoha"
+            from="Software Developer, Patentic"
+          />
+
+            <WhyJoin />
+
+            
+
+            <BottomActionCall />
+
+            <Footer />
       </Box>
-      <HomeFooter />
     </div>
   );
 }

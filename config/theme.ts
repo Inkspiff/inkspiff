@@ -33,26 +33,37 @@ const {mode} = palette
     typography: {
       fontFamily: raleway.style.fontFamily,
       h1: {
-        fontWeight: 600,
-        [theme.breakpoints.down('xl')]: {
+        fontWeight: 700,
+        [theme.breakpoints.up('xl')]: {
           fontSize: "4.78125rem",
           lineHeight: "4.875rem",
           fontFamily: raleway.style.fontFamily,
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.up('md')]: {
+          fontSize: "3.78125rem",
+          lineHeight: "3.875rem",
+          fontFamily: raleway.style.fontFamily,
+        },
+        [theme.breakpoints.down('md')]: {
+          fontSize: "3.2125rem",
+          lineHeight: "3.3125rem",
+          fontFamily: raleway.style.fontFamily,
+        },
+        [theme.breakpoints.down('sm')]: {
           fontSize: "2.8125rem",
-          lineHeight: raleway.style.fontFamily,
+          lineHeight: "3.125rem",
+          fontFamily: raleway.style.fontFamily,
         },
       },
       h2: {
         fontWeight: 600,
         marginBottom: "32px",
-        [theme.breakpoints.down('xl')]: {
+        [theme.breakpoints.up('xl')]: {
           fontSize: "2.8125rem",
           lineHeight: "3.0625rem",
           fontFamily: raleway.style.fontFamily,
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.up('xs')]: {
           fontSize: "2.25rem",
           lineHeight: "2.5rem",
           fontFamily: raleway.style.fontFamily,

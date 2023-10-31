@@ -1,9 +1,7 @@
 import { BlockType, ViewSettingsType, FileType, SelectMenuItemType } from "@/types/editor";
 import {MarkdownInterface, TemplateType } from "@/types"
-import { uid } from "@/lib/utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SectionType } from "@/types/editor";
-import { actionAsyncStorage } from "next/dist/client/components/action-async-storage";
 
 
 export interface appState {
