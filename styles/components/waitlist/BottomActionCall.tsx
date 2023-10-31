@@ -14,25 +14,26 @@ const BottomActionCall = () => {
       flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-        // border: "1px solid black",
+        bgcolor: "#121212",
+        borderRadius: "32px 32px 0 0",
         width: "100%",
         px: {
           xs: "2rem",
           sm: "4rem",
           md: "8rem"
         },
-        textAlign: "center"
+        py: 4,
+        textAlign: "center",
+        color: "white"
     }}>
       
-      <Typography variant="h1" sx={{
-        fontWeight: 700,
+      <Typography variant="h2" sx={{
         textAlign: "center",
         mt: 8,
       }}>
-        Start using Inkspill for free.
+        Start using Inkspiff for free.
       </Typography>
       <Typography variant="body1" sx={{
-        mt: 2,
         mb: 1,
         textAlign: "center",
         fontWeight: 500,
@@ -42,7 +43,13 @@ const BottomActionCall = () => {
       
         <Button variant="contained" size="small" sx={{
           my: 2,
-        }}>Try Inkspill free</Button>
+          py: "12px",
+          px: "24px",
+          borderRadius: 4,
+          // bgcolor: "white",
+          // color: "#121212", 
+          
+          }}>Join Inkspiffers</Button>
  
       
     </Box>

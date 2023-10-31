@@ -42,7 +42,6 @@ const KeyPoints = () => {
         <Typography
           variant="h2"
           sx={{
-            fontWeight: 700,
             textAlign: "center",
             margin: "auto",
             my: 4,
@@ -73,7 +72,6 @@ const KeyPoints = () => {
         <Typography
           variant="h2"
           sx={{
-            fontWeight: 700,
             my: 4,
             textAlign: "center",
           }}
@@ -90,6 +88,7 @@ const KeyPoints = () => {
                   sx={{
                     bgcolor: 'action.hover',
                     p: 3,
+                    height: "100%",
                   }}
                 >
                   <Typography variant="h5">{point.heading}</Typography>

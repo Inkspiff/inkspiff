@@ -23,7 +23,6 @@ const Features = () => {
 
         <Typography variant="h2" sx={{
             textAlign: "center",
-            fontWeight: 700,
             maxWidth: "450px",
             margin: "auto",
             mb: 4,

@@ -76,8 +76,8 @@ const Logo = ({type="image", size=34, sx={}}: propTypes) => {
           </Box>
           <Typography
         sx={{
-          fontWeight: 700,
-          fontSize: `${size}`
+          fontWeight: 600,
+          fontSize: `24px`
         }}
       >
         Inkspiff

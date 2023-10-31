@@ -36,7 +36,8 @@ const Hero = () => {
         // border: "1px solid black"
       }}>
       <Typography variant="h1" sx={{
-        fontWeight: 700,
+        // fontWeight: 700,
+        // border: 1,
         mb: 1,
       }}>
         Create <span >great </span><span>readmes</span>, <br/>in <span>seconds.</span>

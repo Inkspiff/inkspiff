@@ -21,7 +21,7 @@ const Metrics = () => {
     }}>
       
       <Typography variant="h2" sx={{
-        fontWeight: 700,
+        // fontWeight: 700,
         textAlign: "center",
         mt: 8,
       }}>
@@ -37,12 +37,13 @@ const Metrics = () => {
       </Typography>
       
       <Box>
-      <Typography variant="h3" component="p" sx={{
+      <Typography variant="h2" component="p" sx={{
         my: 4,
         textAlign: "center",
+
         fontWeight: 300,
       }}>
-        400 monthly users
+        400+ <br/> monthly users
       </Typography>
       </Box>
       <Box>
