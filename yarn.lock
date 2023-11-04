@@ -1982,6 +1982,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typeform/embed-react@npm:^3.8.0":
+  version: 3.8.0
+  resolution: "@typeform/embed-react@npm:3.8.0"
+  dependencies:
+    "@typeform/embed": 4.3.2
+    fast-deep-equal: ^3.1.3
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: dcf0960b34a4a97bae574595628f676821a0ff4164285b2ada2013729a470630a1170ff36f57e6fb97256acb3282e4fd73c2d1dac37a11801140471516ee43f9
+  languageName: node
+  linkType: hard
+
+"@typeform/embed@npm:4.3.2":
+  version: 4.3.2
+  resolution: "@typeform/embed@npm:4.3.2"
+  checksum: eb662c7be686e1347797d5d22ca26f6b56fbcb05e12fe64733e121c23b15b0818f9d2be9986c8ee8b37d322bb7ea94dfe7bb33ab0bacb5ac7a99dcd710558ea0
+  languageName: node
+  linkType: hard
+
 "@types/body-parser@npm:*":
   version: 1.19.2
   resolution: "@types/body-parser@npm:1.19.2"
@@ -2787,6 +2806,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "classnames@npm:2.3.2"
+  checksum: 2c62199789618d95545c872787137262e741f9db13328e216b093eea91c85ef2bfb152c1f9e63027204e2559a006a92eb74147d46c800a9f96297ae1d9f96f4e
+  languageName: node
+  linkType: hard
+
 "client-only@npm:0.0.1":
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
@@ -2984,6 +3010,15 @@ __metadata:
     supports-color:
       optional: true
   checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
+  languageName: node
+  linkType: hard
+
+"debug@npm:^2.1.3":
+  version: 2.6.9
+  resolution: "debug@npm:2.6.9"
+  dependencies:
+    ms: 2.0.0
+  checksum: d2f51589ca66df60bf36e1fa6e4386b318c3f1e06772280eea5b1ae9fd3d05e9c2b7fd8a7d862457d00853c75b00451aa2d7459b924629ee385287a650f58fe6
   languageName: node
   linkType: hard
 
@@ -4454,6 +4489,7 @@ __metadata:
     "@mui/utils": ^5.13.1
     "@next-auth/firebase-adapter": ^2.0.1
     "@reduxjs/toolkit": ^1.9.5
+    "@typeform/embed-react": ^3.8.0
     "@types/node": 20.2.1
     "@types/react": 18.2.6
     "@types/react-dom": 18.2.4
@@ -4476,6 +4512,7 @@ __metadata:
     react-icons: ^4.11.0
     react-markdown: ^8.0.7
     react-redux: ^8.0.5
+    react-share: ^4.4.1
     react-syntax-highlighter: ^15.5.0
     remark-gfm: ^3.0.1
     typescript: 5.0.4
@@ -4945,6 +4982,15 @@ __metadata:
   bin:
     json5: lib/cli.js
   checksum: 866458a8c58a95a49bef3adba929c625e82532bcff1fe93f01d29cb02cac7c3fe1f4b79951b7792c2da9de0b32871a8401a6e3c5b36778ad852bf5b8a61165d7
+  languageName: node
+  linkType: hard
+
+"jsonp@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "jsonp@npm:0.2.1"
+  dependencies:
+    debug: ^2.1.3
+  checksum: 90aabd9deb3a9ba83aedf8d40e1aaff1fc29f3f3fe42985a661782498dde526a7cd9b7bec4b8721f7d0beafab9e5ccfdafd46640f7dd6c58d529a6bb5238e2b8
   languageName: node
   linkType: hard
 
@@ -5865,6 +5911,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ms@npm:2.0.0":
+  version: 2.0.0
+  resolution: "ms@npm:2.0.0"
+  checksum: 0e6a22b8b746d2e0b65a430519934fefd41b6db0682e3477c10f60c76e947c4c0ad06f63ffdf1d78d335f83edee8c0aa928aa66a36c7cd95b69b26f468d527f4
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.1.2":
   version: 2.1.2
   resolution: "ms@npm:2.1.2"
@@ -6673,6 +6726,18 @@ __metadata:
     redux:
       optional: true
   checksum: a108f4f7ead6ac005e656d46051474a2bbdb31ede481bbbb3d8d779c1a35e1940b8655577cc5021313411864d305f67fc719aa48d6e5ed8288cf9cbe8b7042e4
+  languageName: node
+  linkType: hard
+
+"react-share@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "react-share@npm:4.4.1"
+  dependencies:
+    classnames: ^2.3.2
+    jsonp: ^0.2.1
+  peerDependencies:
+    react: ^16.3.0 || ^17 || ^18
+  checksum: f86bf7415f9fe98243b1ea58bf9df53503de7fb2235b1e633dd25c8cef68e59070b3cd20fab6ec5286eccbd30d27ce6c458ac532c4fdf7b6f12f4048bbea24d3
   languageName: node
   linkType: hard
 

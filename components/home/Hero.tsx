@@ -3,29 +3,92 @@ import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
+import Share from '../share'
 
 const Hero = () => {
   const [name, setName] = useState("")
+  const [nameHelperText, setNameHelperText] = useState("")
+  const [nameHasError, setNameHasError] = useState(false)
   const [email, setEmail] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [emailHasError, setEmailHasError] = useState(false)
+  const [emailHelperText, setEmailHelperText] = useState("")
+  const [alreadyJoined, setAlreadyJoined] = useState(false)
 
+  const [loading, setLoading] = useState(false)
   const [added, setAdded] = useState(false)
 
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value)
+    setNameHasError(false)
+    setNameHelperText("")
   }
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
+    setEmailHasError(false)
+    setEmailHelperText("")
   }
 
   const handleJoin = async () => {
     
-    // console.log({dataToSend})
 
+    // console.log({dataToSend})
+    let fromHasError = false
+
+    if (name.trim() === "") {
+      setNameHasError(true)
+      setNameHelperText("Please add your full name.")
+      fromHasError = true
+    }
+
+    if (email.trim() === "") {
+      setEmailHasError(true)
+      setEmailHelperText("Please add your email.")
+      fromHasError = true
+    }
+
+    const emailRegex =  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    
+    if (!emailRegex.test(String(email)
+    .toLowerCase())) {
+      setEmailHasError(true)
+      setEmailHelperText("Please add a valid email.")
+      fromHasError = true
+    }
+
+    if (fromHasError) {
+      return
+    }
+
+  
 
     setLoading(true)
+
+    const responseGetEmails = await fetch("/api/db/get-emails", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      
+      method: "GET",
+    })
+
+    if (!responseGetEmails?.ok) {
+      // handle wahalas
+      return
+    } 
+
+    const emails = await responseGetEmails.json()
+
+    if (emails.includes(email)) {
+      // user already joined
+      setAlreadyJoined(true)
+      setLoading(false)
+      setAdded(true)
+      setName("")
+      setEmail("")
+    }
+
     const response = await fetch("/api/db/join-waitlist", {
       headers: {
         "Content-Type": "application/json",
@@ -48,9 +111,10 @@ const Hero = () => {
 
     setAdded(true)
 
-    const json = await response.json()
-
-    console.log({json})
+    setName("")
+    setEmail("")
+    
+    
     
   }
 
@@ -90,10 +154,10 @@ const Hero = () => {
           <Typography variant="body1" sx={{
               mb: 4,
               mt: 4,
-              fontSize: {xs: "18px"}
+              fontSize: {xs: "18px", sm: "22px"}
           }}>
           
-           Join the waitlist! Create code documentation in seconds, collaborate with fellow developers, grow your work.
+           Join the waitlist! Create code  documentation in seconds, collaborate with fellow developers, get your projects out there.
           </Typography>
 
           {!added ? 
@@ -108,6 +172,8 @@ const Hero = () => {
             label="Name"
             variant="outlined"
             disabled={loading}
+            error={nameHasError}
+            helperText={nameHelperText}
             size="small"
               inputProps={{
                 onChange: handleNameChange
@@ -122,6 +188,8 @@ const Hero = () => {
             label="Email"
             variant="outlined"
             disabled={loading}
+            error={emailHasError}
+            helperText={emailHelperText}
             size="small"
               inputProps={{
                 onChange: handleEmailChange
@@ -148,14 +216,19 @@ const Hero = () => {
             borderRadius: "16px",
             width: "100%",
             maxWidth: "400px",
-            height: "150px",
             margin: "0 auto",
             mb: 4,
+            p: 2,
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
           }}>
-            <Typography variant="h4" component="p">All Done, Thanks.</Typography>
+            <Typography variant="h4" component="p" sx={{
+              mb: 2
+            }}>{alreadyJoined ? "You are already on the list" : "All Done, Thanks."}</Typography>
+
+            <Share />
           </Box>}
           
 
@@ -172,7 +245,10 @@ const Hero = () => {
             maxWidth: {sm: "450px"},
             mx: "auto"
         }} >
-            Are you tired of spending hours crafting documentation for your code projects? Do you wish there was a smarter, more efficient way to generate readme files and collaborate with your team on code documentation? Look no further—Inkspiff is here to revolutionize your code documentation workflow.
+            Are you tired of having to spend hours crafting docs for your code projects? <br />Do you wish there was a smarter, more efficient way to create <span style={{
+              fontWeight: "bold",
+              display: "inline",
+            }}>readme</span> files, collaborate and get your work out? <br />Look no further—Inkspiff is here to revolutionize your code documentation workflow.
         </Typography>
       
        </Box>

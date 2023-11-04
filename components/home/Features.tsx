@@ -9,7 +9,7 @@ import PaddedContainer from '@/components/layout/PaddedContainer'
 const LIST = [
     {
         title: "Zero markdown knwoledge",
-        desc: "AI-Driven Content Generation: Let our AI create well-structured, concise, and stylish readme files for your projects.",
+        desc: "Don't know markdown? Got no time for that? Let our AI create well-structured, concise, and stylish readme files for your projects.",
     },
     // {
     //     title: "Customization",
@@ -17,7 +17,7 @@ const LIST = [
     // },
     {
         title: "Beautiful Templates",
-        desc: "Choose from a library of elegant readme templates to make your documentation stand out.",
+        desc: "Choose from a library of community managed elegant readme templates to make your project stand out.",
     },
     {
         title: "120X Faster",

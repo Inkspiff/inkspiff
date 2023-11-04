@@ -10,7 +10,12 @@ const BottomActionCall = () => {
   const {palette, } = theme
   const {mode } = palette
   
-  
+  const isBrowser = () => typeof window !== 'undefined'; //The approach recommended by Next.js
+
+  function scrollToTop() {
+      if (!isBrowser()) return;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
 
   return (
@@ -58,7 +63,7 @@ const BottomActionCall = () => {
           "&:hover": {
             bgcolor: "#f0f0f0",
           }
-          }}>Join Inkspiffers</Button>
+          }} onClick={scrollToTop}>Join Inkspiffers</Button>
  
       
     </Box>

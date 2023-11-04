@@ -62,7 +62,7 @@ const Developer = () => {
                     // border: 1,
                 }}>
                     <Typography variant="body1">
-                   Hi there! If you&apos;e reading this, you&apos;e probably like me—spending most of your days in your office, in front of a computer.
+                   
                    </Typography>
                    <Typography variant="body1">
                         
@@ -80,10 +80,26 @@ const Developer = () => {
                     // border: 1,
                 }}>
                     <Typography variant="body1">
-                   Hi there! If you&apos;e reading this, you&apos;e probably like me—spending most of your days in your office, in front of a computer.
+                    I'm<Box component="span"  sx={{
+                        fontWeight: 600
+                   }}> Precious</Box>, aka <Box component="span" sx={{
+                        color: "#006de2",
+                        fontWeight: 600,
+                        textDecoration: "underline",
+                        cursor: "pointer"
+                   }}><a>@pincode</a></Box>, I am a dev based out of Nigeria. I love to write music and consume business content on youtube.
                    </Typography>
+                   <br />
                    <Typography variant="body1">
-                        
+                   Few weeks ago, I wanted to showcase some of my code projects and so, needed to create some awesome readme files. thought would be a breeze. <Box component="span"  sx={{
+                        fontWeight: 600
+                   }}>It was'nt</Box>.
+                   </Typography>
+                   <br/>
+                   <Typography variant="body1">
+                   My bad markdown knowledge and ugly writing, found zero jouy in the <Box component="span"  sx={{
+                        fontWeight: 600
+                   }}>lack of automation</Box>/standadization in the process. I had to juggle a dozen different tools to get really readmes. That's why we're here.
                    </Typography>
                 </Box>
                    
