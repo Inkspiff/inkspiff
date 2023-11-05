@@ -16,6 +16,7 @@ const Hero = () => {
 
   const [loading, setLoading] = useState(false)
   const [added, setAdded] = useState(false)
+  const [joinNumber, setJoinNumber] = useState<number>(0)
 
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +110,10 @@ const Hero = () => {
       return
     } 
 
+    // const {count} = await response.json()
+
     setAdded(true)
+    // setJoinNumber(count)
 
     setName("")
     setEmail("")
