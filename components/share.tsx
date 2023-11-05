@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import {
@@ -14,8 +14,14 @@ import {
     TwitterIcon,
     WhatsappIcon,
   } from "react-share";
+  import { ThemeContext } from '@/context/ThemeContext';
 
 const Share = ({mode="light", showText=true}: {mode?: "light"| "dark", showText?: boolean}) => {
+  const { toggleTheme, theme} = useContext(ThemeContext);
+
+  const {palette, } = theme
+  const {mode: themeMode } = palette
+  
   return (
     <div>
         {showText && <Typography variant="body1" sx={{
@@ -40,13 +46,13 @@ const Share = ({mode="light", showText=true}: {mode?: "light"| "dark", showText?
 
         <LinkedinShareButton url={"https://inkspiff.com"} title={"Join Inkspiff Waitlist"} summary={"Inkspiff's waitlist is out."} source={"https://inkspiff.com"}>
         <LinkedinIcon size={"48px"} borderRadius={8} bgStyle={{
-                    fill: mode === "light" ? "white" : "#121212"
+                    fill: mode === "light" ? (themeMode === "light" ? "white" : "#121212")  : "#121212"
                 }}iconFillColor='#0072b1' />
         </LinkedinShareButton>
 
         <RedditShareButton url={"https://inkspiff.com"} title={"Join Inkspiff's Waitlist"} >
                 <RedditIcon size={"48px"} borderRadius={8} bgStyle={{
-                    fill: mode === "light" ? "white" : "#121212"
+                    fill: mode === "light" ? (themeMode === "light" ? "white" : "#121212") : "#121212"
                 }} iconFillColor='#FF4500' />
         </RedditShareButton>
     </div>
