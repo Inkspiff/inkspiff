@@ -37,7 +37,7 @@ const Share = ({mode="light", showText=true}: {mode?: "light"| "dark", showText?
         }}>
 
                 <TwitterIcon size={"48px"} borderRadius={8} bgStyle={{
-                    fill: mode === "light" ? "white" : "#121212"
+                     fill: mode === "light" ? (themeMode === "light" ? "white" : "#121212")  : "#121212"
                 }}iconFillColor='#26a7de ' style={{
                     // border: "1px solid red",
                 }}/>
