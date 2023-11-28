@@ -1,12 +1,12 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
-import { EditorState, Text } from '@codemirror/state'
+import { EditorState, Text, EditorSelection } from '@codemirror/state'
 // import { EditorView } from '@codemirror/view'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
-import { getCaretCoordinates, getSectionFromLine } from '@/lib/utils'
+import { blockRequiresNewLine, getCaretCoordinates, getSectionFromLine } from '@/lib/utils'
 import SelectMenu3 from "@/components/editor/SelectMenu3"
-import { SelectMenuItemType } from '@/types/editor'
+import { BlockSelectItemType } from '@/types/editor'
 import { useSession } from "next-auth/react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
@@ -43,12 +43,7 @@ const Editor: React.FC<Props> = (props) => {
   const handleDocChange = useCallback((newState: EditorState) => {
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
     // const section = getSectionFromLine(newCurrentLine)
-
-
-
-
-
-    // setDoc(newState.doc.toString())
+    // console.log("Editor State:", newState)
     dispatch(appActions.changeMarkdown({
       content: newState.doc.toString(),
       currentLine: newCurrentLine
@@ -134,21 +129,23 @@ const Editor: React.FC<Props> = (props) => {
     }
   }, [editorView])
 
-  const updateEditorContent = useCallback((newContent: string) => {
-
-
+  const updateEditorContent = useCallback((newContent: string, from: number, to:number) => {
     if (editorView) {
       const state = editorView.state;
+      
       const transaction = state.update({
         changes: {
-          from: 0,
-          to: state.doc.length,
+          from: from,
+          to: to,
           insert: newContent,
         },
       });
+
+      
       editorView.dispatch(transaction);
     }
   }, [editorView]);
+
 
 
 
@@ -162,7 +159,6 @@ const Editor: React.FC<Props> = (props) => {
   const openSelectMenuHandler = () => {
 
     const { x, y } = getCaretCoordinates();
-    console.log({x, y})
     setSelectMenuIsOpen(true)
     setSelectMenuPosition({ x: x!, y: y! })
     document.addEventListener("click", closeSelectMenuHandler);
@@ -172,26 +168,51 @@ const Editor: React.FC<Props> = (props) => {
   const closeSelectMenuHandler = () => {
     setSelectMenuIsOpen(false);
     setSelectMenuPosition({ x: null, y: null });
-    
     document.removeEventListener("click", closeSelectMenuHandler);
   }
 
+  // console.log({currentLine: markdown.currentLine})
   
-  const blockSelectionHandler = (block: SelectMenuItemType) => {
-    const splitContent = markdown.content.split("\n")
+  const blockSelectionHandler = (block: BlockSelectItemType) => {
+    // get head
+    if (editorView) {
+      const {from, to, head, anchor} = editorView.state.selection.ranges[0]
 
-    splitContent.splice(markdown.currentLine, 0, block.content);
+        // TODO: Remove the last character -> /
+        const splitContent = markdown.content.split("\n")
 
-    const newContent = splitContent.join("\n")
+        if (blockRequiresNewLine(block.tag)) {
+          const contentUntilLine = splitContent.slice(0, markdown.currentLine)
 
-    // updateEditorContent(newContent)
+          console.log(contentUntilLine)
 
-      dispatch(appActions.changeMarkdown({
-        content: newContent,
-        currentLine: currentLine + 1,
-      }))
-    
-    closeSelectMenuHandler();
+          const numberOfCharsUntilLine = contentUntilLine.join("\n").length
+          console.log(numberOfCharsUntilLine)
+
+          updateEditorContent((((markdown.content.trim() === "/") ? "" : "\n\n") + block.content), numberOfCharsUntilLine - 1, numberOfCharsUntilLine)
+          // Set the cursor position using EditorSelection
+          const newSelection = EditorSelection.single((numberOfCharsUntilLine == 1) ? block.content.length: numberOfCharsUntilLine + block.content.length + 1 - 1);
+          editorView.dispatch({
+            selection: newSelection,
+          });
+        } else {
+          // splitContent[markdown.currentLine - 1] += block.content
+          updateEditorContent(block.content, from - 1, to) // -1 removes the slash
+
+          // Set the cursor position using EditorSelection
+          const newSelection = EditorSelection.single(to + block.content.length - 1);
+          
+          editorView.dispatch({
+            selection: newSelection,
+          });
+        }
+
+
+        
+        
+        closeSelectMenuHandler();
+    }
+
   }
 
   

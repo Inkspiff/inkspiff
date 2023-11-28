@@ -164,7 +164,9 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
               <Box>
                 
               <Typography variant="h1" sx={{
-                mb: 2
+                mb: "16px",
+                maxWidth: "540px",
+
               }}>Login to your account </Typography>
 
                 <Typography
@@ -185,10 +187,15 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
                   "& a": {
                     color: "#121212",
                   },
+                 
                 }}
               >
                 <Link href="/register">
-                  Don&apos;t have an account? Sign Up
+                  Don&apos;t have an account? <Box component="span" sx={{
+                   "&:hover": {
+                    textDecoration: "underline",
+                  },
+                  }}>Sign Up</Box>
                 </Link>
               </Typography>
             </>

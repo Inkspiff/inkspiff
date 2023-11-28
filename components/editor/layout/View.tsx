@@ -6,15 +6,15 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, } from "next-auth/react";
 import { useRouter } from "next/router"
-import Preview from './Preview'
+import Preview from '../Preview'
 import Editor from "@/components/editor/Editor"
 import { SelectMenuItemType } from '@/types/editor'
 import { EditorState } from '@codemirror/state';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import AltEditor from "@/components/editor/AltEditor"
-import Blocks from "@/components/editor/Blocks"
-import NoSections from "@/components/editor/NoSections"
+import SectionEditor from "@/components/editor/sections/SectionEditor"
+import Blocks from "@/components/editor/block-view/Blocks"
+import NoSections from "@/components/editor/sections/NoSections"
 
 const View = () => {
   const router = useRouter();
@@ -104,12 +104,12 @@ const View = () => {
      
         <Grid item xs={12} sm={(fullscreen ? 12 : 6)} md={(fullscreen ? 12 : 6)} sx={{
           // outline: "1px solid blue",
-          height: "100%",
-          minHeight: {xs: "calc(100vh - 64px)"},
+          height: {xs: "auto", md: "100%"},
+          minHeight: {xs: "auto", md: "calc(100vh - 64px)"},
           overflowY: {xs: "auto", sm: "scroll"},
       
         }}>
-          {(sidebar && selectedSection) && <AltEditor key={selectedSection.id} />}
+          {(sidebar && selectedSection) && <SectionEditor key={selectedSection.id} />}
           {(sidebar && !selectedSection) && <NoSections />}
         {(!sidebar && !blocksView) && <Editor key={markdown.id} initialDoc={doc} />}
         {(!sidebar && blocksView) && <Blocks />}
@@ -117,7 +117,7 @@ const View = () => {
         </Grid>
         <Grid item xs={12} sm={(fullscreen ? 12 : 6)} md={(fullscreen ? 12 : 6)} sx={{
           // outline: "1px solid red",
-          height: "100%",
+          height: {xs: "auto", md: "100%"},
           // minHeight: "50vh",
           overflowY: {xs: "auto", sm: "scroll"},
         }}>

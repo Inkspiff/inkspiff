@@ -31,14 +31,14 @@ import NameEmail from '@/components/account/NameEmail';
 import EditorModal from '@/components/editor/EditorModal';
 import LoginModal from '@/components/auth/login-modal';
 
-export default function AccountArea() {
+export default function AccountAreaMobile() {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
 
   const [openSettings, setOpenSettings] = useState(false)
-  const [updatesAnchorEl, setUpdatesAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [showUpdates, setShowUpdates] = React.useState(false);
   const [logoutAnchorEl, setLogoutAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleToggleOpenLogout = (event: React.MouseEvent<HTMLElement>) => {
@@ -48,7 +48,6 @@ export default function AccountArea() {
 
   const openLogout = Boolean(logoutAnchorEl);
 
-  const openUpdates = Boolean(updatesAnchorEl)
 
   const handleDrawerClose = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
@@ -56,24 +55,29 @@ export default function AccountArea() {
   };
 
   const handleCreateNew = () => {
+    dispatch(appActions.closeDrawer())
     if (session) {
       router.push("/create-new")
     }
     else {
+
       dispatch(appActions.toggleOpenLoginModal())
     }
   }
 
   const handleOpenSettings = () => {
+    dispatch(appActions.closeDrawer())
     setOpenSettings(true)
   }
 
   const handleCloseSettings = () => {
     setOpenSettings(false)
+
   }
 
-  const handleToggleShowUpdates = (event: React.MouseEvent<HTMLElement>) => {
-    setUpdatesAnchorEl(updatesAnchorEl ? null : event.currentTarget);
+  const handleToggleShowUpdates = () => {
+    dispatch(appActions.closeDrawer())
+    setShowUpdates(prev => !prev);
   };
 
   const handleLogout = () => {
@@ -86,7 +90,7 @@ export default function AccountArea() {
     
     <Box sx={{
       // border: "1px solid green",
-      display: {xs: "none", sm: "block"},
+      display: {xs: "block", sm: "none"},
       height: {sm: "150px"},
     }}>
     <Box sx={{
@@ -196,7 +200,8 @@ export default function AccountArea() {
       <Box
      sx={{
       // border: "1px solid red",
-      py: 3,
+      pt: 2,
+      pb: 2,
     }}>
       <List>
       
@@ -226,27 +231,22 @@ export default function AccountArea() {
          </ListItemButton>
          
        </ListItem>
-       <Popover id={openUpdates ? 'updates-popover' : undefined} open={openUpdates} anchorEl={updatesAnchorEl}
+       <EditorModal open={showUpdates}
        onClose={handleToggleShowUpdates}
-       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
+       sx={{
+        p: 0
+       }}
       >
         <Paper sx={{
           p: 2,
           width: "400px",
           maxWidth: "100%",
-          height: "300px",
+          height: "100%",
           overflowY: "auto",
         }}>
           <Updates />
         </Paper>
-      </Popover>
+      </EditorModal>
 
        <ListItem  disablePadding sx={{
           //  border: "1px solid red",

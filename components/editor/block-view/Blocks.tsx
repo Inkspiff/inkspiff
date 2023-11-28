@@ -7,10 +7,10 @@ import { appActions } from "@/store/app-slice";
 import { useSession, } from "next-auth/react";
 import { useRouter } from "next/router"
 import {splitIntoBlocks} from "@/lib/utils"
-import BlockText from '@/components/editor/BlockText';
-import BlockTable from '@/components/editor/BlockTable';
-import BlockListItem from '@/components/editor/BlockListItem';
-import BlockImage from '@/components/editor/BlockImage';
+import BlockText from '@/components/editor/block-view/BlockText';
+import BlockTable from '@/components/editor/block-view/BlockTable';
+import BlockListItem from '@/components/editor/block-view/BlockListItem';
+import BlockImage from '@/components/editor/block-view/BlockImage';
 
 const Blocks = () => {
   const router = useRouter();

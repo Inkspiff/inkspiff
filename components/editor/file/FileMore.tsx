@@ -28,67 +28,62 @@ import { useRouter } from "next/router"
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import FileList from "@/components/editor/FileList"
-import AccountArea from '@/components/editor/AccountArea';
-import Actions from '@/components/editor/Actions';
-
-const drawerWidth = 240;
-
-
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import FileOptions from '@/components/editor/file/FileOptions';
+import { FileType } from '@/types/editor';
+import { truncateSync } from 'fs';
 
 interface propTypes {
-  open: boolean, 
-  // onClose: () => void,
-  // onCreateNew: () => void,
-  // onHideCreateNew: () =>void,
+    file: FileType
 }
 
+export default function FileMore({file}:propTypes) {
 
-export default function RightSidePanel({open}: propTypes) {
-  const theme = useTheme();
-  const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
+  const {viewSettings, fileList, markdown, markdownSelected} = app
+  const [loadingFiles, setLoadingFiles] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<FileType | null>(null)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+ 
+
+
+
+  const handleCloseOptions = () => {
+    setAnchorEl(null);
+    setSelectedFile(null)
+  };
+  
+
+const handleOpenOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // Stop event propagation
+    setAnchorEl(e.currentTarget);
+    
+}
+  
+
   
   
 
+ 
 
 
   return (
-    <Drawer
-    sx={{
-      width: drawerWidth,
-      flexShrink: 0,
-      '& .MuiDrawer-paper': {
-        width: drawerWidth,
-        bgcolor: "gray.A100",
-        boxSizing: 'border-box',
-        height: "100vh",
-        overflowY: "hidden",
-        // border: "1px solid red"
-      },
-    }}
-    variant="persistent"
-    anchor="left"
-    open={open}
-  >
-    <AccountArea />
     
-    
-    <Box sx={{
-      overflowY: "auto",
-      maxHeight: "calc(100vh - 150px)",
-      pb: 3,
-    }}>
-      <FileList />
+   <>
+         <IconButton 
+         id="file-more-button"
+         size="small" sx={{
+          borderRadius: "4px",
+          p: "2px",
+         }} onClick={handleOpenOptions}>
+        < MoreHorizRoundedIcon />
+         </IconButton>
 
-      <Actions />
-    </Box>
-    
-    
-  </Drawer>
+         <FileOptions file={file} anchorEl={anchorEl} onClose={handleCloseOptions} />
+      
+   </>
   );
 }
-
-// http://localhost:3000/editor/New-Markdown-KMkTktr2BLriaLIuYVBB

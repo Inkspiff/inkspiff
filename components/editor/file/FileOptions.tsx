@@ -18,7 +18,7 @@ import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
 import { useSession, signIn, signOut } from "next-auth/react";
 import EditorModal from '@/components/editor/EditorModal';
-import LoginModal from '@/components/editor/LoginModal';
+import LoginModal from '@/components/auth/login-modal';
 import EditorDialog from '@/components/editor/EditorDialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -54,11 +54,9 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
   const [duplicating, setDuplicating] = useState(false)
   const [copied, setCopied] = useState<boolean>(false);
 
-  const [showLoginModal, setShowLoginModal] = useState(false)
-  const [loginModalTexts, setLoginModalTexts] = useState<{text: string, subText: string}>({ text: "", subText: ""})
 
   const handleToggleShowLoginModal = () => {
-    setShowLoginModal(prev => !prev)
+    dispatch(appActions.toggleOpenLoginModal())
   }
 
 
@@ -72,11 +70,7 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
                 setCopied(false)
       }, 3000);
     } else {
-      handleToggleShowLoginModal()
-      setLoginModalTexts({
-        text: "Can't use link without login",
-        subText: "Go to login page",
-      })
+      dispatch(appActions.toggleOpenLoginModal())
     }
   
 }
@@ -146,9 +140,18 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
       
     }
 
-    const toggleShowConfirmDelete = () => {
+    const handleOpenConfirmDelete = () => {
         onClose()
-        setShowConfirmDelete(prev => !prev)
+        if (session) {
+          setShowConfirmDelete(true)
+        } else {
+          dispatch(appActions.toggleOpenLoginModal())
+        }
+        
+    }
+
+    const handleCloseConfirmDelete = () => {
+      setShowConfirmDelete(false)
     }
     
     useEffect(() => {
@@ -211,7 +214,7 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
         text: "Delete",
         command: "⌘X",
         icon: <DeleteOutlineRoundedIcon fontSize="small" />,
-        action: toggleShowConfirmDelete,
+        action: handleOpenConfirmDelete,
       },
       {
         text: "Duplicate",
@@ -257,7 +260,9 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
           <Paper sx={{ 
             width: 240, 
             maxWidth: '100%',
-            p: 0 }} elevation={0}>
+            p: 0,
+            borderRadius: "8px",
+            }} elevation={0}>
       <MenuList sx={{
         // border: "1px solid red",
         padding: "8px 0px",
@@ -289,9 +294,9 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
 
         
       <EditorDialog open={showConfirmDelete} 
-      onClose={toggleShowConfirmDelete} 
+      onClose={handleCloseConfirmDelete} 
       sx={{
-
+        borderRadius: "12px"
       }} >
       {deleting ? <Box>Deleting</Box> : <>
       <DialogTitle id="alert-dialog-title">
@@ -306,7 +311,7 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
         
         }}>
         <Button onClick={() => {deleteMd()}} size="small">Sure</Button>
-        <Button onClick={toggleShowConfirmDelete} variant="outlined" size="small">Nope</Button>
+        <Button onClick={handleOpenConfirmDelete} variant="outlined" size="small">Nope</Button>
         </DialogActions>
       </>}
        
@@ -314,9 +319,7 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
 
       <EditorSnackbar message={"deleted"} open={deleted} onClose={handleDeleted} />
 
-      <EditorModal open={showLoginModal} onClose={handleToggleShowLoginModal} >
-        <LoginModal text={loginModalTexts.text} subText={loginModalTexts.subText} />
-      </EditorModal>
+      
     
     </>
    

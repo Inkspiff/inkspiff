@@ -1,8 +1,14 @@
+import { BlockType } from "@codemirror/view";
 
 
 export const MENU_HEIGHT = 150;
 
-export const SUPPORTED_BLOCKS = [
+export const SUPPORTED_BLOCKS: {
+  id: string,
+    content: string,
+    tag: string,
+    label: string,
+}[] = [
   {
     id: "heading-1",
     content: "# ",
@@ -11,7 +17,7 @@ export const SUPPORTED_BLOCKS = [
   },
   {
     id: "heading-2",
-    content: `# `,
+    content: `## `,
     tag: "h2",
     label: "Heading 2"
   },

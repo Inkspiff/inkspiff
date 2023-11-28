@@ -29,7 +29,7 @@ import Updates from "@/components/updates/Updates"
 import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import NameEmail from '@/components/account/NameEmail';
 import EditorModal from '@/components/editor/EditorModal';
-import LoginModal from '@/components/editor/LoginModal';
+import LoginModal from '@/components/auth/login-modal';
 import TemplatesPopup from "@/components/templates/TemplatesPopup"
 
 export default function Actions() {
@@ -52,22 +52,35 @@ export default function Actions() {
 
 
   const handleExport = () => {
+    if (session) {
+       // TODO: Open export file modal
+    } else {
+    dispatch(appActions.toggleOpenLoginModal())
+    }
   }
 
   const handleImport = () => {
+  if (session) {
+      // TODO: Open Import file modal
+    } else {
+    dispatch(appActions.toggleOpenLoginModal())
+    }
   }
 
   
   const [openTemplatesPopup, setOpenTemplatesPopup] = useState(false)
-  const [showLoginModal, setShowLoginModal] = useState(false)
-  const [loginModalTexts, setLoginModalTexts] = useState<{text: string, subText: string}>({ text: "", subText: ""})
-
+ 
   const handleToggleShowLoginModal = () => {
-    setShowLoginModal(prev => !prev)
+   
+    dispatch(appActions.toggleOpenLoginModal())
   }
 
   const handleOpenTemplatesPopup = () => {
-    setOpenTemplatesPopup(true)
+     if (session) {
+      setOpenTemplatesPopup(true)
+    } else {
+    dispatch(appActions.toggleOpenLoginModal())
+    }
   }
 
   const handleCloseTemplatesPopup = () => {
@@ -77,6 +90,9 @@ export default function Actions() {
   return (
     
       <List>
+        <Divider sx={{
+          mb: 2
+        }} />
         <ListItem  disablePadding sx={{
             //  border: "1px solid red",
             p: 0,
@@ -150,6 +166,40 @@ export default function Actions() {
             }}>Export</Typography>
           </ListItemButton>
         </ListItem>
+
+        <ListItem  disablePadding sx={{
+            //  border: "1px solid red",
+            p: 0,
+            m: 0,
+        }}>
+          <ListItemButton sx={{
+            //  border: "1px solid blue",
+            p: "4px",
+            cursor: "pointer",
+            borderRadius: "4px",
+          }} onClick={handleExport}>
+            <AddCircleOutlineOutlinedIcon sx={{
+              mx: 1,
+              width: 16,
+              height: 16,
+            }} /> 
+            
+            <Typography variant="body2" sx={{
+              fontWeight: 500,
+              fontSize: "14px",
+            }}>Feedback</Typography>
+          </ListItemButton>
+        </ListItem>
+
+        <Box sx={{
+          py: 1,
+          px: 2
+        }}>
+            <Typography variant="body2" sx={{
+              fontWeight: 500,
+              fontSize: "14px",
+            }}>Inkspiff</Typography>
+        </Box>
       </List>
   );
 }

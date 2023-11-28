@@ -10,14 +10,12 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import MailIcon from '@mui/icons-material/Mail';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
@@ -25,14 +23,8 @@ import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Button from "@mui/material/Button"
 import { useRouter } from "next/router"
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import FileOptions from '@/components/editor/FileOptions';
 import { FileType } from '@/types/editor';
-import FileMore from '@/components/editor/FileMore';
+import FileMore from '@/components/editor/file/FileMore';
 
 
 
@@ -124,7 +116,7 @@ export default function FileList() {
   }, [])
 
 
-
+// console.log({markdownSelected})
   return (
     
    <>
@@ -142,9 +134,9 @@ export default function FileList() {
           marginLeft: 0,
           paddingLeft: 0,
           borderRadius: "4px",
-           bgcolor: (markdownSelected === file.id) ? "grey.A300" : "",
+           bgcolor: (markdownSelected === file.id) ? "action.hover" : "",
            "&:hover": {
-            bgcolor: "grey.A100"
+            bgcolor: "action.hover"
            }
        }}>
          <ListItemButton sx={{
@@ -154,6 +146,9 @@ export default function FileList() {
            m: 0,
            cursor: "pointer",
            borderRadius: "4px",
+           "&:hover": {
+            bgcolor: "action.hover"
+           }
           
          }} onClick={(e: React.MouseEvent<HTMLDivElement>) => {
           console.log("before")

@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import IconButton from '@mui/material/IconButton';
 import ViewSidebarRoundedIcon from '@mui/icons-material/ViewSidebarRounded';
-import Sections from "@/components/editor/Sections"
+import Sections from "@/components/editor/sections/Sections"
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
@@ -14,7 +14,7 @@ import { useSession, } from "next-auth/react";
 import { useRouter } from "next/router"
 
 
-export default function LeftSidePanel() {
+export default function RightSidePanel() {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
@@ -65,7 +65,8 @@ export default function LeftSidePanel() {
      
         <React.Fragment >
           <IconButton onClick={toggleDrawer(true)} sx={{
-            borderRadius: "4px"
+            borderRadius: "4px",
+            display: {xs: "none", md: "inline-flex"}
           }}  size="small">
               <ViewSidebarRoundedIcon sx={{
                 // color: "#121212"

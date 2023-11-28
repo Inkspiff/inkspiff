@@ -12,9 +12,7 @@ interface propTypes {
 }
 
 
-const SelectMenuItem: React.FC<propTypes> = ({ onSelect, item, isSelected }) => {
-
- 
+const BlockSelectItem: React.FC<propTypes> = ({ onSelect, item, isSelected }) => {
           return (
             <Box
               className={isSelected ? "Selected" : undefined}
@@ -64,4 +62,4 @@ const SelectMenuItem: React.FC<propTypes> = ({ onSelect, item, isSelected }) => 
           );
 };
 
-export default SelectMenuItem;
+export default BlockSelectItem;

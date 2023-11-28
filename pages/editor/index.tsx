@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import Link from "next/link"
-import View from "@/components/editor/View";
-import Templates from "@/components/Templates";
-import CreateNew from "@/components/CreateNew";
-import Navbar from "@/components/editor/Navbar";
+import View from "@/components/editor/layout/View";
+import Templates from "@/components/templates/Templates";
+import CreateNew from "@/components/create/CreateNew";
+import Navbar from "@/components/editor/layout/Navbar";
 import Box from "@mui/material/Box";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
@@ -17,15 +17,15 @@ import {authOptions} from "@/lib/auth"
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router"
 // import { useRouter } from "next/navigation"
-import LeftSidePanel from "@/components/editor/LeftSidePanel"
 import { styled, useTheme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import RightSidePanel from "@/components/editor/RightSidePanel";
+import LeftSidePanel from "@/components/editor/layout/LeftSidePanel";
 import Feedback from "@/components/help/Feedback"
-
+import LoginModal from "@/components/auth/login-modal"
 
 import { db } from "@/firebase"
 import { DocumentData, QuerySnapshot, collection, query, where, getDocs, orderBy, limit, doc, getDoc } from "firebase/firestore";
+import BottomPanel from "@/components/editor/layout/BottomPanel";
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -52,6 +52,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       } else {
         // No markdown found
         console.log("No markdown found")
+        return { redirect: { destination: `/create-new` } };
       }
 
     } catch (err) {
@@ -117,35 +118,55 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
   // }, [])
 
 
+  useEffect(() => {
+    if (!session) {
+      dispatch(appActions.toggleOpenLoginModal())
+    }
+  }, [])
+
+
 
   return (
     <div>
       <Head>
-        <title>Create README | Inkspill</title>
-        <link rel="icon" href="/dog.png" />
+        <title>Create & Edit markdown easily | Inkspiff</title>
       </Head>
       
       <Box
         sx={{
           display: 'flex',
-        // border: "1px solid red",
-        height: "100vh",
-        position: "reative"
+        border: "2px solid yellow",
+        height:"100vh",
+        position: "relative",
+        width: "100%",
         }}
       >
         <Navbar />
-       <RightSidePanel open={open} />
+       <LeftSidePanel />
 
        <Main open={open} sx={{
         // m: 0,
         mt: "45px",
-        height: "calc(100% - 45px)",
-        // border: "4px solid green"
+        height: {sm: "calc(100% - 45px)"},
+        // border: "3px solid green",
+        width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
+        display: {xs: "none"}
       }}>
         <View />
       </Main>
-        
+      
+      <Box sx={{
+        mt: "45px",
+        height: {sm: "calc(100% - 45px)"},
+        // border: "3px solid green",
+        width: "100%",
+        display: {sm: "none"}
+      }}>
+        <View />
+      </Box>
+        <BottomPanel />
         <Feedback />
+        <LoginModal />
       </Box>
     </div>
   );

@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { TemplateType } from '@/types';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import Preview from "@/components/editor/Preview"
-import ViewTemplates from './ViewTemplate';
+import ViewTemplates from '../ViewTemplate';
 
 interface propTypes {
   onViewTemp: (index: number) => void
@@ -69,8 +69,9 @@ const Templates = ({onViewTemp}: propTypes) => {
             flexDirection: "column",
             width: "50%",
             cursor: "pointer",
-            borderRadius: "8px",
-        }}>
+            borderRadius: "12px",
+          }} variant="outlined"
+          elevation={0} >
         <Box sx={{
             height: {xs: "100px"},
             width: "100%",

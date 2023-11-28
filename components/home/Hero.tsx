@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
@@ -7,13 +8,6 @@ import Button from "@mui/material/Button"
 const Hero = () => {
 
   const router = useRouter()
-
-  const handleCreateNew = () => {
-    // This forces a cache invalidation.
-    // router.refresh()
-
-    router.push("/create-new")
-  }
 
 
   return (
@@ -52,10 +46,13 @@ const Hero = () => {
       }}>
         Inkspill is the tool for creating markdown files faster and better.
       </Typography>
-      <Button variant="contained" onClick={handleCreateNew} sx={{
+      <Link href="/create-new">
+      <Button variant="contained" sx={{
         my: 2,
         fontWeight: 500
-      }} size="small">Create New .md</Button>
+      }} >Create New .md</Button>
+      </Link>
+     
       </Box>
       
     </Box>

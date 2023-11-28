@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { matchSorter } from "match-sorter";
-import  {SelectMenuItemType} from "@/types/editor"
+import  {BlockSelectItemType} from "@/types/editor"
 import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
 import Popover from "@mui/material/Popover"
@@ -11,31 +11,34 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 
-interface SelectMenuProps {
-    open: boolean;
-  position: { x: number | null; y: number | null };
-  onSelect: (block: SelectMenuItemType) => void;
-  close: () => void;
-}
 
 
-const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close }) => {  
+const Blocks: React.FC = () => {  
+    const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app);
+
+  const {viewSettings} = app
+  const {bottomPanel} = viewSettings
 
   const boxRef = useRef<HTMLDivElement>(null);
   
   const [command, setCommand] = useState("");
-  const [items, setItems] = useState<SelectMenuItemType[]>(SUPPORTED_BLOCKS);
+  const [items, setItems] = useState<BlockSelectItemType[]>(SUPPORTED_BLOCKS);
   const [selectedItem, setSelectedItem] = useState(0);
 
-  const {viewSettings } = app;
-  const {drawer} = viewSettings
+  const handleSelectBlock = (block: BlockSelectItemType) => {
+    console.log({selectedItem})
+  }
+
+  const close = () => {
+    dispatch(appActions.closeBottomPanel())
+  }
 
 
-  const clearAndSelect = (block: SelectMenuItemType) => {
+  const clearAndSelect = (block: BlockSelectItemType) => {
     setCommand("")
     setSelectedItem(0)
-    onSelect(block)
+    handleSelectBlock(block)
   }
   
 
@@ -54,7 +57,7 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
           setCommand("")
           const itemIndex = selectedItem
           setSelectedItem(0)
-          onSelect(items[itemIndex]);
+          handleSelectBlock(items[itemIndex]);
           break;
         case "Backspace":
           if (!command.replace("/", "")) clearAndClose();
@@ -99,17 +102,18 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
       }
     };
 
-    if (open) {
+    if (bottomPanel === "blocks") {
       document.addEventListener("keydown", keyDownHandler);
     }
     
     return () => {
-      if (open) {
+      if (bottomPanel === "blocks") {
         document.removeEventListener("keydown", keyDownHandler);
       }
       
     };
-  }, [command, items, selectedItem, onSelect, close]);
+  }, [command, items, selectedItem, handleSelectBlock, close]);
+
 
   useEffect(() => {
     const commandWithoutSlash = command.replace("/", "") 
@@ -125,42 +129,11 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
    
   }, [command]);
 
-  if (position.x === null || position.y === null) {
-    return null;
-  }
-
-  const x = drawer ? position.x : position.x;
-  const y = (position.y + 20);
-  const positionAttributes = { top: y, left: x };
 
 
 
   return (
-    <Popover 
-     id={open ? 'select-popover' : undefined}
-     open={open}
-    //  anchorEl={anchorEl}
-     onClose={() => {
-      setCommand("")
-      close()
-     }}
-  anchorReference="anchorPosition"
-  anchorPosition={{ top: y, left: x }}
-  anchorOrigin={{
-    vertical: 'top',
-    horizontal: 'left',
-  }}
-  transformOrigin={{
-    vertical: 'top',
-    horizontal: 'left',
-  }}
-
-  PaperProps={{
-    sx: {
-      borderRadius: "8px"
-    }
-  }}
->
+    
       <Paper className="Items" style={{
     width: "100%",
     padding: "4px",
@@ -193,9 +166,8 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
     </Box>
        
       </Paper>
-</Popover>
     
   );
 };
 
-export default SelectMenu;
+export default Blocks;

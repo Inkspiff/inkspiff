@@ -360,3 +360,12 @@ export const getSectionFromLine  = (lineNumber: number, sections: SectionType[])
 
   return sections[sections.length - 1]
 }
+
+export const blockRequiresNewLine = (tag: string) => {
+  switch(tag) {
+    case "a":
+      return false
+    default:
+      return true
+  }
+}

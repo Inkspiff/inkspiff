@@ -30,7 +30,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { FileType } from '@/types/editor';
 import Style from "@/components/appearance/Style"
 import EditorModal from '@/components/editor/EditorModal';
-import LoginModal from '@/components/editor/LoginModal';
+import LoginModal from '@/components/auth/login-modal';
 
 const List = styled((props: ListProps) => (
   <MuiList {...props} />
@@ -77,17 +77,16 @@ export default function More() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   
   const {viewSettings, fileList, markdown, markdownSelected} = app
+  const {content, lastEdited} = markdown
   const [showConfirmDelete, setShowConfirmDelete] = useState(false)
   const [deleted, setDeleted] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [duplicating, setDuplicating] = useState(false)
   const [copied, setCopied] = useState<boolean>(false);
 
-  const [showLoginModal, setShowLoginModal] = useState(false)
-  const [loginModalTexts, setLoginModalTexts] = useState<{text: string, subText: string}>({ text: "", subText: ""})
-
+  
   const handleToggleShowLoginModal = () => {
-    setShowLoginModal(prev => !prev)
+    dispatch(appActions.toggleOpenLoginModal())
   }
 
   const handleToggleOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -108,11 +107,7 @@ export default function More() {
                 setCopied(false)
       }, 3000);
     } else {
-      handleToggleShowLoginModal()
-      setLoginModalTexts({
-        text: "Can't use link without login",
-        subText: "Go to login page",
-      })
+      dispatch(appActions.toggleOpenLoginModal())
     }
 }
   
@@ -178,10 +173,21 @@ export default function More() {
       }
     }
 
-    const toggleShowConfirmDelete = () => {
-        setAnchorEl(null)
-        setShowConfirmDelete(prev => !prev)
-    }
+
+    const handleOpenConfirmDelete = () => {
+      setAnchorEl(null)
+      if (session) {
+        setShowConfirmDelete(true)
+      } else {
+        dispatch(appActions.toggleOpenLoginModal())
+      }
+      
+  }
+
+  const handleCloseConfirmDelete = () => {
+    setShowConfirmDelete(false)
+  }
+  
     
     useEffect(() => {
         if (deleted) {
@@ -240,10 +246,19 @@ export default function More() {
       console.log("Undo")
     }
     const handleImport = () => {
-      console.log("Import")
+      if (session){
+        console.log("Import")
+      } else {
+      dispatch(appActions.toggleOpenLoginModal())
+      }
+      
     }
     const handleExport = () => {
-      console.log("Export")
+       if (session){
+        console.log("Export")
+      } else {
+        dispatch(appActions.toggleOpenLoginModal())
+      }
     }
 
   const handleToggleFullscreen = () => {
@@ -365,7 +380,7 @@ export default function More() {
               </ListItemButton>
             </ListItem>
             <ListItem >
-              <ListItemButton onClick={toggleShowConfirmDelete}>
+              <ListItemButton onClick={handleOpenConfirmDelete}>
                Delete
               </ListItemButton>
             </ListItem>
@@ -397,17 +412,28 @@ export default function More() {
             <Box sx={{
               px:2,
               py: 1,
+              display: "flex",
+              flexDirection: "column"
             }}>
               <Typography variant="caption" sx={{
                 display: "block"
-              }}>Word count: 10</Typography>
-              <Typography variant="caption">Last edited by: {`Precious Nwaoha Today at 11: 48 PM`}</Typography>
+              }}>Word count: {content ? content.split(" ").length : 0}</Typography>
+              
+              {session ? 
+              <Typography variant="caption">Last edited by: {`${session.user?.name} Today at ${lastEdited}`}</Typography> 
+              : <Button variant="text" onClick={() => {
+                router.push("/login")
+              }}  sx={{
+              mx: "auto",
+              mt: 1,
+              alignSelf: "center"
+              }}>Login</Button>}
               </Box>      
             
         </Paper>
       </Popover>
 
-      <EditorDialog open={showConfirmDelete} onClose={toggleShowConfirmDelete} >
+      <EditorDialog open={showConfirmDelete} onClose={handleCloseConfirmDelete} >
       {deleting ? <Box>Deleting</Box> : <>
       <DialogTitle id="alert-dialog-title">
           {"Confirm Delete!"}
@@ -419,7 +445,7 @@ export default function More() {
         </DialogContent>
         <DialogActions>
         <Button onClick={() => {deleteMd()}}>Sure</Button>
-        <Button onClick={toggleShowConfirmDelete}>Nope</Button>
+        <Button onClick={handleCloseConfirmDelete}>Nope</Button>
         </DialogActions>
       </>}
        
@@ -427,9 +453,7 @@ export default function More() {
 
       <EditorSnackbar message={"deleted"} open={deleted} onClose={handleDeleted} />
     
-      <EditorModal open={showLoginModal} onClose={handleToggleShowLoginModal} >
-        <LoginModal text={loginModalTexts.text} subText={loginModalTexts.subText} />
-      </EditorModal>
+      
     </div>
   );
 }

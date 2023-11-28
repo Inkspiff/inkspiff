@@ -1,4 +1,4 @@
-import { BlockType, ViewSettingsType, FileType, SelectMenuItemType } from "@/types/editor";
+import { BlockType, ViewSettingsType, FileType, BlockSelectItemType } from "@/types/editor";
 import {MarkdownInterface, TemplateType } from "@/types"
 import { uid } from "@/lib/utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -19,7 +19,8 @@ export interface appState {
     markdownSelected: string,
     templates: TemplateType[],
     viewSettings: ViewSettingsType,
-    fileList: FileType[]
+    fileList: FileType[],
+    openLoginModal: boolean
 }
 
 const initialState: appState = {
@@ -46,14 +47,15 @@ const initialState: appState = {
     viewSettings: {
         fullscreen: false,
         sidebar: false,
-        drawer: true,
+        drawer: false,
         blocks: false,
+        bottomPanel: ""
     },
     fileList: [{
         id: "",
         title: "New File"
-      }]
-    
+      }],
+    openLoginModal: false
 }
 
 
@@ -92,7 +94,7 @@ const appSlice = createSlice( {
                 content: action.payload.content
             }
         },
-        insertMarkdown(state, action: PayloadAction<SelectMenuItemType  >){
+        insertMarkdown(state, action: PayloadAction<BlockSelectItemType  >){
             const splitContent = state.markdown.content.split("\n")
 
             splitContent.splice(state.markdown.currentLine, 0, action.payload.content);
@@ -144,6 +146,7 @@ const appSlice = createSlice( {
         },
         addSections(state, action: PayloadAction<SectionType[]>) {
             state.addedSections = action.payload
+            
         },
         removeSection(state, action: PayloadAction<{id: string}>) {
             state.addedSections = state.addedSections
@@ -151,6 +154,7 @@ const appSlice = createSlice( {
         },
         addSection(state, action: PayloadAction<SectionType>) {
             state.addedSections = [...state.addedSections, action.payload]
+            // state.selectedSection = action.payload
         },
         updateSectionContent(state, action: PayloadAction<{id: string, content: string}>) {
             let updatedSections = [...state.addedSections]
@@ -228,11 +232,38 @@ const appSlice = createSlice( {
                 drawer: !state.viewSettings.drawer
             }
         },
+        closeDrawer(state) {
+            state.viewSettings = {
+                ...state.viewSettings, 
+                drawer: false
+            }
+        },
+        openDrawer(state) {
+            state.viewSettings = {
+                ...state.viewSettings, 
+                drawer: true
+            }
+        },
+        closeBottomPanel(state) {
+            state.viewSettings = {
+                ...state.viewSettings, 
+                bottomPanel: ""
+            }
+        },
+        openBottomPanel(state, action: PayloadAction<string>) {
+            state.viewSettings = {
+                ...state.viewSettings, 
+                bottomPanel: action.payload
+            }
+        },
         updatedSaveStates(state, action: PayloadAction<{saving: boolean, saveFailed: boolean}>) {
             state.saveStates = {
                 saving: action.payload.saving,
                 saveFailed: action.payload.saveFailed
             }
+        },
+        toggleOpenLoginModal(state) {
+            state.openLoginModal = !state.openLoginModal
         }
     }
 })

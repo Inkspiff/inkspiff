@@ -6,9 +6,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
-import View from "@/components/editor/View";
+import View from "@/components/editor/layout/View";
 import { useRouter } from "next/router";
-import ChooseTemplate from "@/components/ChooseTemplate";
+import ChooseTemplate from "@/components/create/ChooseTemplate";
 import UseAI from "@/components/use-ai/use-ai";
 import { TemplateType } from "@/types";
 import ChooseCreationMethod from "./ChooseCreationMethod";
@@ -23,19 +23,29 @@ const CreateNew = () => {
   // const app = useSelector((state: RootState) => state.app)
   const [newSelected, setNewSelected] = useState<undefined | number>(undefined) // 0, 1, 2
   const [showCreating, setShowCreating] = useState(false)
+  const [openLoginModal, setOpenLoginModal] = useState(false)
 
   const handleNew = (_newType: number) => {
       
     
     if (_newType === 2) {
-      
-      handleCreateNewMarkdown(
-        "New Markdown", ""
-        )
-        // setNewSelected(undefined)
-      // open side menu and add it
-      // hide create new
+      if (session) {
+        handleCreateNewMarkdown(
+          "New Markdown", ""
+          )
+          // setNewSelected(undefined)
+        // open side menu and add it
+        // hide create new
+      } else {
+        router.push("/editor")
+      }
+     
     } else {
+      // if (session) {
+      //   setNewSelected(_newType)
+      // } else {
+      //   console.log("Must log in!")
+      // }
       setNewSelected(_newType)
     }
 
@@ -77,8 +87,6 @@ const CreateNew = () => {
     const json = await response.json()
 
     router.push(`/editor/${title.trim().split(" ").filter(a => a !== " ").join("-")}-${json.id}`)
-    
-
   }
 
   return (

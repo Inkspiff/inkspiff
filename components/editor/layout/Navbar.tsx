@@ -17,7 +17,7 @@ import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import TitleSpace from "@/components/editor/TitleSpace";
 import VerticalSplitRoundedIcon from '@mui/icons-material/VerticalSplitRounded';
 import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
-import LeftSidePanel from "@/components/editor/LeftSidePanel"
+import RightSidePanel from "@/components/editor/layout/RightSidePanel"
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
@@ -117,7 +117,7 @@ const handleCopy = () => {
   }
 
 const handleOpenDrawer = () => {
-  dispatch(appActions.toggleDrawer())
+  dispatch(appActions.openDrawer())
 }
 
 
@@ -131,14 +131,19 @@ const handleShowSidebar = () => {
 
   return (
     <AppBar
+      
+      elevation={0}
+      variant="outlined"
+
+      // open={open}
       sx={{
         height: "45px",
-        position: "fixed"
+        position: "fixed",
+        top: 0,
+        left: 0,
+        borderWidth: "0 0 1px 0",
+        zIndex: 100,
       }}
-      elevation={0}
-      // variant="outlined"
-      open={open}
-
     >
       <Box
         sx={{
@@ -146,7 +151,7 @@ const handleShowSidebar = () => {
           alignItems: "center",
           justifyContent: "space-between",
           width: '100%',
-          height: "45px",
+          height: "100%",
           px: 2,
           py: 0,
         }}
@@ -154,7 +159,7 @@ const handleShowSidebar = () => {
         
         <Box sx={{
             display: "flex",
-            alignItems: "flex-end",
+            alignItems: "center",
             // color: "#121212"
         }}>
           {!open && <IconButton sx={{
@@ -212,7 +217,10 @@ const handleShowSidebar = () => {
             
             <Share />
 
-          
+
+              <Box sx={{
+                display: {xs: "none", md: "inline-block"}
+              }}>
               {viewSettings.fullscreen ? 
               <IconButton sx={{
                 borderRadius: "4px"
@@ -229,8 +237,10 @@ const handleShowSidebar = () => {
               }} />
               </IconButton> 
               }
+              </Box>
               
-              <LeftSidePanel />
+              
+              <RightSidePanel />
 
 
               <More />

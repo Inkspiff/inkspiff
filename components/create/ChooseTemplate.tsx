@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, ChangeEvent} from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
@@ -7,13 +7,33 @@ import Typography from "@mui/material/Typography"
 import Paper from "@mui/material/Paper"
 import Grid from "@mui/material/Grid"
 import Button from "@mui/material/Button"
-import IconButton from "@mui/material/IconButton"
+import Input from "@mui/material/Input"
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import { useRouter } from 'next/router';
 import { TemplateType } from '@/types';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import Preview from "@/components/editor/Preview"
 import ViewTemplate from '@/components/ViewTemplate';
-import Templates from '@/components/Templates';
+import Templates from '@/components/templates/Templates';
+import { useSession, signIn, signOut } from "next-auth/react";
+import { TextField } from '@mui/material';
+
+const DUMMY_TEMP: TemplateType  ={
+  id: "1",
+  name: "Profile Readme",
+  content: "Hello",
+  description: "Description",
+   creator: {
+      email: "nwaohaprecious25@gmail.com",
+      name: "Precious Nwaoha",
+      image: "",
+  },
+  type: 'free',
+  categories: ["profile"],
+  includes: [],
+  views: 0,
+  image: "",
+}
 
 interface TemplatesInterface {
   onSelected: (template: TemplateType) => void,
@@ -21,15 +41,21 @@ interface TemplatesInterface {
 }
 
 const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
+  const { data: session } = useSession();
+
   const dispatch = useDispatch()
   const router = useRouter()
   const app = useSelector((state: RootState) => state.app)
   const [loading, setLoading] = useState(false)
   const [viewingTemp, setViewingTemp] = useState<null | number>(null);
-  const [loadingSelectedTemp, setLoadingSelectedTemp] = useState(false)
+  const [loadingSelectedTemp, setLoadingSelectedTemp] = useState(false);
+  const [searchInput, setSearchInput] = useState("")
   const {templates} = app
   
-  
+  const handleChangeSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value)
+  }
+   
   const handleViewTemplate = (index: number) => {
     setViewingTemp(index)
   }
@@ -39,20 +65,10 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
   }
 
   const handleSelectTemplate = async (index: number) => {
-    // const markdown = {
-    //   content: templates[_template].content,
-    //   currentLine: templates[_template].content.split("\n").length
-    // }
-
-    // dispatch(appActions.changeMarkdown(markdown))
 
     setLoadingSelectedTemp(true)
+    onSelected(templates[index])
 
-   
-        onSelected(templates[index])
- 
-    
-    
   }
 
   const handleBack = () => {
@@ -79,9 +95,14 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
     }
 
 
+    if (session) {
+      getTemplates()
+    }
     
-    getTemplates()
   }, [])
+
+
+
 
 
   return (
@@ -115,9 +136,10 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
             }}>Back</Box>
             <Typography variant="h1" sx={{
             m: 2,
-            mb: {md: 8},
+            mb: {xs: 4, md: 8},
+
             textAlign:{xs: "center", md: "left"}
-            }}>Select a<br />template.</Typography>
+            }}>Pick a<br />template.</Typography>
           </Box>
 
 
@@ -131,9 +153,69 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
             height: {xs: "auto", md: "100%"},
             // border: "1px solid blue",
             // display: "flex",
-            py: 4,
-            px: {xs: "16px", md: "24px"}
           }}>
+            <Box sx={{
+              // border: "1px solid red",
+              py: 0.5,
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}>
+                <Input 
+                // fullWidth
+                value={searchInput} 
+                placeholder={"Search..."}
+                startAdornment={<SearchOutlinedIcon />}
+                type="search"
+                onChange={handleChangeSearchInput}
+                  sx={{
+                    borderRadius: "8px",
+                    width: "100%",
+                    maxWidth: "400px",
+                    px: 1,
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    "&.MuiInputBase-root": {
+                      border: "1px solid",
+                      borderColor: "grey.A400",
+                      bgcolor: "action.hover",
+                    },
+                    "&.MuiInputBase-root:hover": {
+                      border: "1px solid",
+                      borderColor: "grey.A400",
+                      borderBottom: "1px",
+                      bgcolor: "grey.A300",
+                    },
+                    "&.MuiInputBase-root::before": {
+                      border: "none",
+                    },
+                  }}
+                  inputProps={{
+                   sx: {
+
+                    border: "1px solid red",
+                    "&.MuiInput-input": {
+                      border: "1px solid red",
+                      width: "auto",
+                    minWidth: "auto",
+                    },
+                    "&.MuiInput-input::affter": {
+                      border: "none",
+                      width: "auto",
+                    minWidth: "auto",
+                    },
+                    
+                    textAlign: "center",
+                   }
+                  }}
+
+                  
+                />
+            </Box>
+
+            
             {loading ? <Box>
               Loading
             </Box> 
@@ -142,7 +224,7 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
               // display: "inline-flex",
               width: "100%",
             }}>
-                  
+
                   {templates && <>
                     {(viewingTemp !== null )? 
                     <ViewTemplate title={templates[viewingTemp].name} content={templates[viewingTemp].content} onBack={handleBackToAllTemps} />

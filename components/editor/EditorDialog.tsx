@@ -18,7 +18,8 @@ const style = {
     width: '80%', 
     maxHeight: 400,
     px: 4,
-    py: 2 
+    py: 2,
+    borderRadius: "16px"
    } 
 };
 

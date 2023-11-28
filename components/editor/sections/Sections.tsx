@@ -15,10 +15,11 @@ import {SUPPORTED_SECTIONS} from "@/config/editor"
 import {splitIntoSections, uid} from "@/lib/utils"
 import { matchSorter } from "match-sorter";
 import Modal from '@mui/material/Modal';
-import CustomSectionNamer from "@/components/editor/CustomSectionNamer"
+import CustomSectionNamer from "@/components/editor/sections/CustomSectionNamer"
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
+import EditorModal from "../EditorModal";
 
 const Sections = () => {
     const { data: session } = useSession()
@@ -47,11 +48,14 @@ const Sections = () => {
   
 
     React.useEffect(() => {
-        if (sidebar) {
+        if (sidebar) { // should split only when sidebar opens
+            console.log("Heyoooo!")
             dispatch(appActions.addSections(splitIntoSections(mainContent)))
         }
     }, [sidebar])
 
+
+    // console.log(addedSections)
 
     React.useEffect(() => {
         const matchedItems = matchSorter(SUPPORTED_SECTIONS, searchValue.trim(), { keys: ["name"] });
@@ -60,7 +64,7 @@ const Sections = () => {
     
 
     React.useEffect(() => {
-        
+
         if (sidebar) { 
             dispatch(appActions.updateMarkdownContent(
                 addedSections.map(section => section.content).join("")
@@ -76,8 +80,12 @@ const Sections = () => {
             name: section.name,
             content: section.content,
         }
-        // dispatch(appActions.selectSection(section))
+        
         dispatch(appActions.addSection(newSection))
+
+        setTimeout(() => {
+            dispatch(appActions.selectSection(newSection))
+        }, 0)
     }
 
     const handleRemoveSection = (id: string, index: number ) => {
@@ -268,26 +276,13 @@ const Sections = () => {
         })}
 
         </Box>
-        <Modal
+        <EditorModal
         open={openCustomSectionNamer}
         onClose={handleCloseCustomSectionNamer}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
       >
-        <Box sx={ {
-            position: 'absolute' as 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-        }}>
-            <CustomSectionNamer />
-        </Box>
-      </Modal>
+       
+            <CustomSectionNamer onClose={handleCloseCustomSectionNamer}/>
+      </EditorModal>
     </Box>
 }
 

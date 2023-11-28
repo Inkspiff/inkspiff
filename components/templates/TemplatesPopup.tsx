@@ -122,6 +122,7 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
       dispatch(appActions.updateTemplates(temps))
     }
 
+    
     getTemplates()
   }, [])
 

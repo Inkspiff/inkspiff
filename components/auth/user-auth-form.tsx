@@ -7,6 +7,8 @@ import { signIn } from "next-auth/react"
 // import { useForm } from "react-hook-form"
 // import * as z from "zod"
 import Button from "@mui/material/Button"
+import Box from "@mui/material/Box"
+import {FaGithub} from "react-icons/fa"
 
 // import { userAuthSchema } from "@/lib/validations/auth"
 
@@ -66,13 +68,18 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         disabled={isLoading || isGitHubLoading}
         variant="outlined"
         sx={{
-          my: 2
+          my: 2,
+          display: "flex",
+          alignItems: "center",
         }}
       >
         {isGitHubLoading ? (
           <span>loading spinner</span>
         ) : (
-            <span>github icon</span>
+            <Box component="span" sx={{
+              display: "inline-block",
+              mr: 1,
+            }}><FaGithub/></Box>
         )}{" "}
         Sign In with Github
       </Button>

@@ -15,7 +15,11 @@ import {splitIntoSections, uid} from "@/lib/utils"
 import { matchSorter } from "match-sorter";
 import Modal from '@mui/material/Modal';
 
-const CustomSectionNamer = () => {
+interface propTypes {
+  onClose: () => void
+}
+
+const CustomSectionNamer = ({onClose}: propTypes) => {
     const { data: session } = useSession()
     const dispatch = useDispatch()
     const app = useSelector((state: RootState) => state.app);
@@ -30,34 +34,54 @@ const CustomSectionNamer = () => {
     }
   
     const handleCreateSection = () => {
+
+      if (nameValue.trim() === "") {
+        return
+      }
+
+      const newSection = {
+        id: uid(),
+        name: nameValue,
+        content: `## ${nameValue}\nWrite your way... :)\n`
+    }
         
-        dispatch(appActions.addSection({
-            id: uid(),
-            name: nameValue,
-            content: "Write your way... :)"
-        }))
+        dispatch(appActions.addSection(newSection))
+
+        setTimeout(() => {
+          dispatch(appActions.selectSection(newSection))
+      }, 0)
+
+      onClose()
     }
    
 
 
     return <Box sx={{
-        p: "8px"
+        p: "8px",
+        // border: "1px solid red"
     }}>
-       <Typography variant="h6" sx={{
+       <Typography variant="h4" sx={{
             mb: 2
         }}>Create custom section.</Typography>
 
-        <Input 
+      <Box sx={{
+        // border: "1px solid blue",
+        display: "flex",
+        // flexDirection: "column",
+        alignItems: "center",
+        
+      }}>
+      <Input 
         value={nameValue} 
         placeholder={"Section Name..."}
-        endAdornment={<SearchOutlinedIcon />}
         disableUnderline={true}
+        fullWidth
         sx={{
           border: "1px solid",
           borderColor: "grey.A200",
           borderRadius: "6px",
           px: 1,
-          mb: 2,
+          // mb: 2,
           "& .MuiInput-input": {
             // border: "1px solid blue",
           borderRadius: "6px",
@@ -71,8 +95,14 @@ const CustomSectionNamer = () => {
         onChange={handleNameChange}
         />
 
-        <Button disabled={nameValue.trim() === ""} variant="text" size="small" onClick={handleCreateSection}>Create</Button>
+        <Button disabled={nameValue.trim() === ""} variant="text" size="small" onClick={handleCreateSection} sx={{
+          // border: "1px solid red",
+          mt: 0, 
+          ml: 1,
+        }}>Create</Button>
 
+      </Box>
+        
        
     </Box>
 }

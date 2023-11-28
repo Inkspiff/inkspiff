@@ -81,8 +81,7 @@ export default function Home({ session, providers }: InferGetServerSidePropsType
   return (
     <div>
       <Head>
-        <title>Inkspill - Create README files is seconds</title>
-        <link rel="icon" href="/dog.png" />
+        <title>Inkspiff - Create README files is seconds</title>
       </Head>
       <HomeHeader />
       <Box  component="main"

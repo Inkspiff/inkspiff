@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
-import View from "@/components/editor/View";
+import View from "@/components/editor/layout/View";
 import { useRouter } from "next/router";
-import Templates from "@/components/Templates";
-import CreateNew from "@/components/CreateNew";
-import Navbar from "@/components/editor/Navbar";
+import Templates from "@/components/templates/Templates";
+import CreateNew from "@/components/create/CreateNew";
+import Navbar from "@/components/editor/layout/Navbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import UseAI from "@/components/use-ai/use-ai";
@@ -30,9 +30,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
-  if (!session) {
-   return { redirect: { destination: `/login` } }
-  }
+  // if (!session) {
+  //  return { redirect: { destination: `/login` } }
+  // }
 
   const providers = await getProviders();
   
@@ -56,8 +56,7 @@ export default function CreateNewPage({ session, providers }: InferGetServerSide
   return (
     <div>
       <Head>
-        <title>Create README | Inkspill</title>
-        <link rel="icon" href="/dog.png" />
+        <title>Create new README | Inkspiff</title>
       </Head>
       <AppBar  sx={{
         bgcolor: "white",

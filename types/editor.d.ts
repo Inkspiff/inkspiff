@@ -22,7 +22,7 @@ export interface BlockType {
   }
 
 
-export  interface SelectMenuItemType {
+export  interface BlockSelectItemType {
     id: string;
     content: string;
     tag: string;
@@ -34,6 +34,7 @@ export interface ViewSettingsType {
     sidebar: boolean,
     drawer: boolean,
     blocks: boolean,
+    bottomPanel: string,
 }
 
 export interface FileType {
@@ -45,5 +46,14 @@ export interface SectionType {
     id: string,
     name: string,
     content: string,
+
+}
+
+export interface BlockViewElementType {
+    content: string,
+    tag: string,
+    link?: string,
+    type?: string,
+    alt?: string,
 
 }

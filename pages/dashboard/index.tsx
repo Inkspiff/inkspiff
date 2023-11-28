@@ -4,10 +4,10 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
-import View from "@/components/editor/View";
-import Templates from "@/components/Templates";
-import CreateNew from "@/components/CreateNew";
-import Navbar from "@/components/editor/Navbar";
+import View from "@/components/editor/layout/View";
+import Templates from "@/components/templates/Templates";
+import CreateNew from "@/components/create/CreateNew";
+import Navbar from "@/components/editor/layout/Navbar";
 
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
@@ -15,7 +15,7 @@ import { getProviders } from "next-auth/react"
 import {authOptions} from "@/lib/auth"
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router"
-import LeftSidePanel from "@/components/editor/LeftSidePanel"
+import LeftSidePanel from "@/components/editor/layout/RightSidePanel"
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 // import Box from "@mui/material/Box";

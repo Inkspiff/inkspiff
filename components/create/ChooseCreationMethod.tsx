@@ -24,10 +24,11 @@ const ChooseCreationMethod = ({ onHandleNew }: ChooseCreationMethodInterface) =>
       }}
     >
       <Typography
-        variant="h2"
+        variant="h1"
         sx={{
           textAlign: "center",
           mb: 4,
+          maxWidth: {xs: "400px", md: "540px"}
         }}
       >
         How would you like to start?

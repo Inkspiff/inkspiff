@@ -125,6 +125,8 @@ export default function TitleSpace() {
   return (
     <Stack spacing={2} sx={{
       // color: "#121212"
+      // border: "1px solid red",
+      ml: 0.5,
     }}>
       {!sidebar && <Box component="div" 
       contentEditable 
@@ -150,7 +152,7 @@ export default function TitleSpace() {
         width: "auto",
         borderRadius: "4px",
         p: "0px 8px",
-      }}>{selectedSection ? selectedSection.name : "No Section"}</Box>}
+      }}>{selectedSection ? `${selectedSection.name} - Section View` : "No Section"}</Box>}
 
 
       {/* <Breadcrumbs 

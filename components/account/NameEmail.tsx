@@ -7,10 +7,19 @@ import Typography from '@mui/material/Typography';
 import { useSelector, useDispatch } from "react-redux";
 import { useSession, signIn, signOut } from "next-auth/react";
 import ArrowRightRounded from "@mui/icons-material/ArrowRightRounded"
+import { RootState } from "@/store";
+import { appActions } from '@/store/app-slice';
 
 
 export default function NameEmail() {
   const { data: session } = useSession();
+  const dispatch = useDispatch()
+  const app = useSelector((state: RootState) => state.app)
+
+
+  const handleOpenLoginModal = () => {
+    dispatch(appActions.toggleOpenLoginModal());
+  }
 
   if (!session) {
     return <Box sx={{
@@ -35,7 +44,7 @@ export default function NameEmail() {
           }} >
             
             </Avatar>
-    <Link href="/login" >
+    
      
       <Typography variant="body2" sx={{
         display: "inline-flex",
@@ -46,9 +55,8 @@ export default function NameEmail() {
         "&:hover": {
           textDecoration: 'underline'
         }
-      }}>  <ArrowRightRounded /> Login</Typography>
+      }} onClick={handleOpenLoginModal}>  <ArrowRightRounded /> Login</Typography>
       
-      </Link>
     </Box>
   }
 

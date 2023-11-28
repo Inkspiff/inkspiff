@@ -4,9 +4,9 @@ import { EditorState, Text } from '@codemirror/state'
 // import { EditorView } from '@codemirror/view'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
-import { getCaretCoordinates } from '@/lib/utils'
+import { blockRequiresNewLine, getCaretCoordinates } from '@/lib/utils'
 import SelectMenu3 from "@/components/editor/SelectMenu3"
-import { SelectMenuItemType } from '@/types/editor'
+import { BlockSelectItemType } from '@/types/editor'
 import { useSession } from "next-auth/react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
@@ -15,7 +15,7 @@ import { useRouter } from "next/router"
 import Popover from "@mui/material/Popover"
 
 
-const AltEditor = () => {
+const SectionEditor = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
@@ -36,11 +36,14 @@ const AltEditor = () => {
   });
 
   const handleDocChange = useCallback((newState: EditorState) => {
+    const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
+
+
+    setCurrentLine(newCurrentLine)
     dispatch(appActions.updateSectionContent({
         id: id,
         content: newState.doc.toString()
     }))
-    // setCurrentLine(newState.doc.lineAt(newState.selection.main.head).number)
   }, [])
 
 
@@ -51,26 +54,32 @@ const AltEditor = () => {
   })
 
 
-  const updateEditorContent = useCallback((newContent: string) => {
+  useEffect(() => {
+    if (editorView) {
+      // Do nothing for now
+    } else {
+      // loading editor
+    }
+  }, [editorView])
+
+
+  const updateEditorContent = useCallback((newContent: string, from: number, to:number) => {
     if (editorView) {
       const state = editorView.state;
+      
       const transaction = state.update({
         changes: {
-          from: 0,
-          to: state.doc.length,
+          from: from,
+          to: to,
           insert: newContent,
         },
       });
+
       editorView.dispatch(transaction);
     }
   }, [editorView]);
 
-   
-
-//   useEffect(() => {
-//     updateEditorContent(content!)
-//   }, [content])
-
+  
 
   const keyUpHandler = (e: React.KeyboardEvent) => {
     if (e.key === "/") {
@@ -95,22 +104,32 @@ const AltEditor = () => {
     document.removeEventListener("click", closeSelectMenuHandler);
   }
 
-  
-  const blockSelectionHandler = (block: SelectMenuItemType) => {
-    const splitContent = content.split("\n")
+  // console.log(content.replace(/\/$/, ""), {currentLine})
+  const blockSelectionHandler = (block: BlockSelectItemType) => {
+    // get head
+    if (editorView) {
+      const {from, to, head, anchor} = editorView.state.selection.ranges[0]
 
-    splitContent.splice(currentLine, 0, block.content);
+        // TODO: Remove the last character -> /
+        const splitContent = content.replace(/\/$/, "").split("\n")
 
-    const newContent = splitContent.join("\n")
+        if (blockRequiresNewLine(block.tag)) {
+          const contentUntilLine = splitContent.slice(0, currentLine)
 
-    // updateEditorContent(newContent)
+          const numberOfCharsUntilLine = contentUntilLine.join("\n").length
 
-      dispatch(appActions.changeMarkdown({
-        content: newContent,
-        currentLine: currentLine + 1,
-      }))
-    
-    closeSelectMenuHandler();
+          updateEditorContent(("\n\n" + block.content), numberOfCharsUntilLine, numberOfCharsUntilLine)
+        } else {
+          // splitContent[currentLine - 1] += block.content
+          updateEditorContent(block.content, from, to) // -1 removes the slash
+        }
+
+        
+
+        // updateEditorContent(newContent)
+        
+        closeSelectMenuHandler();
+    }
   }
 
   
@@ -145,4 +164,4 @@ const AltEditor = () => {
   </Box>
 }
 
-export default AltEditor
+export default SectionEditor
