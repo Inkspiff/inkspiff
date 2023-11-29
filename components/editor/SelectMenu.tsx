@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { matchSorter } from "match-sorter";
-import  {SelectMenuItemType} from "@/types/editor"
+import  {BlockSelectItemType} from "@/types/editor"
 import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
 import SelectMenuItem from "@/components/editor/SelectMenItem";
@@ -11,7 +11,7 @@ import { appActions } from "@/store/app-slice";
 
 interface SelectMenuProps {
   position: { x: number | null; y: number | null };
-  onSelect: (block: SelectMenuItemType) => void;
+  onSelect: (block: BlockSelectItemType) => void;
   close: () => void;
 }
 
@@ -20,7 +20,7 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ position, onSelect, close }) =>
   const app = useSelector((state: RootState) => state.app);
   
   const [command, setCommand] = useState("");
-  const [items, setItems] = useState<SelectMenuItemType[]>(SUPPORTED_BLOCKS);
+  const [items, setItems] = useState<BlockSelectItemType[]>(SUPPORTED_BLOCKS);
   const [selectedItem, setSelectedItem] = useState(0);
 
   const {viewSettings } = app;

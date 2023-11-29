@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { matchSorter } from "match-sorter";
-import  {SelectMenuItemType} from "@/types/editor"
+import  {BlockSelectItemType} from "@/types/editor"
 import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
 
 
 interface SelectMenuProps {
   position: { x: number | null; y: number | null };
-  onSelect: (block: SelectMenuItemType) => void;
+  onSelect: (block: BlockSelectItemType) => void;
   close: () => void;
 }
 
 
 const SelectMenu: React.FC<SelectMenuProps> = ({ position, onSelect, close }) => {
   const [command, setCommand] = useState("");
-  const [items, setItems] = useState<SelectMenuItemType[]>(SUPPORTED_BLOCKS);
+  const [items, setItems] = useState<BlockSelectItemType[]>(SUPPORTED_BLOCKS);
   const [selectedItem, setSelectedItem] = useState(0);
 
   useEffect(() => {

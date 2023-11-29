@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { matchSorter } from "match-sorter";
-import  {SelectMenuItemType} from "@/types/editor"
+import  {BlockSelectItemType} from "@/types/editor"
 import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
 import Popover from "@mui/material/Popover"
@@ -14,7 +14,7 @@ import { appActions } from "@/store/app-slice";
 interface SelectMenuProps {
     open: boolean;
   position: { x: number | null; y: number | null };
-  onSelect: (block: SelectMenuItemType) => void;
+  onSelect: (block: BlockSelectItemType) => void;
   close: () => void;
 }
 
@@ -25,14 +25,14 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
   const boxRef = useRef<HTMLDivElement>(null);
   
   const [command, setCommand] = useState("");
-  const [items, setItems] = useState<SelectMenuItemType[]>(SUPPORTED_BLOCKS);
+  const [items, setItems] = useState<BlockSelectItemType[]>(SUPPORTED_BLOCKS);
   const [selectedItem, setSelectedItem] = useState(0);
 
   const {viewSettings } = app;
   const {drawer} = viewSettings
 
 
-  const clearAndSelect = (block: SelectMenuItemType) => {
+  const clearAndSelect = (block: BlockSelectItemType) => {
     setCommand("")
     setSelectedItem(0)
     onSelect(block)
