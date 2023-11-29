@@ -31,6 +31,7 @@ import NameEmail from '@/components/account/NameEmail';
 import EditorModal from '@/components/editor/EditorModal';
 import LoginModal from '@/components/auth/login-modal';
 import TemplatesPopup from "@/components/templates/TemplatesPopup"
+import Logo from '../ui/Logo';
 
 export default function Actions() {
   const router = useRouter();
@@ -54,6 +55,7 @@ export default function Actions() {
   const handleExport = () => {
     if (session) {
        // TODO: Open export file modal
+       console.log("Export")
     } else {
     dispatch(appActions.toggleOpenLoginModal())
     }
@@ -61,11 +63,16 @@ export default function Actions() {
 
   const handleImport = () => {
   if (session) {
-      // TODO: Open Import file modal
+      // TODO: Open Import file modal\
+      console.log("Import")
     } else {
     dispatch(appActions.toggleOpenLoginModal())
     }
   }
+
+  const handleGiveFeedback = () => {
+    console.log("Give Feedback")
+    }
 
   
   const [openTemplatesPopup, setOpenTemplatesPopup] = useState(false)
@@ -89,7 +96,10 @@ export default function Actions() {
 
   return (
     
-      <List>
+      <List sx={{
+        display: "flex",
+        flexDirection: "column"
+      }}>
         <Divider sx={{
           mb: 2
         }} />
@@ -177,7 +187,7 @@ export default function Actions() {
             p: "4px",
             cursor: "pointer",
             borderRadius: "4px",
-          }} onClick={handleExport}>
+          }} onClick={handleGiveFeedback}>
             <AddCircleOutlineOutlinedIcon sx={{
               mx: 1,
               width: 16,
@@ -193,12 +203,13 @@ export default function Actions() {
 
         <Box sx={{
           py: 1,
-          px: 2
+          px: 2,
+          // alignSelf: "center",
         }}>
-            <Typography variant="body2" sx={{
-              fontWeight: 500,
-              fontSize: "14px",
-            }}>Inkspiff</Typography>
+            <Logo type="image" sx={{
+              transform: "translateX(-8px) translateY(12px)"
+            }}/>
+            
         </Box>
       </List>
   );

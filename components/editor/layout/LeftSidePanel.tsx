@@ -40,7 +40,7 @@ export default function LeftSidePanel() {
     
   }, [isSmUp])
 
-  console.log({open})
+  // console.log({open})
 
 
   return (
@@ -49,7 +49,6 @@ export default function LeftSidePanel() {
     sx={{
       width: {xs: "100%", sm: drawerWidth},
       flexShrink: 0,
-      // opacity: 0,
       '& .MuiDrawer-paper': {
         width: {xs: "100%", sm: drawerWidth},
         bgcolor: "gray.A100",
@@ -80,8 +79,7 @@ export default function LeftSidePanel() {
     
     <Box sx={{
       overflowY: "auto",
-      height: "calc(100vh - 150px)",
-      maxHeight: "calc(100vh - 150px)",
+      height: "calc(100vh - 406px)",
       pb: 3,
       // border: "1px solid red",
       position: "relative",
@@ -89,7 +87,10 @@ export default function LeftSidePanel() {
 
       <FileList />
 
-      <Box sx={{
+      
+    </Box>
+    
+    <Box sx={{
         position: "absolute",
         bottom: 0,
         left: 0,
@@ -101,8 +102,6 @@ export default function LeftSidePanel() {
       }}>
         <Actions />
       </Box>
-    </Box>
-    
     
   </Drawer>
   );

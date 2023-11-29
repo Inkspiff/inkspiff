@@ -87,7 +87,7 @@ export default function AccountArea() {
     <Box sx={{
       // border: "1px solid green",
       display: {xs: "none", sm: "block"},
-      height: {sm: "150px"},
+      // height: {sm: "150px"},
     }}>
     <Box sx={{
         height: "45px",

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import Link from "next/link"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
@@ -15,10 +15,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { ThemeContext } from '@/context/ThemeContext'
 
 const Members = () => {
   const { data: session } = useSession();
   const app = useSelector((state: RootState) => state.app)
+  const { toggleTheme, theme} = useContext(ThemeContext);
+
+  const {palette, } = theme
+  const {mode } = palette
+
   const {viewSettings, fileList, markdown, markdownSelected} = app
   const [loadingFiles, setLoadingFiles] = useState(false)
   const [fileOpened, setFileOpened] = useState<string | null>(null)
@@ -89,7 +95,7 @@ const Members = () => {
           <Grid item sm={4} sx={{
             height: "100%",
             overflowY: "auto",
-            bgcolor: "rgb(251, 251, 250)",
+            bgcolor: ( mode === "light") ? "rgb(251, 251, 250)" : "rgb(28, 28, 28)",
             borderRadius: "0 8px 8px 0",
             py: 2,
           }}>
@@ -107,6 +113,7 @@ const Members = () => {
                       p: "2px 12px",
                       m: 0,
                       borderRadius: "4px",
+                      bgcolor: (fileOpened === file.id) ? "action.hover" : ""
                     }}  onClick={() => {handleOpenFile(file.id)}}>
                         <ListItemText primary={<Typography sx={{
                       // border: "1px solid red",

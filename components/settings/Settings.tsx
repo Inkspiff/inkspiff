@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Modal from '@mui/material/Modal';
@@ -25,6 +25,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { ThemeContext } from '@/context/ThemeContext';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -96,6 +97,10 @@ interface propTypes {
 export default function Settings({open, onClose}: propTypes) {
   const { data: session } = useSession();
   const app = useSelector((state: RootState) => state.app)
+  const { toggleTheme, theme} = useContext(ThemeContext);
+
+  const {palette, } = theme
+  const {mode } = palette
 
   const handleClose = () => onClose();
 
@@ -120,7 +125,7 @@ export default function Settings({open, onClose}: propTypes) {
           }} spacing={0} >
             <Grid item sm={4} sx={{
                 height: "100%",
-                bgcolor: "rgb(251, 251, 250)",
+                bgcolor: ( mode === "light") ? "rgb(251, 251, 250)" : "rgb(28, 28, 28)",
                 // border: "1px solid red",
                 m: 0,
                 py: 2, 
@@ -148,10 +153,11 @@ export default function Settings({open, onClose}: propTypes) {
                     }}>
                         <ListItemButton sx={{
                       // border: "1px solid blue",
+
                       p: "2px 12px",
                       m: 0,
                       borderRadius: "6px",
-                      bgcolor: (index === space) ? "grey.A100" : "",
+                      bgcolor: (index === space) ? "action.hover" : "",
                     }} onClick={() => {handleSelectSpace(index)}}>
                             <ListItemIcon sx={{
                       

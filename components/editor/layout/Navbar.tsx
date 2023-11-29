@@ -135,7 +135,7 @@ const handleShowSidebar = () => {
       elevation={0}
       variant="outlined"
 
-      // open={open}
+      open={open}
       sx={{
         height: "45px",
         position: "fixed",

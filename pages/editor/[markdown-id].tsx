@@ -114,7 +114,7 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
         height: {sm: "calc(100% - 45px)"},
         // border: "3px solid green",
         width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
-        display: {xs: "none"}
+        display: {xs: "none", sm: "block"}
       }}>
         {!session && <Link href="/login">Login</Link>}
         {session && <View />}

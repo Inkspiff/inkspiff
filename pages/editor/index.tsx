@@ -135,10 +135,10 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
       <Box
         sx={{
           display: 'flex',
-        border: "2px solid yellow",
-        height:"100vh",
+        // border: "2px solid yellow",
+        height: {sm: "100vh"},
         position: "relative",
-        width: "100%",
+        width: {xs: "100%", sm: "auto"},
         }}
       >
         <Navbar />
@@ -150,7 +150,7 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
         height: {sm: "calc(100% - 45px)"},
         // border: "3px solid green",
         width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
-        display: {xs: "none"}
+        display: {xs: "none", sm: "block"}
       }}>
         <View />
       </Main>
