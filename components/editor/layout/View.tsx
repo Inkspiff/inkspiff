@@ -8,10 +8,6 @@ import { useSession, } from "next-auth/react";
 import { useRouter } from "next/router"
 import Preview from '../Preview'
 import Editor from "@/components/editor/Editor"
-import { SelectMenuItemType } from '@/types/editor'
-import { EditorState } from '@codemirror/state';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import SectionEditor from "@/components/editor/sections/SectionEditor"
 import Blocks from "@/components/editor/block-view/Blocks"
 import NoSections from "@/components/editor/sections/NoSections"
