@@ -32,6 +32,7 @@ import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import More from "@/components/editor/More";
 import Share from "@/components/editor/Share"
+import { AiFillGithub } from "react-icons/ai";
 
 const drawerWidth = 240;
 
@@ -116,6 +117,10 @@ const handleCopy = () => {
         }, 3000);
   }
 
+  const handleGetGithub = () => {
+    console.log("github")
+  }
+
 const handleOpenDrawer = () => {
   dispatch(appActions.openDrawer())
 }
@@ -191,6 +196,19 @@ const handleShowSidebar = () => {
             // border: "1px solid red",
             alignItems: "center",
           }}>
+
+<IconButton sx={{
+              borderRadius: "4px"
+            }}  size="small" onClick={handleGetGithub}>
+            {copied ? <DoneOutlineRoundedIcon sx={{
+                // color: "#121212",
+                fontSize: "18px"
+              }} /> : <AiFillGithub style={{
+                // color: "#121212",
+                fontSize: "18px"
+              }} />}
+            </IconButton>
+
             
             <IconButton sx={{
               borderRadius: "4px"

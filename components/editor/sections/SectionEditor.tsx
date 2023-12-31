@@ -5,7 +5,7 @@ import { EditorState, Text } from '@codemirror/state'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
 import { blockRequiresNewLine, getCaretCoordinates } from '@/lib/utils'
-import SelectMenu3 from "@/components/editor/SelectMenu3"
+import SelectMenu from "@/components/editor/SelectMenu"
 import { BlockSelectItemType } from '@/types/editor'
 import { useSession } from "next-auth/react";
 import { useSelector, useDispatch } from "react-redux";
@@ -152,10 +152,8 @@ const SectionEditor = () => {
   
   onKeyUp={ keyUpHandler}>
 
-    </Box>
-
-    
-          <SelectMenu3
+    </Box>    
+          <SelectMenu
             open={selectMenuIsOpen}
             position={selectMenuPosition}
             onSelect={blockSelectionHandler}
