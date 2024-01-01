@@ -83,11 +83,11 @@ const Developer = () => {
                     I'm<Box component="span"  sx={{
                         fontWeight: 600
                    }}> Precious</Box>, aka <Box component="span" sx={{
-                        color: "#006de2",
+                        color: "#2a8bf3",
                         fontWeight: 600,
                         textDecoration: "underline",
                         cursor: "pointer"
-                   }}><a>@pincode</a></Box>, I am a dev based out of Nigeria. I love to write music and consume business content on youtube.
+                   }}><a href="https://x.com/pinqode" target="_blank">@pinqode</a></Box>, I am a dev based out of Nigeria. I love to write music and consume business content on youtube.
                    </Typography>
                    <br />
                    <Typography variant="body1">
