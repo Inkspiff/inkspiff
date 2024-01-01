@@ -12,14 +12,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import {navConfig} from "@/config/site"
 
-const NAV_ITEMS= [
+export const NAV_ITEMS= [
     {
       title: "about",
       link: "/about",
     },
     {
       title: "feedback",
-      link: "/about",
+      link: "/feedback",
     }
   ]
   

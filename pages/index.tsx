@@ -46,14 +46,16 @@ export default function Home() {
                         fontWeight: 400,
 
                     }}>
-                        At Inkspiff, we believe that creating comprehensive readme files and maintaining code documentation should be a breeze. That's why we've harnessed the power of generative AI and collaboration features to simplify the process and make it more enjoyable.
+                        At Inkspiff, we believe that creating comprehensive readme files and maintaining code docs should be a breeze. That's why we&apos;re harnessing the powers of generative <span style={{
+                          fontWeight: "bold",
+                        }}>AI, Automation, UX, and Collaboration </span>features to simplify the process and make it more enjoyable.
                     </Typography>
                 </PaddedContainer>
             </Box>
     
 
             <Quote
-            text="We got rid of nearly a dozen different tools because of what Inskpill does for us."
+            text="We are bringing the functionalities of  nearly a dozen different tools to make a one stop."
             by="Precious Nwaoha"
             from="Software Developer, Patentic"
           />

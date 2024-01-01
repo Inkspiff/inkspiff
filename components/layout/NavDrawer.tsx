@@ -16,17 +16,7 @@ import Logo from "@/components/ui/Logo"
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded"
 import Link from 'next/link';
 
-
-const NAV_ITEMS= [
-  {
-    title: "about",
-    link: "/about",
-  },
-  {
-    title: "feedback",
-    link: "/about",
-  }
-]
+import { NAV_ITEMS } from './Navbar';
 
 
 export default function NavDrawer() {

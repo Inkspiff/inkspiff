@@ -10,18 +10,18 @@ import { ThemeContext } from '@/context/ThemeContext';
 const excuseAnswers = [
   {
     icon: "",
-    heading: "Visualize, filter & sort any way you want",
-    text: `By joining our waiting list, you'll be among the first to experience the future of code documentation. Get exclusive early access and be a part of the Inkspiff community from the very beginning.`,
+    heading: "Be the first to know",
+    text: `Join our waiting list and be among the pioneers shaping the future of code docs while gaining a head start in experiencing our innovative platform.`,
   },
   {
     icon: "",
-    heading: "Customize the info you track",
-    text: "Create your own labels, tags, owners, and more, so everyone has context and everything stays organized.",
+    heading: "Early access perks",
+    text: "Secure exclusive early access, and from the very beginning, you will have early access bonuses on your account.",
   },
   {
     icon: "",
-    heading: "Build any page, communicate any idea",
-    text: "Everything is drag and drop in Notion — images, toggles, to-do’s, even embedded databases.",
+    heading: "Drive the community",
+    text: "Be an integral part of the growing Inkspiff community, connecting with like-minded enthusiasts and contributors.",
   },
 ];
 

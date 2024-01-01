@@ -117,7 +117,7 @@ const {mode} = palette
       MuiToolbar: {
         styleOverrides: {
           root: {
-            // background: theme.palette.background.default,
+            background: theme.palette.background.default,
           }
         }
       },

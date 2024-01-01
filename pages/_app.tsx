@@ -42,6 +42,8 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name="robots" content="all" />
+        {/* <meta name="googlebot" content="noindex,nofollow" /> */}
       </Head>
       <ThemeProvider>
       <Provider store={store}>
@@ -49,7 +51,6 @@ export default function MyApp(props: MyAppProps) {
         <ThemeContextAdderCompForMui>
         <Component {...pageProps} />
         </ThemeContextAdderCompForMui>
-      
       
       </Provider>
       </ThemeProvider>

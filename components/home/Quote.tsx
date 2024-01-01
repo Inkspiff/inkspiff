@@ -18,6 +18,7 @@ const Quote = ({text, by, from}: QuoteInterface) => {
 
      <Box sx={{
         textAlign: "center",
+        px: 2,
      }}>
     
       <Typography variant="body1" component="span" sx={{
@@ -34,7 +35,8 @@ const Quote = ({text, by, from}: QuoteInterface) => {
             <Grid item xs={6}></Grid>
             <Grid item xs={6}>
             <Box sx={{
-            textAlign: "left"
+            textAlign: "left",
+            display: "none"
         }}>
             <Typography variant="body2" sx={{
                 fontWeight: 500,
