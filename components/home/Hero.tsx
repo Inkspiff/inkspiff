@@ -152,7 +152,7 @@ const Hero = () => {
               mt: 4
           }}>
           
-          There's a better way document your code!
+          There's a better way to document your code!
           </Typography>
 
           <Typography variant="body1" sx={{
