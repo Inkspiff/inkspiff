@@ -41,6 +41,8 @@ export default function Actions() {
 
   const [exportAnchorEl, setExportAnchorEl] = React.useState<null | HTMLElement>(null);
   const [importAnchorEl, setImportAnchorEl] = React.useState<null | HTMLElement>(null);
+  
+  const [openTemplatesPopup, setOpenTemplatesPopup] = useState(false)
 
   const handleToggleOpenImport = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
@@ -74,8 +76,6 @@ export default function Actions() {
     console.log("Give Feedback")
     }
 
-  
-  const [openTemplatesPopup, setOpenTemplatesPopup] = useState(false)
  
   const handleToggleShowLoginModal = () => {
    

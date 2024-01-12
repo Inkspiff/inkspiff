@@ -1,3 +1,4 @@
+import { TemplateType } from "@/types"
 import { TableType, CodeType, ListType, SectionType } from "@/types/editor"
 
 export const createTable = (headers: string[]) => {
@@ -368,4 +369,20 @@ export const blockRequiresNewLine = (tag: string) => {
     default:
       return true
   }
+}
+
+
+export const getTemplateCategories = (templates: TemplateType[]) => {
+  const categories: string[] = []
+
+  templates.forEach(template => {
+
+    template.categories.forEach((category: string) => {
+      if (!categories.includes(category)) {
+        categories.push(category)
+      }
+    })
+  })
+
+  return categories
 }

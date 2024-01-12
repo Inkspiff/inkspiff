@@ -16,11 +16,6 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined';
 import NameEmail from "@/components/account/NameEmail"
-import General from '@/components/settings/General';
-import NotificationSettings from '@/components/settings/NotificationSettings';
-import Billing from '@/components/settings/Billing';
-import Members from '@/components/settings/Members';
-import Plans from "@/components/plans/Plans"
 import Input from '@mui/material/Input';
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import { useSelector, useDispatch } from "react-redux";
@@ -30,6 +25,9 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import ViewTemplateInEditor from "@/components/templates/ViewTemplateInEditor"
 import TemplateFilterSelect from "@/components/templates/TemplateFilterSelect"
 import { ThemeContext } from '@/context/ThemeContext';
+import TemplatesList from "@/components/templates/TemplatesList";
+import { matchSorter } from "match-sorter";
+import { TemplateType } from '@/types';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -46,42 +44,11 @@ const style = {
   overflow: "hidden",
 };
 
-const SIDE_LIST = [
-    {
-        text: "General",
-        icon: <TuneRoundedIcon sx={{
-          fontSize: "16px",
-          m: 0,
-        }}/>,
-    },
-    {
-        text: "Notifications",
-        icon: <NotificationAddOutlinedIcon sx={{
-          fontSize: "16px",
-          m: 0,
-        }}/>,
-    },
-    {
-        text: "Members",
-        icon: <PeopleAltOutlinedIcon sx={{
-          fontSize: "16px",
-          m: 0,
-        }}/>,
-    },
-    {
-        text: "Billing",
-        icon: <CreditCardOutlinedIcon sx={{
-          fontSize: "16px",
-          m: 0,
-        }}/>,
-    },
-    {
-        text: "Upgrade",
-        icon: <ArrowCircleUpOutlinedIcon sx={{
-          fontSize: "16px",
-          m: 0,
-        }}/>,
-    },
+const TEMPLATE_CATEGORIES = [
+    "profile",
+    "website",
+    "blog",
+    "package",
 ]
 
 interface propTypes {
@@ -95,20 +62,20 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
   const app = useSelector((state: RootState) => state.app)
   const { toggleTheme, theme} = useContext(ThemeContext);
 
+  const [space, setSpace] = useState<number>(0)
+  const [loading, setLoading] = useState(false)
+  const [searchValue, setSearchValue] = useState<string>("")
+  const [searchResults, setSearchResults] = useState<TemplateType[]>([])
+  const [categories, setCategories] = useState<string[]>([])
+  
   const {palette, } = theme
   const {mode } = palette
-  
-  const [value, setValue] = React.useState<string>("")
-
   const { templates } = app
 
   const handleClose = () => onClose();
 
-  const [space, setSpace] = useState<number>(0)
-  const [loading, setLoading] = useState(false)
-
-  const handleSelectSpace = (index: number) => {
-    setSpace(index)
+  const handleSelectCategory = (index: number) => {
+    setSearchValue(TEMPLATE_CATEGORIES[index])
   }
 
   useEffect(() => {
@@ -127,9 +94,26 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
       dispatch(appActions.updateTemplates(temps))
     }
 
-    
-    getTemplates()
-  }, [])
+    if (templates.length === 0) {
+      console.log("grabbing templates")
+      getTemplates()
+    }
+  }, [templates])
+
+  console.log(templates)
+
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+  }
+
+  useEffect(() => {
+      if (searchValue) {
+        const matchedTemplates = matchSorter(templates, searchValue, { keys: ["categories"] });
+      setSearchResults(matchedTemplates);
+      }
+      
+  }, [searchValue]);
 
   return (
     <>
@@ -147,7 +131,6 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
             <Grid item sm={4} sx={{
                 height: "100%",
                 bgcolor: (mode === "light") ? "rgb(251, 251, 250)" : "rgb(28, 28, 28)",
-                // border: "1px solid red",
                 m: 0,
                 py: 2, 
                 
@@ -157,20 +140,18 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
               mb: 2
             }}>
               <Typography variant="body1" component="h3" sx={{
-              
                 fontWeight: 700,
                 mb: 1,
               }}>Templates</Typography>
   
-              <TemplateFilterSelect />
+              {/* <TemplateFilterSelect /> */}
               <Input 
                 fullWidth
-                value={value} 
+                value={searchValue} 
                 placeholder={"Search..."}
                 startAdornment={<SearchOutlinedIcon />}
-                
+                onChange={handleSearchChange}
                 type="text"
-
                 />
 
                
@@ -182,12 +163,7 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
                   mb: 1
                 }}> Suggestions</Typography>
                  <List>
-                {SIDE_LIST.map((elem, index) => {
-                  if (!session) {
-                    if (elem.text === "Billing") {
-                      return 
-                    }
-                  }
+                {TEMPLATE_CATEGORIES.map((category, index) => {
                     return <ListItem key={index} sx={{
                       // border: "1px solid red",
                       p: 0,
@@ -195,25 +171,17 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
                       px: "4px",
                     }}>
                         <ListItemButton sx={{
-                      // border: "1px solid blue",
-                      p: "2px 12px",
-                      m: 0,
-                      borderRadius: "6px",
-                      bgcolor: (index === space) ? "action.hover" : "",
-                    }} onClick={() => {handleSelectSpace(index)}}>
-                            <ListItemIcon sx={{
-                      
-                      minWidth: "0",
-                      fontWeight: 300,
-                      mr: "8px",
-
-                            }}>{elem.icon}</ListItemIcon>
-                            <ListItemText primary={<Typography variant="body2" sx={{
-                      // border: "1px solid red",
-                      p: 0,
-                      m: 0,
-                      // fontSize: "12px",
-                    }}>{elem.text}</Typography>} />
+                          // border: "1px solid blue",
+                          p: "2px 12px",
+                          m: 0,
+                          borderRadius: "6px",
+                        }} onClick={() => {handleSelectCategory(index)}}>
+                          <ListItemText primary={<Typography variant="body2" sx={{
+                            // border: "1px solid red",
+                            p: 0,
+                            m: 0,
+                            textTransform: "capitalize",
+                          }}>{category}</Typography>} />
                         </ListItemButton>
                      
                     </ListItem>
@@ -231,10 +199,18 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
             }}>
                 <Box sx={{
                     height: "100%",
+                    //  border: "1px solid blue",
                 }}>
-                    { (templates.length > 0) 
-                    ? <ViewTemplateInEditor template={templates[0]} /> 
-                    : <Box> No Templates </Box>}
+                  {searchValue ? <Box sx={{
+                    px: 2,
+                    py: 2,
+                    height: "100%",
+                    overflowY: "auto",
+                  }}>
+                    <TemplatesList templates={searchResults} />
+                  </Box> : <ViewTemplateInEditor template={templates[0]} onClose={onClose} /> 
+                  
+                  }
                 </Box>
             </Grid>
           </Grid>

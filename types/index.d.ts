@@ -4,6 +4,16 @@ export interface BlockType {
   htmlContent: string[], 
 }
 
+
+export interface UserType {
+  id: string,
+  email: string,
+  emailVerified: boolean | null,
+  name: string,
+  image: string,
+}
+
+
 export interface MarkdownInterface {
   
   id: string,
@@ -21,17 +31,14 @@ export type TemplateType =  {
   name: string,
   content: string,
   description: string,
-  creator: {
-    email: string,
-    name: string,
-    image: string,
-},
+  creator: UserType,
 type: 'free' | 'pro',
 categories: string[],
 includes?: string[]
   views: number,
   image: string,
 }
+
 
 export  type ContributorType = {
   name: string;

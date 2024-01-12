@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect, useState} from "react"
 import Image from "next/image"
 import Link from "next/link"
 import Box from "@mui/material/Box"
@@ -10,48 +10,93 @@ import Button from "@mui/material/Button"
 import Paper from "@mui/material/Paper"
 import ArrowLeftRoundedIcon from "@mui/icons-material/ArrowLeftRounded"
 import GoogleIcon from "@mui/icons-material/Google"
-import { TemplateType } from "@/types"
+import { TemplateType, UserType } from "@/types"
 import Preview from "@/components/editor/Preview"
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/store";
+import { appActions } from "@/store/app-slice";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface propTypes {
- template:  TemplateType
+ template:  TemplateType,
+ onClose: () => void,
+
 }
 
-const SOCIALS = [
-    {
-        name: "twitter",
-        icon: <GoogleIcon />,
-        link: "",
-    },
-    {
-        name: "linkedin",
-        icon: <GoogleIcon />,
-        link: "",
-    },
-    {
-        name: "youtube",
-        icon: <GoogleIcon />,
-        link: "",
-    },
-]
 
-const ViewTemplateInEditor = ({template}: propTypes) => {
+
+const ViewTemplateInEditor = ({template, onClose}: propTypes) => {
+    const dispatch = useDispatch()
+    const { data: session } = useSession();
+    const router = useRouter()
+    const app = useSelector((state: RootState) => state.app)
+    const [useTemp, setUseTemp] = useState(false)
+    const [showCreating, setShowCreating] = useState(false)
+
+    if (!template) return <Box sx={{
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+
+    }}>Not found</Box>
 
     const  {name, content, description, creator, type, categories} = template
-    // const handleBack = () => {
-    //     onBack()
-    // }
+    const {markdown} = app
+
+    const handleUseTemplate = () => {
+        setUseTemp(true)
+    }
+
+     const handleMerge = () => {
+        dispatch(appActions.updateMarkdownContent(
+            `${markdown.content}\n\n${content}`
+        ))
+        // dispatch(appActions.changeMarkdown({
+        //     content: `${markdown.content}\n\n${content}`,
+        //     currentLine: markdown.content.split("\n").length + content.split("\n").length
+        // }))
+
+        setTimeout(() => {
+            onClose()
+        }, 0)
+    }
+    const handleCreateNew = async () => {
+        setShowCreating(true)
+        const newMdData = {
+          title: name,
+          content: content,
+          admin: session!.user.id,
+        }
+    
+        const response = await fetch("/api/db/create-md", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newMdData)
+    
+        })
+    
+        // setShowCreating(false)
+        if (!response?.ok) {
+          // handle wahalas
+        } 
+    
+        const json = await response.json()
+    
+        router.push(`/editor/${name.trim().split(" ").filter(a => a !== " ").join("-")}-${json.id}`)
+      }
+    
+    
 
     return <Box sx={{
-        border: "1px solid red",
+        // border: "1px solid red",
         height: "100%",
         position: "relative"
         
     }}>
-        
-        
-        
                 <Box sx={{
                 mb: 2,
                 maxHeight: "calc(100% - 100px)",
@@ -61,15 +106,15 @@ const ViewTemplateInEditor = ({template}: propTypes) => {
                 </Box>
            
                 <Box sx={{
-                    
-                    border: "1px solid red",
+
+                    // border: "1px solid red",
                     position: "absolute",
                     width: "100%",
                     bottom: "0px",
                     left: "0px",
                 }}>
                     <Box sx={{
-                        border: "1px solid red",
+                        // border: "1px solid red",
                         height: "50px",
                     }}></Box>
 
@@ -84,7 +129,25 @@ const ViewTemplateInEditor = ({template}: propTypes) => {
                     justifyContent: "space-between",
                     p: 2,
                     }}>
-                        <Grid container spacing={2}>
+                        {useTemp ? <Grid container spacing={2} sx={{
+                        }}>
+                            <Grid item md={6}>
+                                <Button variant="contained" sx={{
+                                    height: "auto",
+                                    minHeight: "auto",
+                                    width: "100%",
+                                }} onClick={handleMerge}>Merge</Button>
+                            </Grid>
+
+                            <Grid item md={6}>
+                                <Button variant="contained" sx={{
+                                    height: "auto",
+                                    minHeight: "auto",
+                                    width: "100%",
+                                }} onClick={handleCreateNew}>New</Button>
+                            </Grid>
+
+                        </Grid> : <Grid container spacing={2}>
                             <Grid item sm={12} md={8}>
                             <Box>
                         <Typography variant="body1" sx={{
@@ -107,7 +170,7 @@ const ViewTemplateInEditor = ({template}: propTypes) => {
                             }}
                             variant="outlined"
                             >
-                                <Image src={"/img/logo-black.png"} alt={creator.name} fill sizes={`(max-width: 2000px) 45px`} />
+                                <Image src={creator.image || "/img/logo-black.png"} alt={creator.name || "Template Creator"} fill sizes={`(max-width: 2000px) 45px`} />
                             </Paper>
                             <Typography variant="body2" sx={{
                                 fontWeight: 700
@@ -123,16 +186,11 @@ const ViewTemplateInEditor = ({template}: propTypes) => {
                             height: "auto",
                             minHeight: "auto",
                             width: "100%",
-                        }}>Use Template</Button>
+                        }} onClick={handleUseTemplate}>Use Template</Button>
                             </Grid>
-                        </Grid>
-                       
-
-                        
+                        </Grid>}
                     </Paper>
                     </Box>
-                    
-                    
                 </Box>
         
     </Box>

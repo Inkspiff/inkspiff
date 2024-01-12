@@ -96,6 +96,7 @@ const Editor: React.FC<Props> = (props) => {
 
     if (session) {
       if (markdown.id) {
+        // updateEditorContent(markdown.content, 0, markdown.content.length - 1)
           saveMd()
       }
     }
@@ -141,7 +142,6 @@ const Editor: React.FC<Props> = (props) => {
         },
       });
 
-      
       editorView.dispatch(transaction);
     }
   }, [editorView]);

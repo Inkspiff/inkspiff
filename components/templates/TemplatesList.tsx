@@ -27,33 +27,17 @@ interface propTypes {
     templates: TemplateType[]
 }
 
-const SOCIALS = [
-    {
-        name: "twitter",
-        icon: <GoogleIcon />,
-        link: "",
-    },
-    {
-        name: "linkedin",
-        icon: <GoogleIcon />,
-        link: "",
-    },
-    {
-        name: "youtube",
-        icon: <GoogleIcon />,
-        link: "",
-    },
-]
 
-const TemplateSlide = ({templates}: propTypes) => {
+const TemplateList = ({templates}: propTypes) => {
     const dispatch = useDispatch()
   const router = useRouter()
   const app = useSelector((state: RootState) => state.app)
 
+  
 
   
 
-  if (templates.length < 1) {
+  if (!templates) {
     return <Box>
         No Templates.
     </Box>
@@ -100,4 +84,4 @@ const TemplateSlide = ({templates}: propTypes) => {
     </Grid>
 }
 
-export default TemplateSlide
+export default TemplateList
