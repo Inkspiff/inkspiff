@@ -20,6 +20,8 @@ import { styled, useTheme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import LeftSidePanel from "@/components/editor/layout/LeftSidePanel";
 // import { query } from "firebase/firestore";
+import BottomPanel from "@/components/editor/layout/BottomPanel";
+import LoginModal from "@/components/auth/login-modal"
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -100,8 +102,8 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
       <Box
         sx={{
           display: 'flex',
-        // border: "2px solid yellow",
-        height: {sm:"100vh"},
+        border: "2px solid yellow",
+        height: "calc(100vh - 60px)",
         position: "relative",
         width: "100%",
         }}
@@ -131,6 +133,8 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
         {session && <View />}
       </Box>
         
+        <BottomPanel />
+        <LoginModal />
       </Box>
     </div>
   );

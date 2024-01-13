@@ -83,12 +83,14 @@ const {bottomPanel} = viewSettings
         left: 0,
         width: "100%",
         display: {xs: "block", sm: "none"},
+        border: "2px solid red",
     }}>
         <Paper elevation={0} variant="outlined" sx={{
             px: 2,
             py: 1,
             display: "flex",
             justifyContent: "space-between",
+            border: "1px solid blue",
         }}>
             <IconButton sx={{
             }} onClick={handleUseAi}>

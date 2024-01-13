@@ -45,17 +45,14 @@ const Sections = () => {
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement> ) => {
         setSearchValue(e.target.value)
     }
-  
 
+    
     React.useEffect(() => {
         if (sidebar) { // should split only when sidebar opens
             console.log("Heyoooo!")
             dispatch(appActions.addSections(splitIntoSections(mainContent)))
         }
     }, [sidebar])
-
-
-    // console.log(addedSections)
 
     React.useEffect(() => {
         const matchedItems = matchSorter(SUPPORTED_SECTIONS, searchValue.trim(), { keys: ["name"] });
@@ -73,7 +70,6 @@ const Sections = () => {
     }, [addedSections])
 
     
-
     const handleAddSection = (section: {name: string, content: string}) => {
         const newSection = {
             id: uid(),
@@ -89,7 +85,6 @@ const Sections = () => {
     }
 
     const handleRemoveSection = (id: string, index: number ) => {
-
         console.log("Remove Section: ", id)
         dispatch(appActions.removeSection({id: id}))
 
@@ -100,7 +95,6 @@ const Sections = () => {
         } else {
             nextSelectedSectionIndex = index + 1
         }
-        
 
         setTimeout(() => {
             if (addedSections.length > 0) { // more than one section
@@ -108,8 +102,7 @@ const Sections = () => {
             } else {
                 dispatch(appActions.selectSection(null))
             }
-        }, 0)
-        
+        }, 0)  
     }
 
     const handleSelectSection = (section: SectionType) => {
@@ -117,14 +110,9 @@ const Sections = () => {
         dispatch(appActions.selectSection(section))
     }
 
-
     const handleToggleShowAddedSections = () => {
         setShowAddedSections(prev => !prev)
     }
-    
-
-   
-
 
     return <Box sx={{
         overflowY: "auto",

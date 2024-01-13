@@ -135,35 +135,36 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
       <Box
         sx={{
           display: 'flex',
-        // border: "2px solid yellow",
+        border: "2px solid yellow",
         height: {sm: "100vh"},
         position: "relative",
         width: {xs: "100%", sm: "auto"},
         }}
       >
         <Navbar />
-       <LeftSidePanel />
+        <LeftSidePanel />
 
-       <Main open={open} sx={{
-        // m: 0,
-        mt: "45px",
-        height: {sm: "calc(100% - 45px)"},
-        // border: "3px solid green",
-        width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
-        display: {xs: "none", sm: "block"}
-      }}>
-        <View />
-      </Main>
+        <Main open={open} sx={{
+          // m: 0,
+          mt: "45px",
+          height: {sm: "calc(100% - 45px)"},
+          // border: "3px solid green",
+          width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
+          display: {xs: "none", sm: "block"}
+        }}>
+          <View />
+        </Main>
       
-      <Box sx={{
-        mt: "45px",
-        height: {sm: "calc(100% - 45px)"},
-        // border: "3px solid green",
-        width: "100%",
-        display: {sm: "none"}
-      }}>
-        <View />
-      </Box>
+        <Box sx={{
+          mt: "45px",
+          height: {sm: "calc(100% - 45px)"},
+          border: "3px solid green",
+          width: "100%",
+          display: {sm: "none"}
+        }}>
+          <View />
+        </Box>
+
         <BottomPanel />
         <Feedback />
         <LoginModal />

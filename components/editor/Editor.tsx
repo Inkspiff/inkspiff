@@ -53,7 +53,6 @@ const Editor: React.FC<Props> = (props) => {
  
 
   useEffect(() => {
-   
     const saveMd = async () => {
       dispatch(appActions.updatedSaveStates({
         saving: true,
