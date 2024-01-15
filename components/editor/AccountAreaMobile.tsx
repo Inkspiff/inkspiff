@@ -101,7 +101,7 @@ export default function AccountAreaMobile() {
         px: "4px",
         // border: "1px solid red",
         "&:hover": {
-          bgcolor: "grey.A200"
+          bgcolor: "action.hover"
         },
         "&:hover .expand-icon": {
           opacity: 1
@@ -164,10 +164,10 @@ export default function AccountAreaMobile() {
        }}
       >
         <Paper sx={{
-          borderRadius: "6px",
+          borderRadius: "8px",
           width: "240px",
           maxWidth: "100%",
-          border: "1px solid red"
+          // border: "1px solid red"
         }}>
 
           <Box sx={{

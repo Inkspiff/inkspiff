@@ -18,22 +18,6 @@ import Templates from '@/components/templates/Templates';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { TextField } from '@mui/material';
 
-const DUMMY_TEMP: TemplateType  ={
-  id: "1",
-  name: "Profile Readme",
-  content: "Hello",
-  description: "Description",
-   creator: {
-      email: "nwaohaprecious25@gmail.com",
-      name: "Precious Nwaoha",
-      image: "",
-  },
-  type: 'free',
-  categories: ["profile"],
-  includes: [],
-  views: 0,
-  image: "",
-}
 
 interface TemplatesInterface {
   onSelected: (template: TemplateType) => void,
@@ -160,6 +144,7 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
               width: "100%",
               display: "flex",
               justifyContent: "center",
+              mb: 2,
             }}>
                 <Input 
                 // fullWidth
@@ -194,10 +179,8 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
                   }}
                   inputProps={{
                    sx: {
-
-                    border: "1px solid red",
                     "&.MuiInput-input": {
-                      border: "1px solid red",
+                      // border: "1px solid red",
                       width: "auto",
                     minWidth: "auto",
                     },

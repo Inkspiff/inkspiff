@@ -104,7 +104,7 @@ const {bottomPanel} = viewSettings
         left: 0,
         width: "100%",
         display: {xs: "block", sm: "none"},
-        border: "1px solid red",
+        // border: "1px solid red",
     }}>
         <Paper elevation={0} variant="outlined" sx={{
             px: 2,
