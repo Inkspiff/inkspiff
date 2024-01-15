@@ -3,7 +3,7 @@ import { matchSorter } from "match-sorter";
 import  {BlockSelectItemType} from "@/types/editor"
 import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
-
+import Typography from "@mui/material/Typography"
 
 interface propTypes {
   onSelect: (block: BlockSelectItemType) => void;
@@ -30,36 +30,40 @@ const SelectMenuItem: React.FC<propTypes> = ({ onSelect, item, isSelected }) => 
                 display: "flex",
                 alignItems: "center",
                 width: "100%",
-                padding: "8px",
+                padding:{xs: "4px", sm: "8px"},
                 borderRadius: "4px",
+                boxShadow: {xs: 2, sm: "auto"},
+                // border: "1px solid red",
               }}
             >
-              <div style={{
-                width: "45px",
-                height: "45px",
+              <Box sx={{
+                width: {xs: "30px", sm: "45px"},
+                height: {xs: "30px", sm: "45px"},
                 borderRadius: "4px",
-                backgroundColor: "white",
+                bgcolor: "background.paper",
                 padding: "8px",
-                border: "1px solid #f6f5f4"
-              }}></div>
+                border: "1px solid #121212"
+              }}></Box>
 
-              <div style={{
+              <Box style={{
                 // border: "1px solid red",
                 marginLeft: "4px",
               }}>
                 <h6 style={{
-                  fontWeight: 400,
-                  fontSize: "1rem",
+                  fontWeight: 500,
+                  fontSize: "0.85rem",
                   margin: "0 0 0 0",
                 }}>{item.label}</h6>
-                <p style={{
+                <Typography sx={{
                   fontWeight: 400,
                   fontSize: "0.75rem",
                   margin: 0,
                   marginBottom: "4px",
-                  color: "#121212"
-                }}>This is a small description</p>
-              </div>
+                  color: "#121212",
+                  display: {xs: "none", sm: "block"}
+                }}>This is a small description</Typography>
+
+              </Box>
             </Box>
           );
 };
