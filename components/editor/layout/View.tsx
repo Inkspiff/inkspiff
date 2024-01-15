@@ -89,7 +89,7 @@ const View = () => {
   return (
 
     <Grid container sx={{
-      border: "2px solid purple",
+      border: "4px solid purple",
       height: "100%",
       // overflow: "hidden",
       position: "relative",

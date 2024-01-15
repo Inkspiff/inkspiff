@@ -3,7 +3,8 @@ import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Link from "next/link"
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Drawer from '@mui/material/Drawer';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Divider from '@mui/material/Divider';
 import PlusOneRoundedIcon from '@mui/icons-material/PlusOneRounded';
@@ -22,9 +23,18 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import theme from '@/config/theme';
 import AccountAreaMobile from '../AccountAreaMobile';
 
+import { PiMagicWandBold } from "react-icons/pi";
+import { TbBrandDatabricks } from "react-icons/tb";
+import { TbPhotoSquareRounded } from "react-icons/tb";
+import { TbSection } from "react-icons/tb";
+import { LuUndo } from "react-icons/lu";
+import { LuRedo } from "react-icons/lu";
+
+import { TbChevronCompactDown } from "react-icons/tb";
+
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Sections from '../sections/Sections';
-import Blocks from '../block-view/Blocks';
+import Blocks from '../blocks/Blocks';
 
 const BottomPanel = () => {
     const dispatch = useDispatch()
@@ -36,7 +46,14 @@ const {bottomPanel} = viewSettings
 
 
   const handleClosePanel = () => {
-    dispatch(appActions.closeBottomPanel())
+    if (bottomPanel === "sections") {
+      dispatch(appActions.toggleSidebar())
+      setTimeout(() => {
+        dispatch(appActions.closeBottomPanel())
+      }, 0)
+    } else {
+      dispatch(appActions.closeBottomPanel())
+    }
   }
 
  const handleOpenPanel = () => {
@@ -53,7 +70,11 @@ const {bottomPanel} = viewSettings
   }
 
   const handleOpenSectionsPanel = () => {
-    dispatch(appActions.openBottomPanel("sections"))
+    dispatch(appActions.toggleSidebar())
+    setTimeout(() => {
+      dispatch(appActions.openBottomPanel("sections"))
+    }, 0)
+    
   }
 
   const handleOpenMediaPanel = () => {
@@ -78,54 +99,48 @@ const {bottomPanel} = viewSettings
 
 
     return <Box sx={{
-        position: "absolute",
+        position: "fixed",
         bottom: 0,
         left: 0,
         width: "100%",
         display: {xs: "block", sm: "none"},
-        border: "2px solid red",
+        border: "1px solid red",
     }}>
         <Paper elevation={0} variant="outlined" sx={{
             px: 2,
             py: 1,
             display: "flex",
             justifyContent: "space-between",
-            border: "1px solid blue",
+            borderRadius: "16px 16px 0 0",
         }}>
             <IconButton sx={{
             }} onClick={handleUseAi}>
-                <PlusOneRoundedIcon /> 
-                {/* AI */}
+                <PiMagicWandBold />
             </IconButton>
             
             <IconButton sx={{
             }} onClick={handleOpenBlocksPanel} >
-                <PlusOneRoundedIcon /> 
-                {/* plus */}
+                <TbBrandDatabricks />
             </IconButton>
 
             <IconButton sx={{
             }} onClick={handleOpenSectionsPanel}>
-                <PhotoAlbumIcon />
-                {/* section */}
+                <TbSection />
             </IconButton>
 
             <IconButton sx={{
             }} onClick={handleOpenMediaPanel}>
-                <PhotoAlbumIcon />
-                {/* photo */}
+                <TbPhotoSquareRounded />
             </IconButton>
 
             <IconButton sx={{
             }} onClick={handleUndo}>
-                <PhotoAlbumIcon />
-                {/* undo */}
+                <LuUndo />
             </IconButton>
 
             <IconButton sx={{
             }} onClick={handleRedo}>
-                <PhotoAlbumIcon />
-                {/* redo */}
+                <LuRedo />
             </IconButton>
         </Paper>
 
@@ -134,8 +149,11 @@ const {bottomPanel} = viewSettings
         onOpen={handleOpenPanel}
         anchor="bottom"
         open={!!bottomPanel}
+        variant="persistent"
         onClose={handleClosePanel}
-        disableBackdropTransition={!iOS} disableDiscovery={iOS}
+        disableSwipeToOpen={false}
+        disableBackdropTransition={!iOS} 
+        disableDiscovery={iOS}
         hideBackdrop={true}
         ModalProps={{
            
@@ -150,12 +168,61 @@ const {bottomPanel} = viewSettings
                 boxSizing: 'border-box',
                 px: 2,
                 py: 2,
+                pt: 3,
               },
         }}
         
         >
+          <Box sx={{
+            // border: "1px solid red",
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            top: "0px",
+            color: theme.palette.text.secondary,
+            cursor: "pointer",
+            "&:hover": {
+              color: theme.palette.text.primary,
+            },
+          }} onClick={handleClosePanel}>
+            <TbChevronCompactDown style={{
+              fontSize: "32px",
+            }} />
+          </Box>
             {(bottomPanel === "sections") && <Sections />}
             {(bottomPanel === "blocks") && <Blocks />}
+            {(bottomPanel === "media") && <Grid container spacing={1} sx={{
+              border: "1px solid red",
+              height: "100%",
+              alignItems: "center"
+            }}>
+                <Grid item xs={6}>
+                  <Paper sx={{
+                    textAlign: "center",
+                    border: "1px solid red"
+                  }}>
+                    <Typography variant={"h2"}>
+                      Inline Media
+                    </Typography>
+                    <Button variant='contained'>
+                      Upload
+                    </Button>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                <Paper sx={{
+                    textAlign: "center",
+                    border: "1px solid red"
+                  }}>
+                    <Typography variant={"h2"}>
+                      Banner Image
+                    </Typography>
+                    <Button variant='contained'>
+                      Upload
+                    </Button>
+                  </Paper>
+                </Grid>
+              </Grid>}
             {(bottomPanel === "default") && <Box>
                 Default
                 </Box>}

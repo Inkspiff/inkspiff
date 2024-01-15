@@ -3,7 +3,7 @@ import { matchSorter } from "match-sorter";
 import  {BlockSelectItemType} from "@/types/editor"
 import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
-import Popover from "@mui/material/Popover"
+import Grid from "@mui/material/Grid"
 import Paper from "@mui/material/Paper"
 import SelectMenuItem from "@/components/editor/SelectMenItem";
 import { useSession } from "next-auth/react";
@@ -137,13 +137,11 @@ const Blocks: React.FC = () => {
       <Paper className="Items" style={{
     width: "100%",
     padding: "4px",
-    // border: "1px solid red",
     backgroundColor: "white",
-    border: "2px solid #f6f5f4",
+    border: "2px solid blue",
     borderRadius: "8px",
     overflow: "hidden",
-    height:  `200px`,
-    minWidth: `280px`,
+    height:  `100%`,
   }
 }>
     <Box sx={{
@@ -151,6 +149,7 @@ const Blocks: React.FC = () => {
         overflowY: "auto",
         height: "100%",
         backgroundColor: "white",
+
     }} ref={boxRef}>
          <h5 style={{
                   fontWeight: 400,
@@ -158,11 +157,18 @@ const Blocks: React.FC = () => {
                   margin: "8px 0",
                   padding: "0 8px"
                 }}>Basic Blocks</h5>
-        {items.map((item, key) => {
-          return (
-           <SelectMenuItem key={key} item={item} onSelect={clearAndSelect} isSelected={(items.indexOf(item) === selectedItem)} />
-          );
-        })}
+                <Grid container spacing={1}>
+                  
+                    {items.map((item, key) => {
+                      return (
+                        <Grid item xs={6}  key={key} >
+                      <SelectMenuItem item={item} onSelect={clearAndSelect} isSelected={(items.indexOf(item) === selectedItem)} />
+                      </Grid>
+                      );
+                    })}
+                  
+                </Grid>
+        
     </Box>
        
       </Paper>

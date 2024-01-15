@@ -46,7 +46,8 @@ export default function RightSidePanel() {
         width: 250,
         // border: "1px solid blue",
         height: "100%",
-        top: {xs: "54px", md: "64px"}
+        top: {xs: "54px", md: "64px"},
+        display: {xs: "none", sm: "block"},
      }}
       role="presentation"
     >
@@ -61,7 +62,7 @@ export default function RightSidePanel() {
 
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: {xs: "none", sm: "flex"}, }}>
      
         <React.Fragment >
           <IconButton onClick={toggleDrawer(true)} sx={{

@@ -102,36 +102,37 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
       <Box
         sx={{
           display: 'flex',
-        border: "2px solid yellow",
-        height: "calc(100vh - 60px)",
-        position: "relative",
-        width: "100%",
+          border: "2px solid yellow",
+          height: {xs: "calc(100vh - 45px)", sm: "calc(100vh - 60px)" },
+          position: "relative",
+          width: "100%",
+          marginTop: "45px",
+          overflowY: {xs: "auto", sm: "hidden"}
         }}
       >
         <Navbar />
-       <LeftSidePanel  />
+        <LeftSidePanel  />
 
-       <Main open={open} sx={{
+        <Main open={open} sx={{
         mt: "45px",
         height: {sm: "calc(100% - 45px)"},
-        // border: "3px solid green",
+        border: "3px solid green",
         width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
         display: {xs: "none", sm: "block"}
       }}>
         {!session && <Link href="/login">Login</Link>}
         {session && <View />}
-      </Main>
+        </Main>
 
-      <Box sx={{
-        mt: "45px",
-        height: {sm: "calc(100% - 45px)"},
-        // border: "3px solid green",
-        width: "100%",
-        display: {sm: "none"}
-      }}>
-        {!session && <Link href="/login">Login</Link>}
-        {session && <View />}
-      </Box>
+        <Box sx={{
+          height: {sm: "calc(100% - 45px)"},
+          // border: "3px solid green",
+          width: "100%",
+          display: {sm: "none"}
+        }}>
+          {!session && <Link href="/login">Login</Link>}
+          {session && <View />}
+        </Box>
         
         <BottomPanel />
         <LoginModal />

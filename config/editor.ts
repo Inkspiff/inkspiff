@@ -1,14 +1,10 @@
+import { BlockSelectItemType } from "@/types/editor";
 import { BlockType } from "@codemirror/view";
 
 
 export const MENU_HEIGHT = 150;
 
-export const SUPPORTED_BLOCKS: {
-  id: string,
-    content: string,
-    tag: string,
-    label: string,
-}[] = [
+export const SUPPORTED_BLOCKS: BlockSelectItemType[] = [
   {
     id: "heading-1",
     content: "# ",
