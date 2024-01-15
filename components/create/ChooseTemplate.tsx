@@ -24,6 +24,8 @@ interface TemplatesInterface {
   onBack: () => void,
 }
 
+// Changed
+
 const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
   const { data: session } = useSession();
 
