@@ -102,7 +102,7 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
       <Box
         sx={{
           display: 'flex',
-          border: "2px solid yellow",
+          // border: "2px solid yellow",
           height: {xs: "calc(100vh - 45px)", sm: "calc(100vh - 60px)" },
           position: "relative",
           width: "100%",
@@ -114,9 +114,8 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
         <LeftSidePanel  />
 
         <Main open={open} sx={{
-        mt: "45px",
         height: {sm: "calc(100% - 45px)"},
-        border: "3px solid green",
+        // border: "3px solid green",
         width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
         display: {xs: "none", sm: "block"}
       }}>
