@@ -13,6 +13,7 @@ const NoSections = () => {
       textAlign: "center",
       borderRadius: 0,
       borderWidth: "0 1px 0 0",
+      position: "relative",
     }}>
       <Paper  elevation={0} variant="outlined" sx={{
         p: 2,

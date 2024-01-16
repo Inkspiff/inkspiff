@@ -5,15 +5,20 @@ import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
 import Paper from "@mui/material/Paper"
-import SelectMenuItem from "@/components/editor/SelectMenItem";
+import SelectMenuItem from "@/components/editor/blocks/SelectMenItem";
 import { useSession } from "next-auth/react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 
+interface BlockProps {
+  // open: boolean;
+  onSelect: (block: BlockSelectItemType) => void;
+// close: () => void;
+}
 
 
-const Blocks: React.FC = () => {  
+const Blocks = ({onSelect}: BlockProps) => {  
     const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app);
 
@@ -27,7 +32,7 @@ const Blocks: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(0);
 
   const handleSelectBlock = (block: BlockSelectItemType) => {
-    console.log({selectedItem})
+    onSelect(block)
   }
 
   const close = () => {

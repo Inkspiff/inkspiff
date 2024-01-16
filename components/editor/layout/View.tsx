@@ -99,8 +99,8 @@ const View = () => {
 
      
         <Grid item xs={12} sm={(fullscreen ? 12 : 6)} md={(fullscreen ? 12 : 6)} sx={{
-          // outline: "1px solid blue",
-          height: {xs: "auto", md: "100%"},
+          // outline: "2px solid blue",
+          height: {xs: "50%", sm: "100%"},
           minHeight: {xs: "auto", md: "calc(100vh - 64px)"},
           overflowY: {xs: "auto", sm: "scroll"},
       
@@ -112,8 +112,8 @@ const View = () => {
   
         </Grid>
         <Grid item xs={12} sm={(fullscreen ? 12 : 6)} md={(fullscreen ? 12 : 6)} sx={{
-          // outline: "1px solid red",
-          height: {xs: "auto", md: "100%"},
+          // outline: "2px solid red",
+          height: {xs: "50%", sm: "100%"},
           // minHeight: "50vh",
           overflowY: {xs: "auto", sm: "scroll"},
         }}>

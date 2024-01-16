@@ -25,7 +25,6 @@ import LoginModal from "@/components/auth/login-modal"
 
 import { db } from "@/firebase"
 import { DocumentData, QuerySnapshot, collection, query, where, getDocs, orderBy, limit, doc, getDoc } from "firebase/firestore";
-import BottomPanel from "@/components/editor/layout/BottomPanel";
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -135,19 +134,19 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
       <Box
         sx={{
           display: 'flex',
-        border: "2px solid yellow",
-        height: {sm: "100vh"},
-        position: "relative",
-        width: {xs: "100%", sm: "auto"},
+          // border: "2px solid yellow",
+          height: {xs: "calc(100vh - 45px)", sm: "calc(100vh - 60px)" },
+          position: "relative",
+          width: "100%",
+          marginTop: "45px",
+          overflowY: {xs: "auto", sm: "hidden"}
         }}
       >
         <Navbar />
         <LeftSidePanel />
 
         <Main open={open} sx={{
-          // m: 0,
-          mt: "45px",
-          height: {sm: "calc(100% - 45px)"},
+          height: "100%",
           // border: "3px solid green",
           width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
           display: {xs: "none", sm: "block"}
@@ -156,16 +155,13 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
         </Main>
       
         <Box sx={{
-          mt: "45px",
-          height: {sm: "calc(100% - 45px)"},
-          border: "3px solid green",
+          height: "100%",
+          // border: "3px solid mediumseagreen",
           width: "100%",
           display: {sm: "none"}
         }}>
           <View />
         </Box>
-
-        <BottomPanel />
         <Feedback />
         <LoginModal />
       </Box>

@@ -21,7 +21,7 @@ import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined"
 import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined"
 
 
-export default function Share() {
+export default function Feedback() {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
@@ -56,7 +56,7 @@ export default function Share() {
               position: "fixed",
               bottom: "2rem",
               right: "2rem",
-              display: "flex",
+              display: {xs: "none", sm: "flex"},
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
