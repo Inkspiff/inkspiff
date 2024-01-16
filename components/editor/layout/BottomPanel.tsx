@@ -40,12 +40,14 @@ import { BlockSelectItemType } from '@/types/editor';
 interface BottomPanelProps {
   // open: boolean;
   onSelectBlock: (block: BlockSelectItemType) => void;
+  onUndo: () => void;
+  onRedo: () => void;
   // close: () => void;
 }
 
 
 
-const BottomPanel = ({onSelectBlock}: BottomPanelProps) => {
+const BottomPanel = ({onSelectBlock, onUndo, onRedo}: BottomPanelProps) => {
     const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
   const {viewSettings} = app
@@ -144,12 +146,16 @@ const {bottomPanel} = viewSettings
             </IconButton>
 
             <IconButton sx={{
-            }} onClick={handleUndo}>
+            }} onClick={() => {
+              onUndo()
+            }}>
                 <LuUndo />
             </IconButton>
 
             <IconButton sx={{
-            }} onClick={handleRedo}>
+            }} onClick={() => {
+              onRedo()
+            }}>
                 <LuRedo />
             </IconButton>
         </Paper>

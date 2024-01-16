@@ -2,7 +2,7 @@
 import type React from 'react'
 import { useEffect, useState, useRef } from 'react'
 import { basicSetup } from 'codemirror'
-import { EditorState } from '@codemirror/state'
+import { EditorState, Extension } from '@codemirror/state'
 import { EditorView, keymap } from '@codemirror/view'
 import { defaultKeymap } from '@codemirror/commands'
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
@@ -13,6 +13,7 @@ import { oneDark } from '@codemirror/theme-one-dark'
 interface Props {
   initialDoc: string,
   onChange?: (state: EditorState) => void
+  extensions?: Extension[]
 }
 
 const useCodeMirror = <T extends Element>(
@@ -20,7 +21,7 @@ const useCodeMirror = <T extends Element>(
 ): [React.MutableRefObject<T | null>, EditorView?] => {
   const refContainer = useRef<T>(null)
   const [editorView, setEditorView] = useState<EditorView>()
-  const { onChange } = props
+  const { onChange, extensions } = props
 
   useEffect(() => {
     if (!refContainer.current) return
@@ -41,7 +42,9 @@ const useCodeMirror = <T extends Element>(
           if (update.changes) {
             onChange && onChange(update.state)
           }
-        })
+        }),
+         // Add the history extension for undo and redo
+        ...(extensions ? extensions : [])
       ]
     })
 

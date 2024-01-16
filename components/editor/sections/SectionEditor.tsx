@@ -2,6 +2,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { EditorState, Text } from '@codemirror/state'
 // import { EditorView } from '@codemirror/view'
+import {undo, redo} from '@codemirror/commands'
+// import { undo } from '@codemirror/commands'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
 import { blockRequiresNewLine, getCaretCoordinates } from '@/lib/utils'
@@ -12,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
-import Popover from "@mui/material/Popover"
+import Button from "@mui/material/Button"
 import BottomPanel from '../layout/BottomPanel'
 
 
@@ -51,7 +53,8 @@ const SectionEditor = () => {
 
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
     initialDoc: content,
-    onChange: handleDocChange,  
+    onChange: handleDocChange, 
+     // extensions: [history()] 
   })
 
 
@@ -133,6 +136,25 @@ const SectionEditor = () => {
     }
   }
 
+  const handleUndo = () => {
+    if (editorView) {
+      undo({
+        state: editorView.state,
+        dispatch: editorView.dispatch,
+      })
+    }
+    
+  };
+  
+  const handleRedo = () => {
+    if(editorView){
+      redo({
+        state: editorView.state,
+        dispatch: editorView.dispatch,
+      })
+    }
+  };
+
   
 
   return <Box  sx={{
@@ -163,6 +185,8 @@ const SectionEditor = () => {
 
           <BottomPanel
             onSelectBlock={blockSelectionHandler}
+            onUndo={handleUndo}
+            onRedo={handleRedo}
           />
   </Box>
 }
