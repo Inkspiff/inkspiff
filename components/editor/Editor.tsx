@@ -1,7 +1,9 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
-import { EditorState, Text, EditorSelection } from '@codemirror/state'
-import { EditorView } from '@codemirror/view'
+import { EditorState,  Text, EditorSelection } from '@codemirror/state'
+// import { EditorView } from '@codemirror/view'
+import {undo, redo} from '@codemirror/commands'
+// import { undo } from '@codemirror/commands'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
 import { blockRequiresNewLine, getCaretCoordinates, getSectionFromLine } from '@/lib/utils'
@@ -14,6 +16,8 @@ import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
 import Button from "@mui/material/Button"
 import BottomPanel from "@/components/editor/layout/BottomPanel";
+
+
 
 
 interface Props {
@@ -44,8 +48,6 @@ const Editor: React.FC<Props> = (props) => {
   const { initialDoc} = props
 
   const handleDocChange = useCallback((newState: EditorState) => {
-  
-
     // Normal code
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
     dispatch(appActions.changeMarkdown({
@@ -121,14 +123,13 @@ const Editor: React.FC<Props> = (props) => {
   // )
 
 
-
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
     initialDoc: initialDoc,
     onChange: handleDocChange,
-    
+    // extensions: [history()]
   })
 
- 
+  
 
   useEffect(() => {
     if (editorView) {
@@ -228,11 +229,22 @@ const Editor: React.FC<Props> = (props) => {
 
 
   const handleUndo = () => {
-   
+    if (editorView) {
+      undo({
+        state: editorView.state,
+        dispatch: editorView.dispatch,
+      })
+    }
+    
   };
   
   const handleRedo = () => {
-   
+    if(editorView){
+      redo({
+        state: editorView.state,
+        dispatch: editorView.dispatch,
+      })
+    }
   };
 
   
@@ -256,9 +268,6 @@ const Editor: React.FC<Props> = (props) => {
   onKeyUp={ keyUpHandler}>
 
     </Box>
-
-        <Button  onClick={handleUndo}>Undo</Button>
-        <Button  onClick={handleRedo}>Redo</Button>
           <SelectMenu
             open={selectMenuIsOpen}
             position={selectMenuPosition}
@@ -267,7 +276,8 @@ const Editor: React.FC<Props> = (props) => {
           />
           <BottomPanel
             onSelectBlock={blockSelectionHandler}
-
+            onUndo={handleUndo}
+            onRedo={handleRedo}
           />
   </Box>
 }
