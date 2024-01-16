@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@codemirror/commands": "^6.2.4",
+    "@codemirror/history": "^0.19.2",
     "@codemirror/lang-markdown": "^6.1.1",
     "@codemirror/language-data": "^6.3.1",
     "@codemirror/state": "^6.2.0",

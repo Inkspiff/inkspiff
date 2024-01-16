@@ -114,7 +114,7 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
         <LeftSidePanel  />
 
         <Main open={open} sx={{
-        height: {sm: "calc(100% - 45px)"},
+        height: "100%",
         // border: "3px solid green",
         width:  viewSettings.drawer ? "calc(100% - 240px)" : "100%",
         display: {xs: "none", sm: "block"}

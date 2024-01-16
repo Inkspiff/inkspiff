@@ -5,7 +5,7 @@ import { EditorState, Text } from '@codemirror/state'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
 import { blockRequiresNewLine, getCaretCoordinates } from '@/lib/utils'
-import SelectMenu from "@/components/editor/SelectMenu"
+import SelectMenu from "@/components/editor/blocks/SelectMenu"
 import { BlockSelectItemType } from '@/types/editor'
 import { useSession } from "next-auth/react";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
 import Popover from "@mui/material/Popover"
+import BottomPanel from '../layout/BottomPanel'
 
 
 const SectionEditor = () => {
@@ -136,7 +137,7 @@ const SectionEditor = () => {
 
   return <Box  sx={{
     position: "relative",
-    // border: "1px solid red"
+    border: "1px solid red"
   }}
   //  key={markdown.content}
    >
@@ -158,6 +159,10 @@ const SectionEditor = () => {
             position={selectMenuPosition}
             onSelect={blockSelectionHandler}
             close={closeSelectMenuHandler}
+          />
+
+          <BottomPanel
+            onSelectBlock={blockSelectionHandler}
           />
   </Box>
 }

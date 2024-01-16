@@ -35,8 +35,17 @@ import { TbChevronCompactDown } from "react-icons/tb";
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Sections from '../sections/Sections';
 import Blocks from '../blocks/Blocks';
+import { BlockSelectItemType } from '@/types/editor';
 
-const BottomPanel = () => {
+interface BottomPanelProps {
+  // open: boolean;
+  onSelectBlock: (block: BlockSelectItemType) => void;
+  // close: () => void;
+}
+
+
+
+const BottomPanel = ({onSelectBlock}: BottomPanelProps) => {
     const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
   const {viewSettings} = app
@@ -105,6 +114,7 @@ const {bottomPanel} = viewSettings
         width: "100%",
         display: {xs: "block", sm: "none"},
         // border: "1px solid red",
+        zIndex: 100,
     }}>
         <Paper elevation={0} variant="outlined" sx={{
             px: 2,
@@ -190,7 +200,7 @@ const {bottomPanel} = viewSettings
             }} />
           </Box>
             {(bottomPanel === "sections") && <Sections />}
-            {(bottomPanel === "blocks") && <Blocks />}
+            {(bottomPanel === "blocks") && <Blocks onSelect={onSelectBlock} />}
             {(bottomPanel === "media") && <Grid container spacing={1} sx={{
               border: "1px solid red",
               height: "100%",

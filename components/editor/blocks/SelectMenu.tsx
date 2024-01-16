@@ -5,7 +5,7 @@ import { SUPPORTED_BLOCKS, MENU_HEIGHT } from "@/config/editor";
 import Box from "@mui/material/Box"
 import Popover from "@mui/material/Popover"
 import Paper from "@mui/material/Paper"
-import SelectMenuItem from "@/components/editor/SelectMenItem";
+import SelectMenuItem from "@/components/editor/blocks/SelectMenItem";
 import { useSession } from "next-auth/react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";

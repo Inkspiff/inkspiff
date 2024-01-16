@@ -100,7 +100,7 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
     }
   }, [templates])
 
-  console.log(templates)
+  // console.log(templates)
 
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,18 +1,20 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
 import { EditorState, Text, EditorSelection } from '@codemirror/state'
-// import { EditorView } from '@codemirror/view'
+import { EditorView } from '@codemirror/view'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
 import { blockRequiresNewLine, getCaretCoordinates, getSectionFromLine } from '@/lib/utils'
-import SelectMenu from "@/components/editor/SelectMenu"
+import SelectMenu from "@/components/editor/blocks/SelectMenu"
 import { BlockSelectItemType } from '@/types/editor'
 import { useSession } from "next-auth/react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
-import Popover from "@mui/material/Popover"
+import Button from "@mui/material/Button"
+import BottomPanel from "@/components/editor/layout/BottomPanel";
+
 
 interface Props {
   initialDoc: string,
@@ -36,14 +38,16 @@ const Editor: React.FC<Props> = (props) => {
     y: null,
   });
 
+
   // const [selectMenuAnchorEl, setSelectMenuAnchorEl] = useState<null | HTMLElement>(null)
   // const id = open ? 'select-popover' : undefined;
   const { initialDoc} = props
 
   const handleDocChange = useCallback((newState: EditorState) => {
+  
+
+    // Normal code
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
-    // const section = getSectionFromLine(newCurrentLine)
-    // console.log("Editor State:", newState)
     dispatch(appActions.changeMarkdown({
       content: newState.doc.toString(),
       currentLine: newCurrentLine
@@ -95,6 +99,9 @@ const Editor: React.FC<Props> = (props) => {
 
     if (session) {
       if (markdown.id) {
+        if (editorView) {
+          editorView.setState(EditorState.create({doc}));
+        } 
         // updateEditorContent(markdown.content, 0, markdown.content.length - 1)
           saveMd()
       }
@@ -121,9 +128,12 @@ const Editor: React.FC<Props> = (props) => {
     
   })
 
+ 
+
   useEffect(() => {
     if (editorView) {
       // Do nothing for now
+      
     } else {
       // loading editor
     }
@@ -177,8 +187,11 @@ const Editor: React.FC<Props> = (props) => {
     if (editorView) {
       const {from, to, head, anchor} = editorView.state.selection.ranges[0]
 
+      console.log("blockSelectionHandler", {from, to, head, anchor})
+
         // TODO: Remove the last character -> /
         const splitContent = markdown.content.split("\n")
+        console.log({splitContent})
 
         if (blockRequiresNewLine(block.tag)) {
           const contentUntilLine = splitContent.slice(0, markdown.currentLine)
@@ -188,7 +201,9 @@ const Editor: React.FC<Props> = (props) => {
           const numberOfCharsUntilLine = contentUntilLine.join("\n").length
           console.log(numberOfCharsUntilLine)
 
-          updateEditorContent((((markdown.content.trim() === "/") ? "" : "\n\n") + block.content), numberOfCharsUntilLine - 1, numberOfCharsUntilLine)
+          const usableFromValue = numberOfCharsUntilLine <= 0 ? 0 : numberOfCharsUntilLine - 1
+
+          updateEditorContent((((markdown.content.trim() === "/") ? "" : "\n\n") + block.content), usableFromValue, numberOfCharsUntilLine)
           // Set the cursor position using EditorSelection
           const newSelection = EditorSelection.single((numberOfCharsUntilLine == 1) ? block.content.length: numberOfCharsUntilLine + block.content.length + 1 - 1);
           editorView.dispatch({
@@ -205,14 +220,20 @@ const Editor: React.FC<Props> = (props) => {
             selection: newSelection,
           });
         }
-
-
-        
         
         closeSelectMenuHandler();
     }
 
   }
+
+
+  const handleUndo = () => {
+   
+  };
+  
+  const handleRedo = () => {
+   
+  };
 
   
 
@@ -236,12 +257,17 @@ const Editor: React.FC<Props> = (props) => {
 
     </Box>
 
-    
+        <Button  onClick={handleUndo}>Undo</Button>
+        <Button  onClick={handleRedo}>Redo</Button>
           <SelectMenu
             open={selectMenuIsOpen}
             position={selectMenuPosition}
             onSelect={blockSelectionHandler}
             close={closeSelectMenuHandler}
+          />
+          <BottomPanel
+            onSelectBlock={blockSelectionHandler}
+
           />
   </Box>
 }
