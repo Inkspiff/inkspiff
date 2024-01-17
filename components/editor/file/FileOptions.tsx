@@ -76,10 +76,9 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
 }
   
     const deleteMd = async () => {
+      setShowConfirmDelete(false)
       if (session) {
-        setShowConfirmDelete(false)
        setDeleting(true)
-  
   
         const response = await fetch("/api/db/delete-md", {
           method: "POST",
@@ -88,54 +87,52 @@ export default function FileOptionsMenu({file, anchorEl, onClose} : propTypes) {
           },
           body: JSON.stringify({
             userId: session!.user.id,
-            mdId: markdown.id,
+            mdId: file.id,
             
           })
         })
         
-        console.log({response})
+        // console.log({response})
         setDeleting(false)
   
         if (!response?.ok) {
-        //   dispatch(appActions.updatedSaveStates({
-        //     saving: false,
-        //     saveFailed: true
-        //   }))
+          // delete failed
 
-        // alert
           if (response.status === 402) {
             return 
           }
           return
         }
 
-
         const fileIndex = fileList.indexOf(file)
+        
+        if (file.id === markdown.id) {
+          const newIndex = (fileIndex + 1) >= fileList.length ? fileIndex - 1 : fileIndex + 1
 
-        const newIndex = (fileIndex + 1) >= fileList.length ? fileIndex - 1 : fileIndex + 1
+          const newFile = fileList[newIndex]
+        
+          console.log({fileIndex, newIndex, fileList})
 
-        const newFile = fileList[newIndex]
+          dispatch(appActions.updateMarkdownSelected(newFile.id))
+          
 
-        console.log({fileIndex, newIndex, fileList})
-
-        dispatch(appActions.updateMarkdownSelected(newFile.id))
+          router.push({
+            pathname: '/editor/[markdown-id]',
+            query: {
+              'markdown-id' : router.query['markdown-id'],
+            },
+          }, 
+          `/editor/${newFile.title.split(" ").join("-")}-${newFile.id}`,
+          {
+            shallow: true
+          })
+        } 
         dispatch(appActions.deleteFile(file.id))
-
-      router.push({
-        pathname: '/editor/[markdown-id]',
-        query: {
-          'markdown-id' : router.query['markdown-id'],
-        },
-      }, 
-      `/editor/${newFile.title.split(" ").join("-")}-${newFile.id}`,
-      {
-        shallow: true
-      })
-
         setDeleted(true)
       } else {
-        dispatch(appActions.updateMarkdownSelected(""))
-        dispatch(appActions.updateFileList([]))
+        // can't delete without being logged in
+        // dispatch(appActions.updateMarkdownSelected(""))
+        // dispatch(appActions.updateFileList([]))
       }
       
     }

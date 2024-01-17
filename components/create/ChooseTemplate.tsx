@@ -51,7 +51,6 @@ const ChooseTemplate = ({onSelected, onBack}: TemplatesInterface) => {
   }
 
   const handleSelectTemplate = async (index: number) => {
-
     setLoadingSelectedTemp(true)
     onSelected(templates[index])
 

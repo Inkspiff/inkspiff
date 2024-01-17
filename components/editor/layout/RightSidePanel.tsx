@@ -67,7 +67,7 @@ export default function RightSidePanel() {
         <React.Fragment >
           <IconButton onClick={toggleDrawer(true)} sx={{
             borderRadius: "4px",
-            display: {xs: "none", md: "inline-flex"}
+            display: {xs: "none", sm: "inline-flex"}
           }}  size="small">
               <ViewSidebarRoundedIcon sx={{
                 // color: "#121212"

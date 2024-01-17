@@ -68,7 +68,7 @@ interface propTypes {
 }
 
 
-export default function More() {
+export default function More({file} : propTypes) {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
@@ -128,16 +128,12 @@ export default function More() {
           })
         })
         
-        console.log({response})
+        // console.log({response})
         setDeleting(false)
   
         if (!response?.ok) {
-        //   dispatch(appActions.updatedSaveStates({
-        //     saving: false,
-        //     saveFailed: true
-        //   }))
+          // delete failed
 
-        // alert
           if (response.status === 402) {
             return 
           }
@@ -168,8 +164,9 @@ export default function More() {
 
         setDeleted(true)
       } else {
-        dispatch(appActions.updateMarkdownSelected(""))
-        dispatch(appActions.updateFileList([]))
+        // can't delete file when your're not logged in
+        // dispatch(appActions.updateMarkdownSelected(""))
+        // dispatch(appActions.updateFileList([]))
       }
     }
 
