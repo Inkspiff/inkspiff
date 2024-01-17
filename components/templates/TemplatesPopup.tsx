@@ -23,21 +23,7 @@ import { ThemeContext } from '@/context/ThemeContext';
 import TemplatesList from "@/components/templates/TemplatesList";
 import { matchSorter } from "match-sorter";
 import { TemplateType } from '@/types';
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: "90%",
-  height: "80%",
-  bgcolor: 'background.paper',
-//   border: '2px solid #000',
-  borderRadius: "8px",
-//   boxShadow: 24,
-  p: 0,
-  overflow: "hidden",
-};
+import { popupBaseStyle } from '@/config/editor';
 
 const TEMPLATE_CATEGORIES = [
     "profile",
@@ -119,7 +105,7 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
-        <Paper sx={style}>
+        <Paper sx={popupBaseStyle}>
           <Grid container sx={{
             height: "100%",
           }} spacing={0} >

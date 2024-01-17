@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, MouseEvent} from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -32,6 +32,9 @@ import EditorModal from '@/components/editor/EditorModal';
 import LoginModal from '@/components/auth/login-modal';
 import TemplatesPopup from "@/components/templates/TemplatesPopup"
 import Logo from '../ui/Logo';
+import ImportPopup from './ImportPopup';
+import ExportPopup from './ExportPopup';
+
 
 export default function Actions() {
   const router = useRouter();
@@ -39,60 +42,46 @@ export default function Actions() {
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
 
-  const [exportAnchorEl, setExportAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [importAnchorEl, setImportAnchorEl] = React.useState<null | HTMLElement>(null);
-  
-  const [openTemplatesPopup, setOpenTemplatesPopup] = useState(false)
+  const [exportPopupAnchorEl, setExportPopupAnchorEl] = useState<null | HTMLElement>(null);
+  const [importPopupAnchorEl, setImportPopupAnchorEl] = useState<null | HTMLElement>(null);
+  const [templatesPopupAnchorEl, setTemplatesPopupAnchorEl] = useState<null | HTMLElement>(null)
 
-  const handleToggleOpenImport = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-    setImportAnchorEl(importAnchorEl ? null : event.currentTarget);
-  };
-
-  const openImport = Boolean(importAnchorEl);
-
-  const openExport = Boolean(exportAnchorEl)
+  const openImport = Boolean(importPopupAnchorEl);
+  const openExport = Boolean(exportPopupAnchorEl)
+  const openTemplates = Boolean(templatesPopupAnchorEl)
 
 
-  const handleExport = () => {
-    if (session) {
-       // TODO: Open export file modal
-       console.log("Export")
-    } else {
-    dispatch(appActions.toggleOpenLoginModal())
-    }
-  }
-
-  const handleImport = () => {
+  const handleOpenImportPopup = (e: React.MouseEvent<HTMLElement>) => {
   if (session) {
-      // TODO: Open Import file modal\
-      console.log("Import")
+      setImportPopupAnchorEl(e.currentTarget as HTMLElement)
     } else {
     dispatch(appActions.toggleOpenLoginModal())
     }
   }
+
+
+  const handleOpenExportPopup = (e: React.MouseEvent<HTMLElement>) => {
+    if (session) {
+        setExportPopupAnchorEl(e.currentTarget as HTMLElement)
+      } else {
+      dispatch(appActions.toggleOpenLoginModal())
+      }
+    }
+  
 
   const handleGiveFeedback = () => {
     console.log("Give Feedback")
     }
 
- 
-  const handleToggleShowLoginModal = () => {
-   
-    dispatch(appActions.toggleOpenLoginModal())
-  }
 
-  const handleOpenTemplatesPopup = () => {
+  const handleOpenTemplatesPopup = (e: MouseEvent<HTMLElement>) => {
      if (session) {
-      setOpenTemplatesPopup(true)
+      setTemplatesPopupAnchorEl(e.currentTarget as HTMLElement)
     } else {
     dispatch(appActions.toggleOpenLoginModal())
     }
   }
 
-  const handleCloseTemplatesPopup = () => {
-    setOpenTemplatesPopup(false)
-  }
 
   return (
     
@@ -127,7 +116,7 @@ export default function Actions() {
           </ListItemButton>
         </ListItem>
 
-        <TemplatesPopup open={openTemplatesPopup} onClose={handleCloseTemplatesPopup} />
+        <TemplatesPopup open={openTemplates} onClose={() => setTemplatesPopupAnchorEl(null)} />
 
         <ListItem  disablePadding sx={{
             //  border: "1px solid red",
@@ -139,7 +128,7 @@ export default function Actions() {
             p: "4px",
             cursor: "pointer",
             borderRadius: "4px",
-          }} onClick={handleImport}>
+          }} onClick={handleOpenImportPopup}>
             <SettingsOutlinedIcon sx={{
               mx: 1,
               width: 16,
@@ -153,6 +142,8 @@ export default function Actions() {
           </ListItemButton>
         </ListItem>
 
+        <ImportPopup open={openImport} onClose={() => setImportPopupAnchorEl(null)} />
+
         <ListItem  disablePadding sx={{
             //  border: "1px solid red",
             p: 0,
@@ -163,7 +154,7 @@ export default function Actions() {
             p: "4px",
             cursor: "pointer",
             borderRadius: "4px",
-          }} onClick={handleExport}>
+          }} onClick={handleOpenExportPopup}>
             <AddCircleOutlineOutlinedIcon sx={{
               mx: 1,
               width: 16,
@@ -176,6 +167,8 @@ export default function Actions() {
             }}>Export</Typography>
           </ListItemButton>
         </ListItem>
+
+        <ExportPopup open={openExport} onClose={() => setExportPopupAnchorEl(null)} />
 
         <ListItem  disablePadding sx={{
             //  border: "1px solid red",
