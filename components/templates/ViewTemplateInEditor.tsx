@@ -17,6 +17,7 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
+// import { useRouter: altRouter } from "next/router"
 
 interface propTypes {
  template:  TemplateType,
@@ -63,12 +64,15 @@ const ViewTemplateInEditor = ({template, onClose}: propTypes) => {
         }, 0)
     }
     const handleCreateNew = async () => {
+        
         setShowCreating(true)
+
         const newMdData = {
           title: name,
           content: content,
           admin: session!.user.id,
         }
+
     
         const response = await fetch("/api/db/create-md", {
           method: "POST",
@@ -85,8 +89,27 @@ const ViewTemplateInEditor = ({template, onClose}: propTypes) => {
         } 
     
         const json = await response.json()
+        console.log(json)
     
-        router.push(`/editor/${name.trim().split(" ").filter(a => a !== " ").join("-")}-${json.id}`)
+        router.push({
+            pathname: '/editor/[markdown-id]',
+            query: {
+              'markdown-id' : router.query['markdown-id'],
+            },
+          }, 
+          `/editor/${name.trim().split(" ").filter(a => a !== " ").join("-")}-${json.id}`,
+          {
+            shallow: true
+          })
+        
+          dispatch(appActions.addFile(
+            {
+              id: json.id,
+              title: name
+            }
+          ))
+          dispatch(appActions.updateMarkdownSelected(json.id))
+          onClose()
       }
     
     

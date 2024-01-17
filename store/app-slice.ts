@@ -101,6 +101,8 @@ const appSlice = createSlice( {
 
             state.markdown = {...state.markdown, content: splitContent.join("\n")}
         },
+
+        /* FILE SECTION */
         updateFileList(state, action: PayloadAction<{
             id: string,
             title: string,
@@ -130,6 +132,9 @@ const appSlice = createSlice( {
             updatedFileList = updatedFileList.filter(obj => obj.id !== action.payload)
              
             state.fileList = updatedFileList
+        },
+        addFile(state, action: PayloadAction< FileType>) {
+            state.fileList =  [...state.fileList, action.payload]
         },
         selectProject(state, action: PayloadAction<{id: string}>) {
             // state.markdown.text =  
