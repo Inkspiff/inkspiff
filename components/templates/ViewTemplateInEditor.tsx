@@ -63,7 +63,7 @@ const ViewTemplateInEditor = ({template, onClose}: propTypes) => {
             onClose()
         }, 0)
     }
-    const handleCreateNew = async () => {
+    const handleCreateNewFileWithTemplates = async () => {
         
         setShowCreating(true)
 
@@ -167,7 +167,7 @@ const ViewTemplateInEditor = ({template, onClose}: propTypes) => {
                                     height: "auto",
                                     minHeight: "auto",
                                     width: "100%",
-                                }} onClick={handleCreateNew}>New</Button>
+                                }} onClick={handleCreateNewFileWithTemplates}>New</Button>
                             </Grid>
 
                         </Grid> : <Grid container spacing={2}>

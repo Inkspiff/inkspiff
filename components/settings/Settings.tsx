@@ -26,21 +26,7 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { ThemeContext } from '@/context/ThemeContext';
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: "90%",
-  height: "80%",
-  bgcolor: 'background.paper',
-//   border: '2px solid #000',
-  borderRadius: "8px",
-//   boxShadow: 24,
-  p: 0,
-  overflow: "hidden",
-};
+import { popupBaseStyle } from '@/config/editor';
 
 const SIDE_LIST = [
     {
@@ -119,7 +105,7 @@ export default function Settings({open, onClose}: propTypes) {
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
-        <Paper sx={style}>
+        <Paper sx={popupBaseStyle}>
           <Grid container sx={{
             height: "100%",
           }} spacing={0} >
