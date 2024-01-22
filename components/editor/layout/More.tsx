@@ -247,18 +247,20 @@ export default function More({file} : propTypes) {
     }
     const handleImport = () => {
       if (session){
-        console.log("Import")
+        dispatch(appActions.setPopup("import"))
       } else {
       dispatch(appActions.toggleOpenLoginModal())
       }
+      setAnchorEl(null);
       
     }
     const handleExport = () => {
        if (session){
-        console.log("Export")
+        dispatch(appActions.setPopup("export"))
       } else {
         dispatch(appActions.toggleOpenLoginModal())
       }
+      setAnchorEl(null);
     }
 
   const handleToggleFullscreen = () => {
