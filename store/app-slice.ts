@@ -1,4 +1,4 @@
-import { BlockType, ViewSettingsType, FileType, BlockSelectItemType } from "@/types/editor";
+import { BlockType, ViewSettingsType, FileType, BlockSelectItemType, EditorActionType } from "@/types/editor";
 import {MarkdownInterface, TemplateType } from "@/types"
 import { uid } from "@/lib/utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -20,7 +20,8 @@ export interface appState {
     templates: TemplateType[],
     viewSettings: ViewSettingsType,
     fileList: FileType[],
-    openLoginModal: boolean
+    openLoginModal: boolean,
+    editorAction: EditorActionType,
 }
 
 const initialState: appState = {
@@ -55,7 +56,8 @@ const initialState: appState = {
         id: "",
         title: "New File"
       }],
-    openLoginModal: false
+    openLoginModal: false,
+    editorAction: "",
 }
 
 
@@ -66,6 +68,10 @@ const appSlice = createSlice( {
         changeTheme(state) {
             state.theme = state.theme + 0.1
         },
+        setEditorAction(state, action: PayloadAction<EditorActionType>) {
+            state.editorAction = action.payload
+        },
+        /** MARKDOWN ACTIONS */
         updateMarkdownSelected(state, action: PayloadAction<string>) {
             state.markdownSelected = action.payload
         },
@@ -102,7 +108,7 @@ const appSlice = createSlice( {
             state.markdown = {...state.markdown, content: splitContent.join("\n")}
         },
 
-        /* FILE SECTION */
+        /* FILE ACTIONS */
         updateFileList(state, action: PayloadAction<{
             id: string,
             title: string,
@@ -145,7 +151,7 @@ const appSlice = createSlice( {
         },
 
 
-        // SECTIONS METHODS
+        /**SECTIONING ACTIONS */
         selectSection(state, action: PayloadAction<null | SectionType>) {
             state.selectedSection = action.payload
         },

@@ -28,7 +28,7 @@ const Editor: React.FC<Props> = (props) => {
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
-  const {markdown, viewSettings, markdownSelected, saveStates, addedSections } = app
+  const {editorAction, markdown, viewSettings, markdownSelected, saveStates, addedSections } = app
   const {content: doc, currentLine} = markdown
   const {fullscreen} = viewSettings
    const [selectMenuIsOpen, setSelectMenuIsOpen] = useState<boolean>(false);
@@ -244,6 +244,27 @@ const Editor: React.FC<Props> = (props) => {
       })
     }
   };
+
+  useEffect(() => {
+    
+    switch(editorAction) {
+      
+      case "undo": 
+        handleUndo()
+        break;
+      case "redo":
+        handleRedo()
+        break;
+      default:
+        break;
+    }
+
+    if (editorAction !== "") {
+      dispatch(appActions.setEditorAction(""))
+    }
+    
+    
+  }, [editorAction])
 
   
 

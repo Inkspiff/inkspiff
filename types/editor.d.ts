@@ -1,4 +1,6 @@
 import React from "react"
+
+export type EditorActionType = "" | "undo" | "redo" | "delete"
 export type TableType = {
     markdown: string,
     size: [number, number]
