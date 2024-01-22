@@ -117,7 +117,7 @@ const View = () => {
           // minHeight: "50vh",
           overflowY: {xs: "auto", sm: "scroll"},
         }}>
-       <Preview doc={doc} />
+       <Preview doc={(sidebar && !selectedSection) ? "" : doc } />
         </Grid>
     </Grid>
     
