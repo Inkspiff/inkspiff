@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { EditorState,  Text, EditorSelection } from '@codemirror/state'
 // import { EditorView } from '@codemirror/view'
 import {undo, redo} from '@codemirror/commands'
-// import { undo } from '@codemirror/commands'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
 import { blockRequiresNewLine, getCaretCoordinates, getSectionFromLine } from '@/lib/utils'
@@ -14,7 +13,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
-import Button from "@mui/material/Button"
 import BottomPanel from "@/components/editor/layout/BottomPanel";
 
 
@@ -101,9 +99,9 @@ const Editor: React.FC<Props> = (props) => {
 
     if (session) {
       if (markdown.id) {
-        if (editorView) {
-          editorView.setState(EditorState.create({doc}));
-        } 
+        // if (editorView) {
+        //   editorView.setState(EditorState.create({doc}));
+        // } 
         // updateEditorContent(markdown.content, 0, markdown.content.length - 1)
           saveMd()
       }
