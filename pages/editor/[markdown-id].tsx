@@ -21,10 +21,10 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import LeftSidePanel from "@/components/editor/layout/LeftSidePanel";
 // import { query } from "firebase/firestore";
 import LoginModal from "@/components/auth/login-modal"
-import ImportPopup from "@/components/editor/ImportPopup"
-import ExportPopup from "@/components/editor/ExportPopup"
+import ImportPopup from "@/components/editor/popups/ImportPopup"
+import ExportPopup from "@/components/editor/popups/ExportPopup"
 import TemplatesPopup from "@/components/templates/TemplatesPopup"
-import FeedbackPopup from "@/components/editor/FeedbackPopup";
+import FeedbackPopup from "@/components/editor/popups/FeedbackPopup";
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {

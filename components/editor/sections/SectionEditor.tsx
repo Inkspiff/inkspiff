@@ -1,9 +1,8 @@
 
 import React, { useCallback, useEffect, useState } from 'react'
-import { EditorState, Text } from '@codemirror/state'
+import { EditorState, Text, EditorSelection } from '@codemirror/state'
 // import { EditorView } from '@codemirror/view'
 import {undo, redo} from '@codemirror/commands'
-// import { undo } from '@codemirror/commands'
 import useCodeMirror from '@/hooks/use-codemirror'
 import Box from "@mui/material/Box"
 import { blockRequiresNewLine, getCaretCoordinates } from '@/lib/utils'
@@ -14,8 +13,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
-import Button from "@mui/material/Button"
-import BottomPanel from '../layout/BottomPanel'
+import BottomPanel from "@/components/editor/layout/BottomPanel";
+
 
 
 const SectionEditor = () => {
@@ -24,7 +23,7 @@ const SectionEditor = () => {
   const dispatch = useDispatch()
 
   const app = useSelector((state: RootState) => state.app)
-  const {selectedSection, addedSections} = app
+  const {selectedSection, addedSections, editorAction} = app
   const {content, name, id} = selectedSection!
   
   const [currentLine, setCurrentLine] = useState(1)
@@ -40,8 +39,6 @@ const SectionEditor = () => {
 
   const handleDocChange = useCallback((newState: EditorState) => {
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
-
-
     setCurrentLine(newCurrentLine)
     dispatch(appActions.updateSectionContent({
         id: id,
@@ -93,7 +90,6 @@ const SectionEditor = () => {
 
 
   const openSelectMenuHandler = () => {
-
     const { x, y } = getCaretCoordinates();
     setSelectMenuIsOpen(true)
     setSelectMenuPosition({ x: x!, y: y! })
@@ -109,6 +105,7 @@ const SectionEditor = () => {
   }
 
   // console.log(content.replace(/\/$/, ""), {currentLine})
+
   const blockSelectionHandler = (block: BlockSelectItemType) => {
     // get head
     if (editorView) {
@@ -121,16 +118,28 @@ const SectionEditor = () => {
           const contentUntilLine = splitContent.slice(0, currentLine)
 
           const numberOfCharsUntilLine = contentUntilLine.join("\n").length
+          console.log(numberOfCharsUntilLine)
 
-          updateEditorContent(("\n\n" + block.content), numberOfCharsUntilLine, numberOfCharsUntilLine)
+          const usableFromValue = numberOfCharsUntilLine <= 0 ? 0 : numberOfCharsUntilLine - 1
+
+          updateEditorContent(("\n\n" + block.content), usableFromValue, numberOfCharsUntilLine)
+
+          // Set the cursor position using EditorSelection
+          const newSelection = EditorSelection.single((numberOfCharsUntilLine == 1) ? block.content.length: numberOfCharsUntilLine + block.content.length + 1 - 1);
+          editorView.dispatch({
+            selection: newSelection,
+          });
         } else {
           // splitContent[currentLine - 1] += block.content
-          updateEditorContent(block.content, from, to) // -1 removes the slash
+          updateEditorContent(block.content, from - 1, to) // -1 removes the slash
+          // Set the cursor position using EditorSelection
+          const newSelection = EditorSelection.single(to + block.content.length - 1);
+          
+          editorView.dispatch({
+            selection: newSelection,
+          });
         }
 
-        
-
-        // updateEditorContent(newContent)
         
         closeSelectMenuHandler();
     }

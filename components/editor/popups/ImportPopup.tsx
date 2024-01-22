@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { ThemeContext } from '@/context/ThemeContext';
 import { popupBaseStyle } from '@/config/editor';
 import { set } from 'react-hook-form';
-import Preview from './Preview';
+import Preview from '../Preview';
 
 
 const ImportPopup = () => {

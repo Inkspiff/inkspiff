@@ -27,6 +27,7 @@ const Editor: React.FC<Props> = (props) => {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
+
   const app = useSelector((state: RootState) => state.app)
   const {editorAction, markdown, viewSettings, markdownSelected, saveStates, addedSections } = app
   const {content: doc, currentLine} = markdown
@@ -46,7 +47,6 @@ const Editor: React.FC<Props> = (props) => {
   const { initialDoc} = props
 
   const handleDocChange = useCallback((newState: EditorState) => {
-    // Normal code
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
     dispatch(appActions.changeMarkdown({
       content: newState.doc.toString(),
@@ -112,22 +112,12 @@ const Editor: React.FC<Props> = (props) => {
   }, [doc])
 
 
-  // const handleChange = useCallback(
-  //   (state: EditorState) => {
-  //     // console.log({state})
-  //     onChange(state)
-  //   },
-  //   [onChange]
-  // )
-
-
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
     initialDoc: initialDoc,
     onChange: handleDocChange,
     // extensions: [history()]
   })
 
-  
 
   useEffect(() => {
     if (editorView) {
@@ -165,7 +155,6 @@ const Editor: React.FC<Props> = (props) => {
 
 
   const openSelectMenuHandler = () => {
-
     const { x, y } = getCaretCoordinates();
     setSelectMenuIsOpen(true)
     setSelectMenuPosition({ x: x!, y: y! })
