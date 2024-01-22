@@ -4,7 +4,7 @@ export const siteConfig: SiteConfig = {
   name: "Inkspill",
   description:
     "An open source application built using the new router, server components and everything new in Next.js 13.",
-  url: "https://inkspill.com",
+  url: "https://inkspiff.com",
   ogImage: "https://inkspill.com/og.jpg",
   links: {
     twitter: "https://twitter.com/inkspill",

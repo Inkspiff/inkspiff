@@ -1,9 +1,11 @@
 import React from 'react'
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
+import BottomPanel from '../layout/BottomPanel'
 
-const NoSections = () => {
+const NoSections = ({}) => {
   return (
+    <>
     <Paper elevation={0} variant="outlined" sx={{
       // border: "1px solid red",
       display: "flex",
@@ -25,6 +27,13 @@ const NoSections = () => {
       </Paper>
       
     </Paper>
+    {/* <BottomPanel
+            onSelectBlock={blockSelectionHandler}
+            onUndo={handleUndo}
+            onRedo={handleRedo}
+          /> */}
+    </>
+    
   )
 }
 

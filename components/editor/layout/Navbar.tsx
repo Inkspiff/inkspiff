@@ -30,7 +30,7 @@ import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 // import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 // import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import More from "@/components/editor/More";
+import More from "@/components/editor/layout/More";
 import Share from "@/components/editor/Share"
 import { AiFillGithub } from "react-icons/ai";
 
