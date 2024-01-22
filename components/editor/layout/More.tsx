@@ -31,6 +31,7 @@ import { FileType } from '@/types/editor';
 import Style from "@/components/appearance/Style"
 import EditorModal from '@/components/editor/EditorModal';
 import LoginModal from '@/components/auth/login-modal';
+import { siteConfig } from '@/config/site';
 
 const List = styled((props: ListProps) => (
   <MuiList {...props} />
@@ -97,10 +98,10 @@ export default function More({file} : propTypes) {
   const id = open ? 'simple-popover' : undefined;
 
 
-  const handleCopy = () => {
+  const handleCopyLink = () => {
     setAnchorEl(null);
     if (session) {
-      navigator.clipboard.writeText(markdown.content);
+      navigator.clipboard.writeText(`${siteConfig.url}}/editor/{markdownSelected}`);
       setCopied(true)
 
       setTimeout(() => {
@@ -342,7 +343,7 @@ export default function More({file} : propTypes) {
 
             <List >
             <ListItem >
-              <ListItemButton  onClick={handleCopy}>
+              <ListItemButton  onClick={handleCopyLink}>
                <ListItemText primary={<Typography variant="body2" sx={{
             fontWeight: 500,
             fontSize: "14px",
