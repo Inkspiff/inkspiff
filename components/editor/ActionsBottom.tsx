@@ -45,7 +45,7 @@ export default function ActionsBottom() {
   
 
   const handleGiveFeedback = () => {
-    console.log("Give Feedback")
+    dispatch(appActions.setPopup("feedback"))
     }
 
 
@@ -167,6 +167,7 @@ export default function ActionsBottom() {
             }}>Feedback</Typography>
           </ListItemButton>
         </ListItem>
+
 
         <Box sx={{
           py: 1,
