@@ -20,7 +20,6 @@ import { styled, useTheme } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import LeftSidePanel from "@/components/editor/layout/LeftSidePanel";
 // import { query } from "firebase/firestore";
-import BottomPanel from "@/components/editor/layout/BottomPanel";
 import LoginModal from "@/components/auth/login-modal"
 
 
@@ -133,7 +132,6 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
           {session && <View />}
         </Box>
         
-        <BottomPanel />
         <LoginModal />
       </Box>
     </div>
