@@ -2,6 +2,7 @@ import React from 'react'
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import BottomPanel from '../layout/BottomPanel'
+import AddSectionBottomPanel from './AddSectionBottomPanel'
 
 const NoSections = ({}) => {
   return (
@@ -27,11 +28,8 @@ const NoSections = ({}) => {
       </Paper>
       
     </Paper>
-    {/* <BottomPanel
-            onSelectBlock={blockSelectionHandler}
-            onUndo={handleUndo}
-            onRedo={handleRedo}
-          /> */}
+   
+   <AddSectionBottomPanel />
     </>
     
   )
