@@ -237,11 +237,13 @@ export default function More({file} : propTypes) {
       }
     }
 
-    const handleRename = () => {
-      console.log("rename")
-    }
     const handleUndo = () => {
-      console.log("Undo")
+      dispatch(appActions.setEditorAction("undo"))
+
+    }
+    const handleRedo = () => {
+      dispatch(appActions.setEditorAction("redo"))
+
     }
     const handleImport = () => {
       if (session){
@@ -375,6 +377,11 @@ export default function More({file} : propTypes) {
             <ListItem >
               <ListItemButton onClick={handleUndo}>
                Undo
+              </ListItemButton>
+            </ListItem>
+            <ListItem >
+              <ListItemButton onClick={handleRedo}>
+               Redo
               </ListItemButton>
             </ListItem>
             <ListItem >
