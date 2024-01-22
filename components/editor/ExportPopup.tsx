@@ -20,13 +20,7 @@ import { set } from 'react-hook-form';
 import Preview from './Preview';
 import ReactMarkdown from 'react-markdown';
 
-
-interface propTypes {
-    open: boolean;
-    onClose: () => void
-}
-
-const handleOpenExportPopup = () => {
+const ExportPopup = () => {
     const dispatch = useDispatch()
     const { data: session } = useSession();
     const router = useRouter()
@@ -208,4 +202,4 @@ const handleOpenExportPopup = () => {
   )
 }
 
-export default handleOpenExportPopup
+export default ExportPopup

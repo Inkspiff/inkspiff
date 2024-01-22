@@ -32,6 +32,7 @@ import Style from "@/components/appearance/Style"
 import EditorModal from '@/components/editor/EditorModal';
 import LoginModal from '@/components/auth/login-modal';
 import { siteConfig } from '@/config/site';
+import { timeAgo } from '@/lib/utils';
 
 const List = styled((props: ListProps) => (
   <MuiList {...props} />
@@ -84,6 +85,8 @@ export default function More({file} : propTypes) {
   const [deleting, setDeleting] = useState(false)
   const [duplicating, setDuplicating] = useState(false)
   const [copied, setCopied] = useState<boolean>(false);
+
+
 
   
   const handleToggleShowLoginModal = () => {
@@ -427,7 +430,7 @@ export default function More({file} : propTypes) {
               }}>Word count: {content ? content.split(" ").length : 0}</Typography>
               
               {session ? 
-              <Typography variant="caption">Last edited by: {`${session.user?.name} Today at ${lastEdited}`}</Typography> 
+              <Typography variant="caption">Last edited by: {`${session.user?.name} Today at ${timeAgo(lastEdited!) || "unkown time"}`}</Typography> 
               : <Button variant="text" onClick={() => {
                 router.push("/login")
               }}  sx={{

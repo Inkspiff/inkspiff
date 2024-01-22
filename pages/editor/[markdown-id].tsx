@@ -24,6 +24,7 @@ import LoginModal from "@/components/auth/login-modal"
 import ImportPopup from "@/components/editor/ImportPopup"
 import ExportPopup from "@/components/editor/ExportPopup"
 import TemplatesPopup from "@/components/templates/TemplatesPopup"
+import FeedbackPopup from "@/components/editor/FeedbackPopup";
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -138,6 +139,7 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
         <TemplatesPopup />
         <ImportPopup  />
         <ExportPopup />
+        <FeedbackPopup />
 
         <LoginModal />
       </Box>
