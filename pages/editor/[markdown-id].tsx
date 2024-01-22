@@ -21,6 +21,9 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import LeftSidePanel from "@/components/editor/layout/LeftSidePanel";
 // import { query } from "firebase/firestore";
 import LoginModal from "@/components/auth/login-modal"
+import ImportPopup from "@/components/editor/ImportPopup"
+import ExportPopup from "@/components/editor/ExportPopup"
+import TemplatesPopup from "@/components/templates/TemplatesPopup"
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -132,6 +135,10 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
           {session && <View />}
         </Box>
         
+        <TemplatesPopup />
+        <ImportPopup  />
+        <ExportPopup />
+
         <LoginModal />
       </Box>
     </div>

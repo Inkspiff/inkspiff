@@ -20,12 +20,7 @@ import { set } from 'react-hook-form';
 import Preview from './Preview';
 
 
-interface propTypes {
-    open: boolean;
-    onClose: () => void
-}
-
-const ImportPopup = ({open, onClose}: propTypes) => {
+const ImportPopup = () => {
     const dispatch = useDispatch()
     const { data: session } = useSession();
     const router = useRouter()
@@ -39,11 +34,15 @@ const ImportPopup = ({open, onClose}: propTypes) => {
     const {palette, } = theme
     const {mode } = palette
 
+  const { markdown: {content, title}, viewSettings } = app
+
+    const open = viewSettings.popup === "import"
 
   const handleClose = () => {
-    setMarkdownContent(null)
-    onClose()
-};
+      setMarkdownContent(null)
+        dispatch(appActions.setPopup(""))
+    };
+
 
   const handleImportFile = (event: ChangeEvent<HTMLInputElement>) => {
     console.log("File")
@@ -116,8 +115,8 @@ const ImportPopup = ({open, onClose}: propTypes) => {
               title: markdownName
             }
           ))
-          dispatch(appActions.updateMarkdownSelected(json.id))
-          onClose()
+          
+        dispatch(appActions.updateMarkdownSelected(json.id))
   }
 
 

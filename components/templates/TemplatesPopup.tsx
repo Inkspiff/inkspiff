@@ -32,12 +32,8 @@ const TEMPLATE_CATEGORIES = [
     "package",
 ]
 
-interface propTypes {
-    open: boolean;
-    onClose: () => void
-}
 
-export default function TemplatesPopup({open, onClose}: propTypes) {
+export default function TemplatesPopup() {
     const dispatch = useDispatch()
   const { data: session } = useSession();
   const app = useSelector((state: RootState) => state.app)
@@ -51,9 +47,13 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
   
   const {palette, } = theme
   const {mode } = palette
-  const { templates } = app
+  const { templates, viewSettings } = app
 
-  const handleClose = () => onClose();
+  const open = viewSettings.popup === "templates"
+
+  const handleClose = () => {
+    dispatch(appActions.setPopup(""))
+  };
 
   const handleSelectCategory = (index: number) => {
     setSearchValue(TEMPLATE_CATEGORIES[index])
@@ -189,7 +189,7 @@ export default function TemplatesPopup({open, onClose}: propTypes) {
                     overflowY: "auto",
                   }}>
                     <TemplatesList templates={searchResults} />
-                  </Box> : <ViewTemplateInEditor template={templates[0]} onClose={onClose} /> 
+                  </Box> : <ViewTemplateInEditor template={templates[0]} onClose={handleClose} /> 
                   
                   }
                 </Box>

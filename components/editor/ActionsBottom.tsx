@@ -7,62 +7,37 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Popover from '@mui/material/Popover';
-import KeyboardDoubleArrowLeftRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowLeftRounded';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from '@/store/app-slice';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
-import Settings from '@/components/settings/Settings';
-import Paper from "@mui/material/Paper"
 import Divider from "@mui/material/Divider"
-import Updates from "@/components/updates/Updates"
-import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
-import NameEmail from '@/components/account/NameEmail';
-import EditorModal from '@/components/editor/EditorModal';
-import LoginModal from '@/components/auth/login-modal';
-import TemplatesPopup from "@/components/templates/TemplatesPopup"
 import Logo from '../ui/Logo';
-import ImportPopup from './ImportPopup';
-import ExportPopup from './ExportPopup';
 
-
-export default function Actions() {
+export default function ActionsBottom() {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
 
-  const [exportPopupAnchorEl, setExportPopupAnchorEl] = useState<null | HTMLElement>(null);
-  const [importPopupAnchorEl, setImportPopupAnchorEl] = useState<null | HTMLElement>(null);
-  const [templatesPopupAnchorEl, setTemplatesPopupAnchorEl] = useState<null | HTMLElement>(null)
-
-  const openImport = Boolean(importPopupAnchorEl);
-  const openExport = Boolean(exportPopupAnchorEl)
-  const openTemplates = Boolean(templatesPopupAnchorEl)
 
 
-  const handleOpenImportPopup = (e: React.MouseEvent<HTMLElement>) => {
+
+  const handleOpenImportPopup = () => {
   if (session) {
-      setImportPopupAnchorEl(e.currentTarget as HTMLElement)
+      dispatch(appActions.setPopup("import"))
     } else {
     dispatch(appActions.toggleOpenLoginModal())
     }
   }
 
 
-  const handleOpenExportPopup = (e: React.MouseEvent<HTMLElement>) => {
+  const handleOpenExportPopup = () => {
     if (session) {
-        setExportPopupAnchorEl(e.currentTarget as HTMLElement)
+      dispatch(appActions.setPopup("export"))
       } else {
       dispatch(appActions.toggleOpenLoginModal())
       }
@@ -76,7 +51,7 @@ export default function Actions() {
 
   const handleOpenTemplatesPopup = (e: MouseEvent<HTMLElement>) => {
      if (session) {
-      setTemplatesPopupAnchorEl(e.currentTarget as HTMLElement)
+      dispatch(appActions.setPopup("templates"))
     } else {
     dispatch(appActions.toggleOpenLoginModal())
     }
@@ -116,7 +91,7 @@ export default function Actions() {
           </ListItemButton>
         </ListItem>
 
-        <TemplatesPopup open={openTemplates} onClose={() => setTemplatesPopupAnchorEl(null)} />
+        
 
         <ListItem  disablePadding sx={{
             //  border: "1px solid red",
@@ -142,7 +117,7 @@ export default function Actions() {
           </ListItemButton>
         </ListItem>
 
-        <ImportPopup open={openImport} onClose={() => setImportPopupAnchorEl(null)} />
+        
 
         <ListItem  disablePadding sx={{
             //  border: "1px solid red",
@@ -168,8 +143,7 @@ export default function Actions() {
           </ListItemButton>
         </ListItem>
 
-        <ExportPopup open={openExport} onClose={() => setExportPopupAnchorEl(null)} />
-
+        
         <ListItem  disablePadding sx={{
             //  border: "1px solid red",
             p: 0,

@@ -75,20 +75,21 @@ const SIDE_LIST = [
     },
 ]
 
-interface propTypes {
-    open: boolean;
-    onClose: () => void
-}
 
-export default function Settings({open, onClose}: propTypes) {
+export default function Settings() {
+  const dispatch = useDispatch()
   const { data: session } = useSession();
   const app = useSelector((state: RootState) => state.app)
   const { toggleTheme, theme} = useContext(ThemeContext);
 
   const {palette, } = theme
   const {mode } = palette
+  const {viewSettings} = app
+  const open = viewSettings.popup === "settings"
 
-  const handleClose = () => onClose();
+  const handleClose = () => {
+    dispatch(appActions.setPopup(""))
+  };
 
   const [space, setSpace] = useState<number>(0)
 

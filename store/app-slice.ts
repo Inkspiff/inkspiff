@@ -1,4 +1,4 @@
-import { BlockType, ViewSettingsType, FileType, BlockSelectItemType, EditorActionType } from "@/types/editor";
+import { BlockType, ViewSettingsType, FileType, BlockSelectItemType, EditorActionType, EditorPopupType } from "@/types/editor";
 import {MarkdownInterface, TemplateType } from "@/types"
 import { uid } from "@/lib/utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -50,7 +50,8 @@ const initialState: appState = {
         sidebar: false,
         drawer: false,
         blocks: false,
-        bottomPanel: ""
+        bottomPanel: "",
+        popup: "",
     },
     fileList: [{
         id: "",
@@ -218,7 +219,7 @@ const appSlice = createSlice( {
             }
         },
 
-        // VIEW METHODS
+        /** VIEW ACTIONS */
         toggleFullscreen(state) {
             state.viewSettings = {
                 ...state.viewSettings, 
@@ -275,7 +276,13 @@ const appSlice = createSlice( {
         },
         toggleOpenLoginModal(state) {
             state.openLoginModal = !state.openLoginModal
-        }
+        },
+        setPopup(state, action: PayloadAction<EditorPopupType>) {
+            state.viewSettings = {
+                ...state.viewSettings, 
+                popup: action.payload
+            }
+        },
     }
 })
 

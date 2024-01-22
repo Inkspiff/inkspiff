@@ -13,11 +13,12 @@ import Button from "@mui/material/Button"
 import { useRouter } from "next/router"
 import FileList from "@/components/editor/file/FileList"
 import AccountArea from '@/components/editor/AccountArea';
-import Actions from '@/components/editor/Actions';
 import useMediaQuery from '@mui/material/useMediaQuery';
 // import { useTheme } from '@mui/material/styles';
 import theme from '@/config/theme';
 import AccountAreaMobile from '../AccountAreaMobile';
+import ActionsBottom from '@/components/editor/ActionsBottom';
+import ActionsTop from '../ActionsTop';
 
 const drawerWidth = 240;
 
@@ -72,6 +73,8 @@ export default function LeftSidePanel() {
     <AccountArea />
 
     <AccountAreaMobile />
+
+    <ActionsTop />
     
     <Divider sx={{
       mb: 2
@@ -100,7 +103,7 @@ export default function LeftSidePanel() {
         // px: 1,
         // border: "1px solid blue"
       }}>
-        <Actions />
+        <ActionsBottom />
       </Box>
     
   </Drawer>

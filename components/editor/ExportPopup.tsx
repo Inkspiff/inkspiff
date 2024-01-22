@@ -26,7 +26,7 @@ interface propTypes {
     onClose: () => void
 }
 
-const handleOpenExportPopup = ({open, onClose}: propTypes) => {
+const handleOpenExportPopup = () => {
     const dispatch = useDispatch()
     const { data: session } = useSession();
     const router = useRouter()
@@ -36,10 +36,12 @@ const handleOpenExportPopup = ({open, onClose}: propTypes) => {
 
     const {palette, } = theme
     const {mode } = palette
-    const { markdown: {content, title} } = app
+    const { markdown: {content, title}, viewSettings } = app
+
+    const open = viewSettings.popup === "export"
 
   const handleClose = () => {
-    onClose()
+        dispatch(appActions.setPopup(""))
     };
 
   const handleExportFileAsMarkdown = async () => {
