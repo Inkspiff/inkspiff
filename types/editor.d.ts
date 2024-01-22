@@ -1,6 +1,8 @@
 import React from "react"
 
 export type EditorActionType = "" | "undo" | "redo" | "delete"
+export type EditorPopupType = "" | "settings" | "export" | "import" | "templates" | "settings"
+
 export type TableType = {
     markdown: string,
     size: [number, number]
@@ -37,6 +39,7 @@ export interface ViewSettingsType {
     drawer: boolean,
     blocks: boolean,
     bottomPanel: string,
+    popup: EditorPopupType
 }
 
 export interface FileType {
