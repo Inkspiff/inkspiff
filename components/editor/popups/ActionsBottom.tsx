@@ -15,7 +15,7 @@ import { useRouter } from "next/router"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Divider from "@mui/material/Divider"
-import Logo from '../ui/Logo';
+import Logo from '../../ui/Logo';
 
 export default function ActionsBottom() {
   const router = useRouter();
