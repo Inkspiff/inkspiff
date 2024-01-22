@@ -445,7 +445,7 @@ export default function More({file} : propTypes) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            file name
+            {markdown.title}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
