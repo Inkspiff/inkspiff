@@ -211,11 +211,30 @@ const appSlice = createSlice( {
             }
         },
         updateSelectedSectionContent(state, action: PayloadAction<string>) {
-            
-            state.selectedSection = {
+            const id = state.selectedSection!.id
+
+            const newSelectedSection = {
                 id: state.selectedSection!.id,
                 name: state.selectedSection!.name,
                 content: action.payload,
+            }
+
+            let updatedSections = [...state.addedSections]
+
+            let indexOfSelectedSection = updatedSections.findIndex(section => {
+                return section.id === id
+            });
+
+            if ( updatedSections[indexOfSelectedSection] ) {
+                updatedSections[indexOfSelectedSection] = {
+                    ...newSelectedSection
+                }
+    
+                state.addedSections = updatedSections
+            }
+
+            state.selectedSection = {
+                ...newSelectedSection
             }
         },
 
