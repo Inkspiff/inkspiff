@@ -183,8 +183,7 @@ const Editor: React.FC<Props> = (props) => {
 
         if (blockRequiresNewLine(block.tag)) {
           const contentUntilLine = splitContent.slice(0, markdown.currentLine)
-
-          console.log(contentUntilLine)
+          console.log({contentUntilLine})
 
           const numberOfCharsUntilLine = contentUntilLine.join("\n").length
           console.log(numberOfCharsUntilLine)

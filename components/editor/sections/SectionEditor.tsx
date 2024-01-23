@@ -40,10 +40,7 @@ const SectionEditor = () => {
   const handleDocChange = useCallback((newState: EditorState) => {
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
     setCurrentLine(newCurrentLine)
-    dispatch(appActions.updateSectionContent({
-        id: id,
-        content: newState.doc.toString()
-    }))
+    dispatch(appActions.updateSelectedSectionContent(newState.doc.toString()))
   }, [])
 
 
@@ -111,18 +108,22 @@ const SectionEditor = () => {
     if (editorView) {
       const {from, to, head, anchor} = editorView.state.selection.ranges[0]
 
-        // TODO: Remove the last character -> /
-        const splitContent = content.replace(/\/$/, "").split("\n")
+      console.log("blockSelectionHandler", {from, to, head, anchor})
+
+        // TODO: Remove the last character -> / .replace(/\/$/, "")
+        const splitContent = content.split("\n")
+        console.log({splitContent})
 
         if (blockRequiresNewLine(block.tag)) {
           const contentUntilLine = splitContent.slice(0, currentLine)
+          console.log({contentUntilLine})
 
           const numberOfCharsUntilLine = contentUntilLine.join("\n").length
           console.log(numberOfCharsUntilLine)
 
           const usableFromValue = numberOfCharsUntilLine <= 0 ? 0 : numberOfCharsUntilLine - 1
 
-          updateEditorContent(("\n\n" + block.content), usableFromValue, numberOfCharsUntilLine)
+          updateEditorContent((((content.trim() === "/") ? "" : "\n\n") + block.content), usableFromValue, numberOfCharsUntilLine)
 
           // Set the cursor position using EditorSelection
           const newSelection = EditorSelection.single((numberOfCharsUntilLine == 1) ? block.content.length: numberOfCharsUntilLine + block.content.length + 1 - 1);

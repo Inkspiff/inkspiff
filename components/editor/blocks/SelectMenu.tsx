@@ -115,7 +115,7 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
     const commandWithoutSlash = command.replace("/", "") 
     // console.log({commandWithoutSlash})
     if (!(commandWithoutSlash === "")) {
-      const matchedItems = matchSorter(SUPPORTED_BLOCKS, commandWithoutSlash, { keys: ["tag"] });
+      const matchedItems = matchSorter(SUPPORTED_BLOCKS, commandWithoutSlash, { keys: ["tag", "label"] });
       setItems(matchedItems);
     } else {
       setItems(SUPPORTED_BLOCKS)
