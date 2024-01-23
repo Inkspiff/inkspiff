@@ -169,7 +169,7 @@ const SectionEditor = () => {
 
   return <Box  sx={{
     position: "relative",
-    border: "1px solid red"
+    // border: "1px solid red"
   }}
   //  key={markdown.content}
    >

@@ -24,9 +24,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const mdDataToSend = {
         title,
         content,
-        admin,
+        admin: admin.email,
         currentLine: 1,
-        allowedUsers: [admin],
+        github: "",
+        members: [{
+            email: admin.email,
+            access: 'owner'
+        }],
         visibility: "public",
         lastEdited: serverTimestamp(),
 

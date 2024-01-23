@@ -67,7 +67,8 @@ const CreateNew = () => {
     const newMdData = {
       title,
       content,
-      admin: session!.user.id,
+      admin: session!.user,
+
     }
 
     const response = await fetch("/api/db/create-md", {

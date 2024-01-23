@@ -1,3 +1,5 @@
+import { string } from "zod"
+
 export interface BlockType {
   id: string,
   tag: string,
@@ -13,6 +15,11 @@ export interface UserType {
   image: string,
 }
 
+export interface MembersType {
+  email: string,
+  access: string,
+}
+
 
 export interface MarkdownInterface {
   
@@ -22,8 +29,9 @@ export interface MarkdownInterface {
   currentLine: number,
   lastEdited: number | undefined,
   admin: string,
-  allowedUsers: string[],
-  visibility: string
+  members: MembersType[],
+  visibility: string,
+
 }
 
 export type TemplateType =  {
