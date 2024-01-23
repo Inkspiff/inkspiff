@@ -19,7 +19,7 @@ export default function RightSidePanel() {
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
-  const {viewSettings } = app
+  const {viewSettings, selectedSection} = app
 
   const {sidebar: open} = viewSettings
 
@@ -34,6 +34,10 @@ export default function RightSidePanel() {
           (event as React.KeyboardEvent).key === 'Shift')
       ) {
         return;
+      }
+
+      if (selectedSection) {
+        dispatch(appActions.selectSection(null))
       }
 
       dispatch(appActions.toggleSidebar());

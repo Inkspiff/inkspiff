@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import Link from "next/link"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid"
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import Input from '@mui/material/Input';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +17,29 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { ThemeContext } from '@/context/ThemeContext'
+import { MdOutlineMail } from "react-icons/md";
+import { IoMdRemoveCircle } from "react-icons/io";
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { MembersType } from '@/types'
+
+function createData(
+  name: string,
+  calories: number,
+  fat: number,
+  carbs: number,
+  protein: number,
+) {
+  return { name, calories, fat, carbs, protein };
+}
+
+
 
 const Members = () => {
   const { data: session } = useSession();
@@ -28,11 +52,88 @@ const Members = () => {
   const {viewSettings, fileList, markdown, markdownSelected} = app
   const [loadingFiles, setLoadingFiles] = useState(false)
   const [fileOpened, setFileOpened] = useState<string | null>(null)
+  const [memberEmail, setMemberEmail] = useState<string>("")
+  const [addingMember, setAddingMember] = useState<boolean>(false)
+  const [membersOfFileOpened, setMembersOfFileOpened] = useState<MembersType[]>([])
+  const [loadingMembersOfFileOpened, setLoadingMembersOfFileOpened] = useState<boolean>(false)
 
+  const {members} = markdown
 
   const handleOpenFile = (id: string) => {
     setFileOpened(id)
+    console.log({id})
   }
+
+  const handleChangeMemberEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMemberEmail(e.target.value)
+    console.log({memberEmail})
+  }
+
+  const handleAddMember = async () => {
+    console.log({memberEmail, fileOpened})
+
+    setAddingMember(true)
+    const response = await fetch("/api/db/add-member", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // userId: session!.user.id,
+        email: memberEmail,
+        mdID: markdown.id,
+      })
+    })
+
+    setAddingMember(false)
+
+    if (!response?.ok) {
+      if (response.status === 402) {
+        return 
+      }
+      return
+    }
+  }
+
+  const handleCopyInviteLink = async () => {
+    console.log("copy invite link")
+  }
+
+  useEffect(() => {
+    // get file members
+    console.log({memberEmail, fileOpened})
+
+    const getMembersOfFileOpened = async () => {
+      setLoadingMembersOfFileOpened(true)
+      const response = await fetch("/api/db/get-members", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // userId: session!.user.id,
+          mdID: markdown.id,
+        })
+      })
+
+      setLoadingMembersOfFileOpened(false)
+
+      if (!response?.ok) {
+        if (response.status === 402) {
+          return 
+        }
+        return
+      }
+
+      const json = await response.json()
+      console.log({json})
+    }
+
+    if (fileOpened) {
+      getMembersOfFileOpened()
+    }
+
+  }, [fileOpened])
 
 
   if (!session ) {
@@ -162,23 +263,57 @@ const Members = () => {
                 borderRadius: "6px",
                 bgcolor: "rgb(251, 251, 250)",
               }}>
-                <Typography variant="body1"sx={{
-                  
-                }}></Typography>
+                <Input 
+                fullWidth
+                value={memberEmail} 
+                placeholder={"Member Email"}
+                startAdornment={<MdOutlineMail />}
+                onChange={handleChangeMemberEmail}
+                type="email"
+                />
+
                 <Button variant="contained" sx={{
                   fontSize: "12px",
                   lineHeight: "16px",
                   borderRadius: "0 4px 4px 0",
-                }}>Copy link</Button>
+                }} onClick={handleAddMember}>Send</Button>
               </Box>
 
-              {/* <Divider />
+              <Divider sx={{
+                my: 2
+              }} />
 
               <Typography variant="body2" component="h4" sx={{
-                        
-              }}>Members</Typography> */}
+                
+              }}>Members</Typography>
 
-              {/* Table */}
+              {/* TODO: TABLE OF MEMBERS */}
+
+              <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 100 }} size="small" aria-label="a dense table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Email</TableCell>
+            <TableCell align="right">Access</TableCell>
+            <TableCell align="right">Remove</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {membersOfFileOpened.map((member, index) => (
+            <TableRow
+              key={index}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {member.email}
+              </TableCell>
+              <TableCell align="right">{member.access}</TableCell>
+              <TableCell align="right"><IoMdRemoveCircle /></TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
               
             </Box>
           </Grid>
@@ -193,3 +328,15 @@ const Members = () => {
 }
 
 export default Members
+
+/**
+ * <LoadingButton
+                  size="small"
+                  onClick={handleAddMember}
+                  loading={addingMember}
+                  variant="outlined"
+                  disabled
+                >
+                  <span>Add</span>
+                </LoadingButton>
+ */
