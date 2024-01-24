@@ -59,7 +59,6 @@ export default function CreateNewPage({ session, providers }: InferGetServerSide
         <title>Create new README | Inkspiff</title>
       </Head>
       <AppBar  sx={{
-        bgcolor: "white",
         height: "45px",
         position: "fixed"
       }}
@@ -78,7 +77,6 @@ export default function CreateNewPage({ session, providers }: InferGetServerSide
       >
 
         <Box  onClick={() => {router.back()}} sx={{
-                color: "#121212",
                 display: "flex",
                 alignItems: "center",
                 cursor: "pointer",
@@ -97,7 +95,6 @@ export default function CreateNewPage({ session, providers }: InferGetServerSide
           <Box>
           <Avatar alt="Remy Sharp" src={session ? session.user.image! : "https://picsum.photos/id/237/200/300.jpg" } 
           sx={{
-             bgcolor: "#f6f5f4",
              width: 24,
              height: 24,
              margin: 0,
