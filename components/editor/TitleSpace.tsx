@@ -140,7 +140,7 @@ export default function TitleSpace() {
         borderRadius: "4px",
         p: "0px 8px",
         "&:hover" : {
-          bgcolor: "grey.A100"
+          bgcolor: "action.hover"
         }
       }}>{markdown.title}</Box>}
 

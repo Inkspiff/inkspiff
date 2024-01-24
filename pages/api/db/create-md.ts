@@ -40,7 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         secret: {
             hash: generateUniqueString(),
             state: 'active'
-        }
+        },
+        invites: []
     }
 
     // const createDocument = async (data) => {
