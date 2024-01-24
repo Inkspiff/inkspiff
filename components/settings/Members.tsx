@@ -66,11 +66,7 @@ const Members = () => {
   const [accessOptionsAnchorEl, setAccessOptionsAnchorEl] = React.useState<null | HTMLElement>(null);
   const [loadingMemberAccessChange, setLoadingMemberAccessChange] = useState<boolean>(false)
 
-  const [secret, setSecret] = useState<
-  {
-    hash: string, 
-    state: 'active' | 'inactive'} | null>(null)
-  const [secretLoading, setSecretLoading] = useState<boolean>(false)
+  
 
 
   const handleOpenFile = (id: string) => {
@@ -283,7 +279,38 @@ const Members = () => {
     }
   }, [])
 
-  console.log({secret})
+  // SECRET
+  const [secret, setSecret] = useState<
+  {
+    hash: string, 
+    state: 'active' | 'inactive'} | null>(null)
+  const [secretLoading, setSecretLoading] = useState<boolean>(false)
+  
+  const toggleSecretState = async () => {
+    setSecretLoading(true);
+
+    const response = await fetch("/api/db/toggle-secret-state", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mdID: idOfFileOpened,
+      })
+    })
+
+    setSecretLoading(false)
+
+    if (!response?.ok) {
+      if (response.status === 402) {
+        return 
+      }
+      return
+    }
+
+    const json = await response.json()
+    setSecret(json)
+  };
 
   if (!session ) {
     return <Box sx={{
@@ -400,7 +427,7 @@ const Members = () => {
                     
                 </Box>
 
-                <Switch />
+                <Switch  />
               </Box>
 
               <Box sx={{
@@ -410,7 +437,7 @@ const Members = () => {
                 justifyContent: "space-between",
                 outline: "1px solid #eeeeee",
                 borderRadius: "6px",
-                bgcolor: "rgb(251, 251, 250)",
+                bgcolor: "action.hover",
               }}>
                 <Input 
                 fullWidth

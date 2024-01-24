@@ -65,12 +65,12 @@ const ListItemButton = styled((props: ListItemButtonProps) => (
 
 
 
-interface propTypes {
-  file: FileType,
-}
+// interface propTypes {
+//   file: FileType,
+// }
 
 
-export default function More({file} : propTypes) {
+export default function More() {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
