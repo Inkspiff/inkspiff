@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const mdDataToSend = {
         title,
         content,
-        admin: creator.email,
+        admin: creator.id,
         currentLine: 1,
         github: "",
         memberIDs: [creator.id],
