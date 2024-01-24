@@ -55,6 +55,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
               email: docData!.creator.email as string,
               name: docData!.creator.name as string,
               image: docData!.creator.image as string,
+              id: docData!.creator.id as string,
+              emailVerified: docData!.creator.emailVerified as boolean,
           },
           type: docData!.type as 'free' | 'pro',
           categories: docData!.categories as string[],
