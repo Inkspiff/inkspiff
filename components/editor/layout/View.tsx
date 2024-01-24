@@ -63,8 +63,9 @@ const View = () => {
       currentLine: md.currentLine,
       lastEdited: md.lastEdited ? md.lastEdited.seconds : undefined,
       admin: md.admin,
-      allowedUsers: md.allowedUsers,
+      memberIDs: md.membersIDs,
       visibility: md.visibility,
+      github: md.github,
     }))
   }
 

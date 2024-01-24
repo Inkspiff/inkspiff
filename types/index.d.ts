@@ -31,9 +31,8 @@ export interface MarkdownInterface {
   lastEdited: number | undefined,
   admin: string,
   memberIDs: string[],
-  members: MembersType[],
   visibility: string,
-
+  github: string,
 }
 
 export type TemplateType =  {
