@@ -66,7 +66,11 @@ const Members = () => {
   const [accessOptionsAnchorEl, setAccessOptionsAnchorEl] = React.useState<null | HTMLElement>(null);
   const [loadingMemberAccessChange, setLoadingMemberAccessChange] = useState<boolean>(false)
 
-  
+  const [secret, setSecret] = useState<
+  {
+    hash: string, 
+    state: 'active' | 'inactive'} | null>(null)
+  const [secretLoading, setSecretLoading] = useState<boolean>(false)
 
 
   const handleOpenFile = (id: string) => {
@@ -247,44 +251,10 @@ const Members = () => {
   
   }
 
-  useEffect(() => {
-    
-    const getSecret = async () => {
-      setSecretLoading(true)
-      const response = await fetch("/api/db/get-secret", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          mdID: idOfFileOpened,
-        })
-      })
-
-      setSecretLoading(false)
-
-      if (!response?.ok) {
-        if (response.status === 402) {
-          return 
-        }
-        return
-      }
-
-      const json = await response.json()
-      setSecret(json)
-    }
-
-    if (idOfFileOpened) {
-      getSecret()
-    }
-  }, [])
+  
 
   // SECRET
-  const [secret, setSecret] = useState<
-  {
-    hash: string, 
-    state: 'active' | 'inactive'} | null>(null)
-  const [secretLoading, setSecretLoading] = useState<boolean>(false)
+  
   
   const toggleSecretState = async () => {
     setSecretLoading(true);
@@ -311,6 +281,49 @@ const Members = () => {
     const json = await response.json()
     setSecret(json)
   };
+
+  useEffect(() => {
+    
+    const getSecret = async () => {
+      console.log("get secret")
+      setSecretLoading(true)
+      const response = await fetch("/api/db/get-secret", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          mdID: idOfFileOpened,
+        })
+      })
+
+      setSecretLoading(false)
+
+      if (!response?.ok) {
+        if (response.status === 402) {
+          return 
+        }
+        return
+      }
+
+      const secret = await response.json()
+      console.log(secret)
+      setSecret(secret)
+    }
+
+    if (idOfFileOpened) {
+      getSecret()
+    }
+  }, [idOfFileOpened])
+
+  const handleCopySecret = () => {
+    navigator.clipboard.writeText(`https://inkspiff.com/invite/${secret!.hash}`)
+  }
+
+  useEffect(() =>{ 
+    setIdOfFileOpened(markdownSelected)
+  }, [])
+
 
   if (!session ) {
     return <Box sx={{
@@ -428,8 +441,21 @@ const Members = () => {
                 </Box>
 
                 <Switch  />
+
               </Box>
 
+              {secret && <Box>
+                <Typography sx={{
+                  fontSize: "12px",
+                  mb: 1,
+                }}>
+                {secret?.hash}
+                </Typography>
+                <Button sx={{
+
+                }} onClick={handleCopySecret}>Copy</Button>
+                </Box>}
+                    
               <Box sx={{
                 width: "100%",
                 display: "flex",
