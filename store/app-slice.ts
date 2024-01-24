@@ -37,6 +37,7 @@ const initialState: appState = {
         lastEdited: 0,
         admin: "",
         members: [],
+        memberIDs: [],
         visibility: ""
     },
     saveStates: {

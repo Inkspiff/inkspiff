@@ -1,14 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from "@/firebase"
-import { collection, doc, updateDoc, serverTimestamp, addDoc,  } from "firebase/firestore";
+import { collection, doc, updateDoc, serverTimestamp, addDoc, setDoc,  } from "firebase/firestore";
 
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const newMdData = req.body
 
-    const {title, content, admin,  } = newMdData
+    const {title, content, creator,  } = newMdData
+
+    console.log(newMdData)
 
     let inputsAreValid = true
     
@@ -24,11 +26,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const mdDataToSend = {
         title,
         content,
-        admin: admin.email,
+        admin: creator.email,
         currentLine: 1,
         github: "",
+        memberIDs: [creator.id],
         members: [{
-            email: admin.email,
+            email: creator.email,
             access: 'owner'
         }],
         visibility: "public",
@@ -41,11 +44,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     //     return docRef.id;
     //   };
     
-        await addDoc(mdRef, mdDataToSend).then( (data) => {
+        await addDoc(mdRef, mdDataToSend).then(async (data) => {
             console.log({data})
-            res.status(200).json({
-                id: data.id
+            await setDoc(doc(db, "markdowns", data.id, "members", creator.id), {
+                email: creator.email,
+                access: 'owner'
             })
+                res.status(200).json({
+                    id: data.id
+                })
         }).catch((err) => {
             console.error('Error creating document:', err);
             res.status(500).json({ error: 'Failed to create document' });

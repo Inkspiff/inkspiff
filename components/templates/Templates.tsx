@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { TemplateType } from '@/types';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import Preview from "@/components/editor/Preview"
-import ViewTemplates from '../ViewTemplate';
+import ViewTemplates from '../create/ViewTemplate';
 
 interface propTypes {
   onViewTemp: (index: number) => void

@@ -1,6 +1,10 @@
 import { TemplateType } from "@/types"
 import { TableType, CodeType, ListType, SectionType } from "@/types/editor"
 
+export const EMAIL_PATTERN =
+/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+
 export const createTable = (headers: string[]) => {
     let tableStr = "|"
 
@@ -412,4 +416,14 @@ export function timeAgo(timestamp: number): string {
     return intervalMinutes + " minute" + (intervalMinutes > 1 ? "s" : "") + " ago";
   }
   return Math.floor(seconds) + " second" + (seconds > 1 ? "s" : "") + " ago";
+}
+
+
+export function generateUniqueString(): string {
+  const characters = "0123456789abcdef";
+  let result = "";
+  for (let i = 0; i < 40; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
 }
