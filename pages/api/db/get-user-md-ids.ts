@@ -26,7 +26,7 @@ export default async function handler(
 
   const mdsRef = collection(db, "markdowns");
 
-  const q = query(mdsRef, where("allowedUsers", "array-contains", userId));
+  const q = query(mdsRef, where("memberIDs", "array-contains", userId));
 
   interface fileListType {
     id: string;
@@ -38,6 +38,7 @@ export default async function handler(
       const fileList: fileListType[] = [];
 
       querySnapshot.forEach((templateDoc) => {
+        
         fileList.push({
           id: templateDoc.id,
           title: templateDoc.data().title,

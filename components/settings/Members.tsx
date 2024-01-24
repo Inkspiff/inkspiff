@@ -20,6 +20,9 @@ import { ThemeContext } from '@/context/ThemeContext'
 import { MdOutlineMail } from "react-icons/md";
 import { IoMdRemoveCircle } from "react-icons/io";
 
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -28,6 +31,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { MembersType } from '@/types'
+import { EMAIL_PATTERN } from '@/lib/utils'
 
 function createData(
   name: string,
@@ -56,6 +60,12 @@ const Members = () => {
   const [addingMember, setAddingMember] = useState<boolean>(false)
   const [membersOfFileOpened, setMembersOfFileOpened] = useState<MembersType[]>([])
   const [loadingMembersOfFileOpened, setLoadingMembersOfFileOpened] = useState<boolean>(false)
+  const [searchResultFromDB, setSearchResultFromDB] = useState<MembersType | null>(null)
+  const [emailIsValid, setEmailIsValid] = useState<boolean>(false)
+
+  const [accessOptionsAnchorEl, setAccessOptionsAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [loadingMemberAccessChange, setLoadingMemberAccessChange] = useState<boolean>(false)
+
 
   const {members} = markdown
 
@@ -65,15 +75,84 @@ const Members = () => {
   }
 
   const handleChangeMemberEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMemberEmail(e.target.value)
-    console.log({memberEmail})
+    setMemberEmail(e.target.value)   
+
+    
   }
 
+  const handleCopyInviteLink = async () => {
+    console.log("copy invite link")
+  }
+
+
+  useEffect(() => {
+    const handleCheckIfUser = async () => {
+      console.log({memberEmail})
+      const response = await fetch("/api/db/get-user-from-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: memberEmail,
+        })
+      })
+  
+      if (!response?.ok) {
+        if (response.status === 402) {
+          return 
+        }
+        setSearchResultFromDB(null)
+        return 
+      }
+  
+      const member = await response.json()
+      setSearchResultFromDB(member)
+      console.log({member})
+    }
+    if (EMAIL_PATTERN.test(memberEmail)) { // TODO: check if valid email
+      console.log("hello")
+      handleCheckIfUser()
+    }
+  }, [memberEmail])
+
+
+  
+
   const handleAddMember = async () => {
-    console.log({memberEmail, fileOpened})
+    if (searchResultFromDB === null) {
+      return
+    }
 
     setAddingMember(true)
     const response = await fetch("/api/db/add-member", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // userId: session!.user.id,
+        memberID: searchResultFromDB.id,
+        memberEmail: searchResultFromDB.email,
+        memberAccess: "edit",
+        mdID: markdown.id,
+      })
+    })
+
+    setAddingMember(false)
+
+    if (!response?.ok) {
+      if (response.status === 402) {
+        return 
+      }
+      return
+    }
+  }
+
+
+  const handleInviteMember = async () => {
+    setAddingMember(true)
+    const response = await fetch("/api/db/invite-member", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,9 +174,8 @@ const Members = () => {
     }
   }
 
-  const handleCopyInviteLink = async () => {
-    console.log("copy invite link")
-  }
+
+  
 
   useEffect(() => {
     // get file members
@@ -126,6 +204,7 @@ const Members = () => {
       }
 
       const json = await response.json()
+      setMembersOfFileOpened(json)
       console.log({json})
     }
 
@@ -133,7 +212,44 @@ const Members = () => {
       getMembersOfFileOpened()
     }
 
-  }, [fileOpened])
+  }, [fileOpened, setAddingMember, loadingMemberAccessChange])
+
+
+  // Access options
+  const open = Boolean(accessOptionsAnchorEl);
+  const handleOpenAccessOptions = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAccessOptionsAnchorEl(event.currentTarget);
+  };
+  const handleCloseAccessOptions = () => {
+    setAccessOptionsAnchorEl(null);
+  };
+
+  const handleChangeMemberAccess = async (index: number, newAccess: string) => {
+    console.log("change member access")
+
+    setLoadingMemberAccessChange(true)
+    const response = await fetch("/api/db/set-member-access", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // userId: session!.user.id,
+        memberID: membersOfFileOpened[index].id,
+        memberAccess: newAccess,
+        mdID: markdown.id,
+      })
+    })
+
+    setLoadingMemberAccessChange(false)
+
+    if (!response?.ok) {
+      if (response.status === 402) {
+        return 
+      }
+      return
+    }
+  }
 
 
   if (!session ) {
@@ -272,11 +388,16 @@ const Members = () => {
                 type="email"
                 />
 
-                <Button variant="contained" sx={{
+                {searchResultFromDB ? <Button variant="contained" sx={{
                   fontSize: "12px",
                   lineHeight: "16px",
                   borderRadius: "0 4px 4px 0",
-                }} onClick={handleAddMember}>Send</Button>
+                }} onClick={handleAddMember}>Add</Button>
+              :  <Button variant="contained" sx={{
+                fontSize: "12px",
+                lineHeight: "16px",
+                borderRadius: "0 4px 4px 0",
+              }} onClick={handleInviteMember}>Invite</Button>}
               </Box>
 
               <Divider sx={{
@@ -295,7 +416,6 @@ const Members = () => {
           <TableRow>
             <TableCell>Email</TableCell>
             <TableCell align="right">Access</TableCell>
-            <TableCell align="right">Remove</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -307,8 +427,35 @@ const Members = () => {
               <TableCell component="th" scope="row">
                 {member.email}
               </TableCell>
-              <TableCell align="right">{member.access}</TableCell>
-              <TableCell align="right"><IoMdRemoveCircle /></TableCell>
+              <TableCell align="right">
+              <div>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleOpenAccessOptions}
+                >
+                  {member.access}
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={accessOptionsAnchorEl}
+                  open={open}
+                  onClose={handleCloseAccessOptions}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  <MenuItem onClick={() => handleChangeMemberAccess(index, "edit")}>edit</MenuItem>
+                  <MenuItem onClick={() => handleChangeMemberAccess(index, "view")}>view</MenuItem>
+                  <MenuItem onClick={() => handleChangeMemberAccess(index, "remove")}>remove</MenuItem>
+
+                  {/* TODO: CHANGING ADMINS ACCESS */}
+                </Menu>
+                </div>
+                </TableCell>
+              
             </TableRow>
           ))}
         </TableBody>

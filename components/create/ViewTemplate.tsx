@@ -37,21 +37,21 @@ const ViewTemplate = ({title, content, onBack}: propTypes) => {
   const handleCreateNewMarkdown = async () => {
     
     setLoadingSelectedTemp(true)
-    const newMdData = {
-      title,
-      content,
-      admin: session!.user.id,
-    }
 
     const response = await fetch("/api/db/create-md", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newMdData)
+      body: JSON.stringify({
+        title,
+        content,
+        creator: session!.user,
+      })
 
     })
 
+    setLoadingSelectedTemp(false)
     if (!response?.ok) {
       // handle wahalas
     } 

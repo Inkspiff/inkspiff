@@ -33,19 +33,11 @@ const CreateNew = () => {
         handleCreateNewMarkdown(
           "New Markdown", ""
           )
-          // setNewSelected(undefined)
-        // open side menu and add it
-        // hide create new
       } else {
         router.push("/editor")
       }
      
     } else {
-      // if (session) {
-      //   setNewSelected(_newType)
-      // } else {
-      //   console.log("Must log in!")
-      // }
       setNewSelected(_newType)
     }
 
@@ -64,19 +56,18 @@ const CreateNew = () => {
 
   const handleCreateNewMarkdown = async (title: string, content: string) => {
     setShowCreating(true)
-    const newMdData = {
-      title,
-      content,
-      admin: session!.user,
-
-    }
 
     const response = await fetch("/api/db/create-md", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newMdData)
+      body: JSON.stringify({
+        title,
+        content,
+        creator: session!.user,
+  
+      })
 
     })
 

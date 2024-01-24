@@ -16,6 +16,7 @@ export interface UserType {
 }
 
 export interface MembersType {
+  id: string
   email: string,
   access: string,
 }
@@ -29,6 +30,7 @@ export interface MarkdownInterface {
   currentLine: number,
   lastEdited: number | undefined,
   admin: string,
+  memberIDs: string[],
   members: MembersType[],
   visibility: string,
 
