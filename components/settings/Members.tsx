@@ -31,7 +31,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { MembersType } from '@/types'
-import { EMAIL_PATTERN } from '@/lib/utils'
+import { EMAIL_PATTERN, generateUniqueString } from '@/lib/utils'
 
 function createData(
   name: string,
@@ -55,7 +55,7 @@ const Members = () => {
 
   const {viewSettings, fileList, markdown, markdownSelected} = app
   const [loadingFiles, setLoadingFiles] = useState(false)
-  const [fileOpened, setFileOpened] = useState<string | null>(null)
+  const [idOfFileOpened, setIdOfFileOpened] = useState<string | null>(null)
   const [memberEmail, setMemberEmail] = useState<string>("")
   const [addingMember, setAddingMember] = useState<boolean>(false)
   const [membersOfFileOpened, setMembersOfFileOpened] = useState<MembersType[]>([])
@@ -66,18 +66,20 @@ const Members = () => {
   const [accessOptionsAnchorEl, setAccessOptionsAnchorEl] = React.useState<null | HTMLElement>(null);
   const [loadingMemberAccessChange, setLoadingMemberAccessChange] = useState<boolean>(false)
 
+  const [secret, setSecret] = useState<
+  {
+    hash: string, 
+    state: 'active' | 'inactive'} | null>(null)
+  const [secretLoading, setSecretLoading] = useState<boolean>(false)
 
-  const {members} = markdown
 
   const handleOpenFile = (id: string) => {
-    setFileOpened(id)
+    setIdOfFileOpened(id)
     console.log({id})
   }
 
   const handleChangeMemberEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMemberEmail(e.target.value)   
-
-    
   }
 
   const handleCopyInviteLink = async () => {
@@ -117,8 +119,6 @@ const Members = () => {
   }, [memberEmail])
 
 
-  
-
   const handleAddMember = async () => {
     if (searchResultFromDB === null) {
       return
@@ -135,7 +135,7 @@ const Members = () => {
         memberID: searchResultFromDB.id,
         memberEmail: searchResultFromDB.email,
         memberAccess: "edit",
-        mdID: markdown.id,
+        mdID: idOfFileOpened,
       })
     })
 
@@ -160,7 +160,7 @@ const Members = () => {
       body: JSON.stringify({
         // userId: session!.user.id,
         email: memberEmail,
-        mdID: markdown.id,
+        mdID: idOfFileOpened,
       })
     })
 
@@ -175,11 +175,9 @@ const Members = () => {
   }
 
 
-  
-
   useEffect(() => {
     // get file members
-    console.log({memberEmail, fileOpened})
+    console.log({memberEmail, idOfFileOpened})
 
     const getMembersOfFileOpened = async () => {
       setLoadingMembersOfFileOpened(true)
@@ -190,7 +188,7 @@ const Members = () => {
         },
         body: JSON.stringify({
           // userId: session!.user.id,
-          mdID: markdown.id,
+          mdID: idOfFileOpened,
         })
       })
 
@@ -208,11 +206,11 @@ const Members = () => {
       console.log({json})
     }
 
-    if (fileOpened) {
+    if (idOfFileOpened) {
       getMembersOfFileOpened()
     }
 
-  }, [fileOpened, setAddingMember, loadingMemberAccessChange])
+  }, [idOfFileOpened, setAddingMember, loadingMemberAccessChange])
 
 
   // Access options
@@ -237,7 +235,7 @@ const Members = () => {
         // userId: session!.user.id,
         memberID: membersOfFileOpened[index].id,
         memberAccess: newAccess,
-        mdID: markdown.id,
+        mdID: idOfFileOpened,
       })
     })
 
@@ -249,8 +247,43 @@ const Members = () => {
       }
       return
     }
+  
+  
   }
 
+  useEffect(() => {
+    
+    const getSecret = async () => {
+      setSecretLoading(true)
+      const response = await fetch("/api/db/get-secret", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          mdID: idOfFileOpened,
+        })
+      })
+
+      setSecretLoading(false)
+
+      if (!response?.ok) {
+        if (response.status === 402) {
+          return 
+        }
+        return
+      }
+
+      const json = await response.json()
+      setSecret(json)
+    }
+
+    if (idOfFileOpened) {
+      getSecret()
+    }
+  }, [])
+
+  console.log({secret})
 
   if (!session ) {
     return <Box sx={{
@@ -330,7 +363,7 @@ const Members = () => {
                       p: "2px 12px",
                       m: 0,
                       borderRadius: "4px",
-                      bgcolor: (fileOpened === file.id) ? "action.hover" : ""
+                      bgcolor: (idOfFileOpened === file.id) ? "action.hover" : ""
                     }}  onClick={() => {handleOpenFile(file.id)}}>
                         <ListItemText primary={<Typography sx={{
                       // border: "1px solid red",

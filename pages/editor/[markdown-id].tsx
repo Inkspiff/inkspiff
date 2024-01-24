@@ -77,8 +77,10 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
   const {query} = router
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
-  const {viewSettings, markdown, markdownSelected, saveStates} = app
+  const {viewSettings, markdown, markdownSelected, saveStates,} = app
   const {drawer: open} = viewSettings
+
+  const {github} = markdown
 
 
   useEffect(() => {
@@ -94,6 +96,7 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
   }, [])
 
 
+  console.log({github})
 
 
   return (

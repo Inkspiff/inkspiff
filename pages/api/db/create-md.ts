@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from "@/firebase"
 import { collection, doc, updateDoc, serverTimestamp, addDoc, setDoc,  } from "firebase/firestore";
+import { generateUniqueString } from '@/lib/utils';
 
 
 
@@ -36,7 +37,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }],
         visibility: "public",
         lastEdited: serverTimestamp(),
-
+        secret: {
+            hash: generateUniqueString(),
+            state: 'active'
+        }
     }
 
     // const createDocument = async (data) => {

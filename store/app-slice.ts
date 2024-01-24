@@ -36,9 +36,9 @@ const initialState: appState = {
         currentLine: 1,
         lastEdited: 0,
         admin: "",
-        members: [],
         memberIDs: [],
-        visibility: ""
+        visibility: "",
+        github: "",
     },
     saveStates: {
         saving: false,
