@@ -125,7 +125,10 @@ export default function AccountAreaMobile() {
          vertical: 'top',
          horizontal: 'left',
        }}
-      >
+      > 
+      
+      {/* https://www.notion.so/Product-68d84bd78e6e4762a40a40a136f1f546?pvs=4 */}
+
         <Paper sx={{
           borderRadius: "8px",
           width: "240px",

@@ -197,16 +197,13 @@ const handleShowSidebar = () => {
             alignItems: "center",
           }}>
 
-<IconButton sx={{
+            <IconButton sx={{
               borderRadius: "4px"
             }}  size="small" onClick={handleGetGithub}>
-            {copied ? <DoneOutlineRoundedIcon sx={{
+           <AiFillGithub style={{
                 // color: "#121212",
                 fontSize: "18px"
-              }} /> : <AiFillGithub style={{
-                // color: "#121212",
-                fontSize: "18px"
-              }} />}
+              }} />
             </IconButton>
 
             

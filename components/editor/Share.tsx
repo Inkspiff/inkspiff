@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -14,6 +14,12 @@ import { RootState } from "@/store";
 import { appActions } from '@/store/app-slice';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router"
+import { IoIosLink } from "react-icons/io";
+import { MembersType } from '@/types';
+import { EMAIL_PATTERN } from '@/lib/utils';4
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function Share() {
   const router = useRouter();
@@ -21,8 +27,11 @@ export default function Share() {
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
 
-  const [invitee, setInvitee] = useState<string>("")
+  const [memberEmail, setMemberEmail] = useState<string>("")
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [addingMmeber, setAddingMember] = useState<boolean>(false)
+  const [gettingFileMembers, setGettingFileMembers] = useState<boolean>(false)
+  const [searchResultFromDB, setSearchResultFromDB] = useState<MembersType | null>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -31,10 +40,127 @@ export default function Share() {
   const open = Boolean(anchorEl);
   const id = open ? 'share-popover' : undefined;
 
+  const {markdown, markdownSelected} = app
+
+  const [visibilityOptionsAnchorEl, setVisibilityOptionsAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openVisisbilityOptions = Boolean(visibilityOptionsAnchorEl);
+  const handleOpenVisibilityOptions = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setVisibilityOptionsAnchorEl(event.currentTarget);
+  };
+  const handleCloseVisibilityOptions = () => {
+    setVisibilityOptionsAnchorEl(null);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> ) => {
-    setInvitee(e.currentTarget.value)
+    setMemberEmail(e.currentTarget.value)
   }
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(`https://inkspiff.com/${markdown.title.trim().split(" ").join("-")}-${markdown.id}`)
+  }
+
+  const handleChangeVisibility = (vis: string) => { 
+    console.log("change visibility", vis)
+  }
+
+  useEffect(() => {
+    const handleCheckIfUser = async () => {
+      console.log({memberEmail})
+      const response = await fetch("/api/db/get-user-from-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: memberEmail,
+        })
+      })
+  
+      if (!response?.ok) {
+        if (response.status === 402) {
+          return 
+        }
+        setSearchResultFromDB(null)
+        return 
+      }
+  
+      const member = await response.json()
+      setSearchResultFromDB(member)
+      console.log({member})
+    }
+    if (EMAIL_PATTERN.test(memberEmail)) { // TODO: check if valid
+      handleCheckIfUser()
+    }
+  }, [memberEmail])
+
+
+  const handleAddMember = async () => {
+    if (searchResultFromDB === null) {
+      // TODO: send invite email
+      return
+      
+    }
+
+    setAddingMember(true)
+    const response = await fetch("/api/db/add-member", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // userId: session!.user.id,
+        memberID: searchResultFromDB.id,
+        memberEmail: searchResultFromDB.email,
+        memberAccess: "edit",
+        mdID: markdownSelected,
+      })
+    })
+
+    setAddingMember(false)
+
+    if (!response?.ok) {
+      if (response.status === 402) {
+        return 
+      }
+      return
+    }
+  }
+
+
+  useEffect(() => {
+
+    const getMembersOfFileOpened = async () => {
+      setGettingFileMembers(true)
+      const response = await fetch("/api/db/get-members", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // userId: session!.user.id,
+          mdID: markdownSelected,
+        })
+      })
+
+
+      setGettingFileMembers(false)
+
+      if (!response?.ok) {
+        if (response.status === 402) {
+          return 
+        }
+        return
+      }
+
+      const json = await response.json()
+      console.log({json})
+    }
+
+    if (markdownSelected && session) {
+      getMembersOfFileOpened()
+    }
+
+  }, [setAddingMember])
 
   return (
     <>
@@ -56,7 +182,7 @@ export default function Share() {
         <Paper sx={{
              bgcolor: 'background.paper',
              maxWidth: "100%",
-             width: {xs: "400px", md: "500px"},
+             width: {xs: "400px", md: "400px"},
              border: "1px solid transparent",
              }} >
              
@@ -78,7 +204,7 @@ export default function Share() {
             alignItems: "center",
             justifyContent: "space-between"
           }}>
-              <Box component="input" value={invitee} onChange={handleChange} sx={{
+              <Box component="input" value={memberEmail} onChange={handleChange} sx={{
                 border: "1px solid",
                 borderColor: "grey.A200",
                 p: "8px 8px",
@@ -88,7 +214,7 @@ export default function Share() {
                 borderRadius: "4px",
                 mr: 1,
               }} />
-                <Button variant="contained" size="small">invite</Button>
+                <Button variant="contained" size="small" onClick={handleAddMember}>invite</Button>
               </Box>
 
               <Divider sx={{
@@ -104,8 +230,39 @@ export default function Share() {
                   alignItems: "center",
                 }}
               >
-                <Typography variant="body2">Anyone with the link</Typography>
-                <Typography variant="body2">Copy Link</Typography>
+        
+                <div>
+                <Button
+                  id="basic-button"
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleOpenVisibilityOptions}
+                >
+                  Anyone with the link
+                </Button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={visibilityOptionsAnchorEl}
+                  open={open}
+                  onClose={handleCloseVisibilityOptions}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  <MenuItem onClick={() => handleChangeVisibility("private")}>edit</MenuItem>
+                  <MenuItem onClick={() => handleChangeVisibility("public")}>view</MenuItem>
+                </Menu>
+                </div>
+
+                <Button variant="text" size="small" sx={{
+                  display: "flex",
+                alignItems: "center",
+                }} onClick={handleCopyLink}> 
+                    <IoIosLink style={{
+                      marginRight: "4px"
+                    }} />Copy Link
+                </Button>
               </Box>   
             </>    
           : 
