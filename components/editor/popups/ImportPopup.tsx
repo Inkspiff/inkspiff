@@ -77,7 +77,7 @@ const ImportPopup = () => {
         const newMdData = {
           title: markdownName,
           content: markdownContent,
-          admin: session!.user.id,
+          creator: session!.user,
         }
 
     
@@ -90,9 +90,9 @@ const ImportPopup = () => {
     
         })
     
-        // setShowCreating(false)
         if (!response?.ok) {
           // handle wahalas
+          return
         } 
     
         const json = await response.json()
@@ -117,6 +117,7 @@ const ImportPopup = () => {
           ))
           
         dispatch(appActions.updateMarkdownSelected(json.id))
+        dispatch(appActions.setPopup(""))
   }
 
 
