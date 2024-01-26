@@ -161,12 +161,9 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
     }
   }}
 >
-      <Paper className="Items" style={{
+      <Paper className="Items" sx={{
     width: "100%",
     padding: "4px",
-    // border: "1px solid red",
-    backgroundColor: "white",
-    border: "2px solid #f6f5f4",
     borderRadius: "8px",
     overflow: "hidden",
     height:  `200px`,
@@ -177,7 +174,6 @@ const SelectMenu: React.FC<SelectMenuProps> = ({ open, position, onSelect, close
         width: "100%",
         overflowY: "auto",
         height: "100%",
-        backgroundColor: "white",
     }} ref={boxRef}>
          <h5 style={{
                   fontWeight: 400,

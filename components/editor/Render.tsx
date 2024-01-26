@@ -22,9 +22,8 @@ const Render = ( ) => {
 
   const {markdown} = app
   const {content} = markdown
-  const text = content
 
-  // const markdownString = text
+  // const markdownString = content
 
   // useEffect(() => {
 
@@ -47,43 +46,43 @@ const Render = ( ) => {
   // }, [markdownString, loading, result])
 
 
-  useEffect(() => {
-    const doYou = async () => {
-       // Octokit.js
-      // https://github.com/octokit/core.js#readme
+  // useEffect(() => {
+  //   const doYou = async () => {
+  //      // Octokit.js
+  //     // https://github.com/octokit/core.js#readme
 
-      // Create an instance of Octokit.
-      // const octokit = new Octokit();
+  //     // Create an instance of Octokit.
+  //     // const octokit = new Octokit();
 
-      // Create an instance of Octokit with a personal access token.
-      //   const octokit = new Octokit({
-      //     auth: process.env.NEXT_PUBLIC_GITHUB_PAT
-      //   });
+  //     // Create an instance of Octokit with a personal access token.
+  //     //   const octokit = new Octokit({
+  //     //     auth: process.env.NEXT_PUBLIC_GITHUB_PAT
+  //     //   });
 
 
-      //     // Use the Octokit instance to call the 'markdown.render' method.
-      //     octokit.markdown.render({
-      //       text: text,
-      //       mode: 'markdown',
-      //     })
-      //     .then(response => {
-      //       // Get the HTML content from the response.
-      //       setHtmlContent(response.data);
-      //       // console.log(response.data)
-      //       setLoading(false)
-      //     })
-      //     .catch(error => {
-      //       console.error(error);
-      //       setLoading(false)
-      //     });
-    }
+  //     //     // Use the Octokit instance to call the 'markdown.render' method.
+  //     //     octokit.markdown.render({
+  //     //       text: content,
+  //     //       mode: 'markdown',
+  //     //     })
+  //     //     .then(response => {
+  //     //       // Get the HTML content from the response.
+  //     //       setHtmlContent(response.data);
+  //     //       // console.log(response.data)
+  //     //       setLoading(false)
+  //     //     })
+  //     //     .catch(error => {
+  //     //       console.error(error);
+  //     //       setLoading(false)
+  //     //     });
+  //   }
 
-    if (text.trim() !== "" ) {
-      setLoading(true);
-      doYou();
-    }
+  //   if (content.trim() !== "" ) {
+  //     setLoading(true);
+  //     doYou();
+  //   }
       
-  }, [text])
+  // }, [content])
   
  
 
@@ -106,7 +105,7 @@ const Render = ( ) => {
         }}>Loading...</Box>}
         
         {/* Render the HTML content */}
-      <Box className="rendered" dangerouslySetInnerHTML={{ __html: htmlContent }} ></Box>
+      <Box className="rendered" dangerouslySetInnerHTML={{ __html: content }} ></Box>
         {/* <Button onClick={doYou}>Markdown</Button> */}
         </Box>
 }
