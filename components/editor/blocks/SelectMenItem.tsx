@@ -23,9 +23,9 @@ const SelectMenuItem: React.FC<propTypes> = ({ onSelect, item, isSelected }) => 
               onClick={() => onSelect(item)}
               sx={{
                 "&:hover": {
-                  backgroundColor: "#f6f5f4",
+                  backgroundColor: "action.hover",
                 },
-                backgroundColor: isSelected ? "#f6f5f4" : "",
+                backgroundColor: isSelected ? "action.hover" : "",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -59,7 +59,6 @@ const SelectMenuItem: React.FC<propTypes> = ({ onSelect, item, isSelected }) => 
                   fontSize: "0.75rem",
                   margin: 0,
                   marginBottom: "4px",
-                  color: "#121212",
                   display: {xs: "none", sm: "block"}
                 }}>This is a small description</Typography>
 

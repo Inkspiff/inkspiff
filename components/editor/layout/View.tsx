@@ -11,6 +11,7 @@ import Editor from "@/components/editor/Editor"
 import SectionEditor from "@/components/editor/sections/SectionEditor"
 import Blocks from "@/components/editor/block-view/Blocks"
 import NoSections from "@/components/editor/sections/NoSections"
+import Render from "@/components/editor/Render"
 
 const View = () => {
   const router = useRouter();
@@ -119,6 +120,7 @@ const View = () => {
           overflowY: {xs: "auto", sm: "scroll"},
         }}>
        <Preview doc={(sidebar && !selectedSection) ? "" : doc } />
+
         </Grid>
     </Grid>
     
