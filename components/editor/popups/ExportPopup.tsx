@@ -19,6 +19,7 @@ import { popupBaseStyle } from '@/config/editor';
 import { set } from 'react-hook-form';
 import Preview from '../Preview';
 import ReactMarkdown from 'react-markdown';
+import { Octokit } from "@octokit/rest";
 
 const ExportPopup = () => {
     const dispatch = useDispatch()
@@ -50,11 +51,40 @@ const ExportPopup = () => {
       }
   }
 
+  const getHTML = async () => {
+    //  Octokit.js
+    // https://github.com/octokit/core.js#readme
+
+    // Create an instance of Octokit with a personal access token.
+      const octokit = new Octokit({
+        auth: process.env.NEXT_PUBLIC_GITHUB_PAT
+      });
+
+
+      // Use the Octokit instance to call the 'markdown.render' method.
+      const htmlContent = await octokit.markdown.render({
+        text: content,
+        mode: 'markdown',
+      })
+      .then(response => {
+        // Get the HTML content from the response.
+        return response.data
+      }).catch(error => {
+        console.error(error);
+      })
+
+      return htmlContent
+  }
+
   const handleExportFileAsHTML = async () => {
+    if (typeof window === "undefined") return
+    if (typeof document === "undefined") return
+
     if (content) {
         // Convert Markdown to HTML using react-markdown
-        const htmlContent = <ReactMarkdown>{content}</ReactMarkdown>;
-  
+        const htmlContent  = await getHTML()
+        console.log(htmlContent)
+
         // Create a Blob with the HTML content
         const blob = new Blob([`<!DOCTYPE html><html><head><title>${title}</title></head><body>${htmlContent}</body></html>`], {
           type: 'text/html',
@@ -62,7 +92,7 @@ const ExportPopup = () => {
   
         // Create a link to trigger the download
         const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
+        link.href = window.URL.createObjectURL(blob);
         link.download = `${title.split(' ').join('-')}.html`;
   
         // Append the link to the document and trigger the click event
