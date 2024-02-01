@@ -19,7 +19,8 @@ import { popupBaseStyle } from '@/config/editor';
 import { set } from 'react-hook-form';
 import Preview from '../Preview';
 import ReactMarkdown from 'react-markdown';
-import { Octokit } from "@octokit/rest";
+import { convertToGithubHTML } from '@/lib/utils';
+import html2pdf from 'html2pdf.js'
 
 const ExportPopup = () => {
     const dispatch = useDispatch()
@@ -51,30 +52,7 @@ const ExportPopup = () => {
       }
   }
 
-  const getHTML = async () => {
-    //  Octokit.js
-    // https://github.com/octokit/core.js#readme
-
-    // Create an instance of Octokit with a personal access token.
-      const octokit = new Octokit({
-        auth: process.env.NEXT_PUBLIC_GITHUB_PAT
-      });
-
-
-      // Use the Octokit instance to call the 'markdown.render' method.
-      const htmlContent = await octokit.markdown.render({
-        text: content,
-        mode: 'markdown',
-      })
-      .then(response => {
-        // Get the HTML content from the response.
-        return response.data
-      }).catch(error => {
-        console.error(error);
-      })
-
-      return htmlContent
-  }
+  
 
   const handleExportFileAsHTML = async () => {
     if (typeof window === "undefined") return
@@ -82,8 +60,8 @@ const ExportPopup = () => {
 
     if (content) {
         // Convert Markdown to HTML using react-markdown
-        const htmlContent  = await getHTML()
-        console.log(htmlContent)
+        const htmlContent  = await convertToGithubHTML(content)
+        console.log({htmlContent})
 
         // Create a Blob with the HTML content
         const blob = new Blob([`<!DOCTYPE html><html><head><title>${title}</title></head><body>${htmlContent}</body></html>`], {
@@ -106,7 +84,45 @@ const ExportPopup = () => {
 
   const handleExportFileAsPDF = async () => {
     if (content) {
-        console.log("Exporting as PDF")
+        const htmlContent  = await convertToGithubHTML(content)
+        console.log({htmlContent})
+        
+        const pdfOptions = {
+            margin: 10,
+            filename: `${title.split(' ').join('-')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+            html2canvas: {
+                scale: 2,
+                letterRendering: true,
+                useCORS: true,
+            },
+            // margin: 10,
+            // filename: ,
+            // image: { type: 'jpeg', quality: 0.98 },
+            // html2canvas: { scale: 2 },
+            // jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          };
+
+          const customStyles = `
+            <style>
+                /* Adjust list styles */
+                ul, ol {
+                    /*  margin: 0;
+                        padding: 0;
+                        list-style-position: inside; */
+                }
+
+                li {
+                    /* margin-bottom: 8px; */  /* Adjust the margin as needed */
+                }
+            </style>
+        `;
+
+        const modifiedHtmlContent = `${customStyles}${htmlContent}`;
+        
+          html2pdf().from(modifiedHtmlContent).set(pdfOptions).save();
       }
   }
 

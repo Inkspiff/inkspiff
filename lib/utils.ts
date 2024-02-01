@@ -1,6 +1,8 @@
 import { TemplateType } from "@/types"
 import { TableType, CodeType, ListType, SectionType } from "@/types/editor"
 
+import { Octokit } from "@octokit/rest";
+
 export const EMAIL_PATTERN =
 /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
@@ -426,4 +428,30 @@ export function generateUniqueString(): string {
     result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
+}
+
+
+export const convertToGithubHTML = async (content: string) => {
+  //  Octokit.js
+  // https://github.com/octokit/core.js#readme
+
+  // Create an instance of Octokit with a personal access token.
+    const octokit = new Octokit({
+      auth: process.env.NEXT_PUBLIC_GITHUB_PAT
+    });
+
+
+    // Use the Octokit instance to call the 'markdown.render' method.
+    const htmlContent = await octokit.markdown.render({
+      text: content,
+      mode: 'markdown',
+    })
+    .then(response => {
+      // Get the HTML content from the response.
+      return response.data
+    }).catch(error => {
+      console.error(error);
+    })
+
+    return htmlContent
 }
