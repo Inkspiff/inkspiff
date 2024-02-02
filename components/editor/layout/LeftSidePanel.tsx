@@ -17,8 +17,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 // import { useTheme } from '@mui/material/styles';
 import theme from '@/config/theme';
 import AccountAreaMobile from '../AccountAreaMobile';
-import ActionsBottom from '@/components/editor/popups/ActionsBottom';
-import ActionsTop from '../popups/ActionsTop';
+import ActionsBottom from '@/components/editor/layout/ActionsBottom';
+import ActionsTop from './ActionsTop';
 
 const drawerWidth = 240;
 

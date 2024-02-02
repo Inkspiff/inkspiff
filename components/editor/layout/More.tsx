@@ -98,7 +98,7 @@ export default function More() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'more-popover' : undefined;
 
 
   const handleCopyLink = () => {
@@ -299,8 +299,9 @@ export default function More() {
              px: 0, 
              py: 1,
              bgcolor: 'background.paper',
+             maxWidth: "100%",
              width: "250px",
-             maxHeight: "calc(100vh - 100px)",
+            //  maxHeight: "calc(100vh - 100px)",
              }}>
               
               <Typography component="h6" sx={{

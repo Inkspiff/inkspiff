@@ -28,22 +28,30 @@ export default function Share() {
   const app = useSelector((state: RootState) => state.app)
 
   const [memberEmail, setMemberEmail] = useState<string>("")
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [shareAnchorEl, setShareAnchorEl] = React.useState<null | HTMLElement>(null);
   const [addingMmeber, setAddingMember] = useState<boolean>(false)
   const [gettingFileMembers, setGettingFileMembers] = useState<boolean>(false)
   const [searchResultFromDB, setSearchResultFromDB] = useState<MembersType | null>(null)
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+  const handleToggleOpenShareAnchorEl = (event: React.MouseEvent<HTMLElement>) => {
+    setShareAnchorEl(shareAnchorEl ? null : event.currentTarget);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'share-popover' : undefined;
+  console.log({shareAnchorEl})
+
+  const openShare = Boolean(shareAnchorEl);
+  const idOfSharePopup = openShare ? 'share-popover' : undefined;
+
+  
+
 
   const {markdown, markdownSelected} = app
 
   const [visibilityOptionsAnchorEl, setVisibilityOptionsAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const openVisisbilityOptions = Boolean(visibilityOptionsAnchorEl);
+  const idOfVisibilityOptions = openVisisbilityOptions ? 'members-menu' : undefined;
+
   const handleOpenVisibilityOptions = (event: React.MouseEvent<HTMLButtonElement>) => {
     setVisibilityOptionsAnchorEl(event.currentTarget);
   };
@@ -163,16 +171,16 @@ export default function Share() {
   }, [setAddingMember])
 
   return (
-    <>
+    <div>
        <IconButton sx={{
               borderRadius: "4px"
-            }}  size="small" onClick={handleClick}>
+            }}  size="small" onClick={handleToggleOpenShareAnchorEl}>
               <ShareOutlinedIcon sx={{
                 // color: "#121212"
               }}/>
               </IconButton>
-      <Popover id={id} open={open} anchorEl={anchorEl}
-       onClose={handleClick}
+      <Popover id={idOfSharePopup} open={openShare} anchorEl={shareAnchorEl}
+       onClose={handleToggleOpenShareAnchorEl}
        anchorOrigin={{
          vertical: 'bottom',
          horizontal: 'left',
@@ -182,7 +190,7 @@ export default function Share() {
         <Paper sx={{
              bgcolor: 'background.paper',
              maxWidth: "100%",
-             width: {xs: "400px", md: "400px"},
+             width: {xs: "400px", sm: "400px"},
              border: "1px solid transparent",
              }} >
              
@@ -234,17 +242,17 @@ export default function Share() {
                 <div>
                 <Button
                   id="basic-button"
-                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-controls={openVisisbilityOptions ? 'members-menu' : undefined}
                   aria-haspopup="true"
-                  aria-expanded={open ? 'true' : undefined}
+                  aria-expanded={openVisisbilityOptions ? 'true' : undefined}
                   onClick={handleOpenVisibilityOptions}
                 >
                   Anyone with the link
                 </Button>
                 <Menu
-                  id="basic-menu"
+                  id={idOfVisibilityOptions}
                   anchorEl={visibilityOptionsAnchorEl}
-                  open={open}
+                  open={openVisisbilityOptions}
                   onClose={handleCloseVisibilityOptions}
                   MenuListProps={{
                     'aria-labelledby': 'basic-button',
@@ -277,6 +285,6 @@ export default function Share() {
            
         </Paper>
       </Popover>
-    </>
+    </div>
   );
 }

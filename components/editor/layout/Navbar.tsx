@@ -33,6 +33,7 @@ import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import More from "@/components/editor/layout/More";
 import Share from "@/components/editor/Share"
 import { AiFillGithub } from "react-icons/ai";
+import GithubPopup from "../popups/GithubPopup";
 
 const drawerWidth = 240;
 
@@ -117,8 +118,8 @@ const handleCopy = () => {
         }, 3000);
   }
 
-  const handleGetGithub = () => {
-    console.log("github")
+  const handleGithub = () => {
+    dispatch(appActions.setPopup("github"))
   }
 
 const handleOpenDrawer = () => {
@@ -199,12 +200,14 @@ const handleShowSidebar = () => {
 
             <IconButton sx={{
               borderRadius: "4px"
-            }}  size="small" onClick={handleGetGithub}>
+            }}  size="small" onClick={handleGithub}>
            <AiFillGithub style={{
                 // color: "#121212",
                 fontSize: "18px"
               }} />
             </IconButton>
+
+            <GithubPopup />
 
             
             <IconButton sx={{
