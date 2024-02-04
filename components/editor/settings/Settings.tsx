@@ -19,7 +19,7 @@ import NameEmail from "@/components/account/NameEmail"
 import General from '@/components/editor/settings/General';
 import NotificationSettings from '@/components/editor/settings/NotificationSettings';
 import Billing from '@/components/editor/settings/Billing';
-import Members from '@/components/editor/settings/Members';
+import ManageMembers from '@/components/editor/settings/members/ManageMembers';
 import Plans from "@/components/plans/Plans"
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
@@ -53,7 +53,7 @@ const SIDE_LIST = [
           m: 0,
         }}/>,
         
-        component: <Members />
+        component: <ManageMembers />
     },
     {
         text: "Billing",
