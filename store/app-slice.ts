@@ -110,6 +110,13 @@ const appSlice = createSlice( {
             state.markdown = {...state.markdown, content: splitContent.join("\n")}
         },
 
+        changeVisibility(state, action: PayloadAction<string>) {
+            state.markdown = {
+                ...state.markdown,
+                visibility: action.payload
+            }
+        },
+
         /* FILE ACTIONS */
         updateFileList(state, action: PayloadAction<{
             id: string,

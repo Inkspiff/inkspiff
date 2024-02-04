@@ -12,9 +12,9 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import { useRouter } from 'next/router';
 import { TemplateType } from '@/types';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import Preview from "@/components/editor/Preview"
+import Preview from "@/components/editor/layout/Preview"
 import ViewTemplate from '@/components/create/ViewTemplate';
-import Templates from '@/components/templates/Templates';
+import Templates from '@/components/templates-page/Templates';
 import { useSession, signIn, signOut } from "next-auth/react";
 import { TextField } from '@mui/material';
 

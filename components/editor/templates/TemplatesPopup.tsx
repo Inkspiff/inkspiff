@@ -17,10 +17,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
-import ViewTemplateInEditor from "@/components/templates/ViewTemplateInEditor"
-import TemplateFilterSelect from "@/components/templates/TemplateFilterSelect"
+import ViewTemplateInEditor from "@/components/editor/templates/ViewTemplateInEditor"
+import TemplateFilterSelect from "@/components/templates-page/TemplateFilterSelect"
 import { ThemeContext } from '@/context/ThemeContext';
-import TemplatesList from "@/components/templates/TemplatesList";
+import TemplatesList from "@/components/editor/templates/TemplatesList";
 import { matchSorter } from "match-sorter";
 import { TemplateType } from '@/types';
 import { popupBaseStyle } from '@/config/editor';

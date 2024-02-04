@@ -16,8 +16,8 @@ import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
 import {authOptions} from "@/lib/auth"
 
-import ViewTemplate from "@/components/templates/ViewTemplate";
-import TemplatesList from "@/components/templates/TemplatesList";
+import ViewTemplate from "@/components/templates-page/ViewTemplate";
+import TemplatesList from "@/components/editor/templates/TemplatesList";
 import { db } from "@/firebase"
 import { DocumentData, QuerySnapshot, collection, query, where, getDocs, orderBy, limit, doc, getDoc } from "firebase/firestore";
 import { TemplateType } from "@/types";

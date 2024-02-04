@@ -16,9 +16,9 @@ import { useRouter } from "next/router"
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
-import Settings from '@/components/settings/Settings';
+import Settings from '@/components/editor/settings/Settings';
 import Paper from "@mui/material/Paper"
-import Updates from "@/components/updates/Updates"
+import Updates from "@/components/editor/updates/Updates"
 
 export default function ActionsTop() {
   const router = useRouter();

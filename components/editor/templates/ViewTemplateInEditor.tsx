@@ -11,7 +11,7 @@ import Paper from "@mui/material/Paper"
 import ArrowLeftRoundedIcon from "@mui/icons-material/ArrowLeftRounded"
 import GoogleIcon from "@mui/icons-material/Google"
 import { TemplateType, UserType } from "@/types"
-import Preview from "@/components/editor/Preview"
+import Preview from "@/components/editor/layout/Preview"
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";

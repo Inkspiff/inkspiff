@@ -16,10 +16,10 @@ import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
 import ArrowCircleUpOutlinedIcon from '@mui/icons-material/ArrowCircleUpOutlined';
 import NameEmail from "@/components/account/NameEmail"
-import General from '@/components/settings/General';
-import NotificationSettings from '@/components/settings/NotificationSettings';
-import Billing from '@/components/settings/Billing';
-import Members from '@/components/settings/Members';
+import General from '@/components/editor/settings/General';
+import NotificationSettings from '@/components/editor/settings/NotificationSettings';
+import Billing from '@/components/editor/settings/Billing';
+import Members from '@/components/editor/settings/Members';
 import Plans from "@/components/plans/Plans"
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";

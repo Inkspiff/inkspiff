@@ -17,13 +17,13 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
 import { useSession, signIn, signOut } from "next-auth/react";
-import EditorDialog from '@/components/editor/EditorDialog';
+import EditorDialog from '@/components/editor/editor-ui/EditorDialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
-import EditorSnackbar from '@/components/editor/EditorSnackbar';
+import EditorSnackbar from '@/components/editor/editor-ui/EditorSnackbar';
 import { string } from 'zod';
 import { FileType } from '@/types/editor';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';

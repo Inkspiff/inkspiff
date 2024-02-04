@@ -16,7 +16,7 @@ import { appActions } from "@/store/app-slice";
 import { useRouter } from 'next/router';
 import { TemplateType } from '@/types';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import Preview from "@/components/editor/Preview"
+import Preview from "@/components/editor/layout/Preview"
 import { useSession, signIn, signOut } from "next-auth/react";
 import Avatar from "@mui/material/Avatar"
 

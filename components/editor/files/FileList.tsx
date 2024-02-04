@@ -24,7 +24,8 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Button from "@mui/material/Button"
 import { useRouter } from "next/router"
 import { FileType } from '@/types/editor';
-import FileMore from '@/components/editor/file/FileMore';
+import FileMore from '@/components/editor/files/FileMore';
+import Loading from '@/components/ui/Loading';
 
 
 
@@ -115,8 +116,15 @@ export default function FileList() {
       
   }, [])
 
+  if (loadingFiles) {
+    return <Loading innerSx={{
+      fontSize: "1rem",
+    }} />
+  }
 
-// console.log({markdownSelected})
+  
+  
+
   return (
     
    <>

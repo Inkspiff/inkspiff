@@ -6,12 +6,14 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, } from "next-auth/react";
 import { useRouter } from "next/router"
-import Preview from '../Preview'
-import Editor from "@/components/editor/Editor"
+import Preview from './Preview'
+import Editor from "@/components/editor/layout/Editor"
 import SectionEditor from "@/components/editor/sections/SectionEditor"
 import Blocks from "@/components/editor/block-view/Blocks"
 import NoSections from "@/components/editor/sections/NoSections"
-import Render from "@/components/editor/Render"
+import Render from "@/components/editor/layout/Render"
+import { Typography } from '@mui/material';
+import Loading from '@/components/ui/Loading';
 
 const View = () => {
   const router = useRouter();
@@ -82,7 +84,7 @@ const View = () => {
   
 
   if (loadingMarkdown) {
-    return <Box>Loading</Box>
+    return <Loading />
   }
 
 
@@ -93,14 +95,14 @@ const View = () => {
     <Grid container sx={{
       // border: "4px solid purple",
       height: "100%",
-      // overflow: "hidden",
+      overflowY: "auto",
       position: "relative",
       width: "100%",
     
     }}>
 
      
-        <Grid item xs={12} sm={(fullscreen ? 12 : 6)} md={(fullscreen ? 12 : 6)} sx={{
+        <Grid item xs={12} sm={(fullscreen ? 12 : 6)} sx={{
           // outline: "2px solid blue",
           height: {xs: "50%", sm: "100%"},
           minHeight: {xs: "auto", md: "calc(100vh - 64px)"},
@@ -113,7 +115,7 @@ const View = () => {
         {(!sidebar && blocksView) && <Blocks />}
   
         </Grid>
-        <Grid item xs={12} sm={(fullscreen ? 12 : 6)} md={(fullscreen ? 12 : 6)} sx={{
+        <Grid item xs={12} sm={(fullscreen ? 12 : 6)} sx={{
           // outline: "2px solid red",
           height: {xs: "50%", sm: "100%"},
           // minHeight: "50vh",

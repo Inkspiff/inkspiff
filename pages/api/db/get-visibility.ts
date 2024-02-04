@@ -14,8 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     await getDoc(mdRef).then( (mdDocSnap) => {
         if(mdDocSnap.exists()) {
-            const github = mdDocSnap.data().github
-            res.status(200).json(github)
+            const visibility = mdDocSnap.data().visibility
+            res.status(200).json(visibility)
         }
       
     }).catch((err) => {

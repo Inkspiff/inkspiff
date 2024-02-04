@@ -30,7 +30,7 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import FileOptions from '@/components/editor/file/FileOptions';
+import FileOptions from '@/components/editor/files/FileOptions';
 import { FileType } from '@/types/editor';
 import { truncateSync } from 'fs';
 
