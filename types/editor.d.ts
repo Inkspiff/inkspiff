@@ -1,7 +1,7 @@
 import React from "react"
 
 export type EditorActionType = "" | "undo" | "redo" | "delete"
-export type EditorPopupType = "" | "settings" | "export" | "import" | "templates" | "settings" | "feedback"
+export type EditorPopupType = "" | "settings" | "export" | "import" | "templates" | "settings" | "feedback" | "github"
 
 export type TableType = {
     markdown: string,

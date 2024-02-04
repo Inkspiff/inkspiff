@@ -19,7 +19,7 @@ import CustomSectionNamer from "@/components/editor/sections/CustomSectionNamer"
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
-import EditorModal from "../EditorModal";
+import EditorModal from "../editor-ui/EditorModal";
 
 const Sections = () => {
     const { data: session } = useSession()

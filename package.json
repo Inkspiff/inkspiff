@@ -28,22 +28,29 @@
     "@mui/material": "^5.13.1",
     "@mui/utils": "^5.13.1",
     "@next-auth/firebase-adapter": "^2.0.1",
+    "@octokit/rest": "^20.0.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/node": "20.2.1",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "@types/react-syntax-highlighter": "^15.5.6",
     "codemirror": "^6.0.1",
+    "docxtemplater": "^3.44.0",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
+    "file-saver": "^2.0.5",
     "firebase": "^9.22.0",
     "firebase-admin": "^11.8.0",
     "github-markdown-css": "^5.2.0",
+    "html2pdf.js": "^0.10.1",
+    "mammoth": "^1.6.0",
+    "markdown-to-text": "^0.1.1",
     "match-sorter": "^6.3.1",
     "next": "13.4.3",
     "next-auth": "^4.22.1",
     "nodemailer": "^6.9.3",
     "octokit": "^3.1.2",
+    "officegen": "^0.6.5",
     "openai": "^3.2.1",
     "postmark": "^3.0.18",
     "react": "18.2.0",
@@ -57,5 +64,8 @@
     "typescript": "5.0.4",
     "zod": "^3.21.4"
   },
-  "packageManager": "yarn@3.5.1"
+  "packageManager": "yarn@3.5.1",
+  "devDependencies": {
+    "html-docx-js-typescript": "^0.1.5"
+  }
 }

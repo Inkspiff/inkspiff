@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import View from "@/components/editor/layout/View";
-import Templates from "@/components/templates/Templates";
+import Templates from "@/components/templates-page/Templates";
 import CreateNew from "@/components/create/CreateNew";
 import Navbar from "@/components/editor/layout/Navbar";
 

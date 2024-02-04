@@ -6,7 +6,7 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import Link from "next/link"
 import View from "@/components/editor/layout/View";
-import Templates from "@/components/templates/Templates";
+import Templates from "@/components/templates-page/Templates";
 import CreateNew from "@/components/create/CreateNew";
 import Navbar from "@/components/editor/layout/Navbar";
 import Box from "@mui/material/Box";
@@ -23,7 +23,7 @@ import LeftSidePanel from "@/components/editor/layout/LeftSidePanel";
 import LoginModal from "@/components/auth/login-modal"
 import ImportPopup from "@/components/editor/popups/ImportPopup"
 import ExportPopup from "@/components/editor/popups/ExportPopup"
-import TemplatesPopup from "@/components/templates/TemplatesPopup"
+import TemplatesPopup from "@/components/editor/templates/TemplatesPopup"
 import FeedbackPopup from "@/components/editor/popups/FeedbackPopup";
 
 

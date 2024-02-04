@@ -15,9 +15,9 @@ import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Button from "@mui/material/Button"
 import { useRouter } from "next/router"
-import FileList from "@/components/editor/file/FileList"
+import FileList from "@/components/editor/files/FileList"
 import AccountArea from '@/components/editor/AccountArea';
-import Actions from '@/components/editor/popups/ActionsBottom';
+import Actions from '@/components/editor/layout/ActionsBottom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 // import { useTheme } from '@mui/material/styles';
 import theme from '@/config/theme';

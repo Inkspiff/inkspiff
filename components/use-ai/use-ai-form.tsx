@@ -127,7 +127,7 @@ const UseAIForm = () => {
         const newMdData = {
           title: "New Markdown",
           content: data.result,
-          admin: session!.user.id,
+          creator: session!.user,
         }
     
          const response2 = await fetch("/api/db/create-md", {
@@ -142,6 +142,7 @@ const UseAIForm = () => {
 
         if (!response2?.ok) {
             // handle wahalas
+            return
         } 
 
           const json = await response2.json()

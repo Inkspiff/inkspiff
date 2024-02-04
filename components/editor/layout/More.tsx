@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import EditorDialog from '@/components/editor/EditorDialog';
+import EditorDialog from '@/components/editor/editor-ui/EditorDialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
-import EditorSnackbar from '@/components/editor/EditorSnackbar';
+import EditorSnackbar from '@/components/editor/editor-ui/EditorSnackbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
@@ -29,7 +29,7 @@ import { useRouter } from "next/router"
 import { useSession, signIn, signOut } from "next-auth/react";
 import { FileType } from '@/types/editor';
 import Style from "@/components/appearance/Style"
-import EditorModal from '@/components/editor/EditorModal';
+import EditorModal from '@/components/editor/editor-ui/EditorModal';
 import LoginModal from '@/components/auth/login-modal';
 import { siteConfig } from '@/config/site';
 import { timeAgo } from '@/lib/utils';
@@ -98,7 +98,7 @@ export default function More() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'more-popover' : undefined;
 
 
   const handleCopyLink = () => {
@@ -299,8 +299,9 @@ export default function More() {
              px: 0, 
              py: 1,
              bgcolor: 'background.paper',
+             maxWidth: "100%",
              width: "250px",
-             maxHeight: "calc(100vh - 100px)",
+            //  maxHeight: "calc(100vh - 100px)",
              }}>
               
               <Typography component="h6" sx={{

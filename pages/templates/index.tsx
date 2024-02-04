@@ -13,14 +13,14 @@ import BottomActionCall from "@/components/ui/BottomActionCall";
 import Footer from "@/components/layout/Footer"
 import PricingPlans from "@/components/plans/PricingPlans"
 import PaddedContainer from "@/components/layout/PaddedContainer"
-import TemplateSlide from "@/components/templates/TemplateSlide";
+import TemplateSlide from "@/components/templates-page/TemplateSlide";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
 import {authOptions} from "@/lib/auth"
-import TemplatesList from "@/components/templates/TemplatesList";
-import SubmitATemplate from "@/components/templates/SubmitATemplate";
-import SearchTemplatesSide from "@/components/templates/SearchTemplatesSide";
+import TemplatesList from "@/components/editor/templates/TemplatesList";
+import SubmitATemplate from "@/components/templates-page/SubmitATemplate";
+import SearchTemplatesSide from "@/components/templates-page/SearchTemplatesSide";
 import { db } from "@/firebase"
 import { DocumentData, QuerySnapshot, collection, query, where, getDocs, orderBy, limit, doc, getDoc } from "firebase/firestore";
 import { TemplateType } from "@/types";

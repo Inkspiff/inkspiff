@@ -14,7 +14,7 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import DoneIcon from '@mui/icons-material/Done';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
-import TitleSpace from "@/components/editor/TitleSpace";
+import TitleSpace from "@/components/editor/files/TitleSpace";
 import VerticalSplitRoundedIcon from '@mui/icons-material/VerticalSplitRounded';
 import ArticleRoundedIcon from '@mui/icons-material/ArticleRounded';
 import RightSidePanel from "@/components/editor/layout/RightSidePanel"
@@ -31,8 +31,9 @@ import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 // import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import More from "@/components/editor/layout/More";
-import Share from "@/components/editor/Share"
+import Share from "@/components/editor/share/Share"
 import { AiFillGithub } from "react-icons/ai";
+import GithubPopup from "../popups/GithubPopup";
 
 const drawerWidth = 240;
 
@@ -117,8 +118,8 @@ const handleCopy = () => {
         }, 3000);
   }
 
-  const handleGetGithub = () => {
-    console.log("github")
+  const handleGithub = () => {
+    dispatch(appActions.setPopup("github"))
   }
 
 const handleOpenDrawer = () => {
@@ -199,12 +200,14 @@ const handleShowSidebar = () => {
 
             <IconButton sx={{
               borderRadius: "4px"
-            }}  size="small" onClick={handleGetGithub}>
+            }}  size="small" onClick={handleGithub}>
            <AiFillGithub style={{
                 // color: "#121212",
                 fontSize: "18px"
               }} />
             </IconButton>
+
+            <GithubPopup />
 
             
             <IconButton sx={{
@@ -234,7 +237,7 @@ const handleShowSidebar = () => {
 
 
               <Box sx={{
-                display: {xs: "none", md: "inline-block"}
+                display: {xs: "none", sm: "inline-block"}
               }}>
               {viewSettings.fullscreen ? 
               <IconButton sx={{

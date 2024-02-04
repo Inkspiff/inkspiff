@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   try {
     const completion = await openai.createCompletion({
-      model: "text-davinci-003",
+      model: "gpt-3.5-turbo-instruct",
       prompt: generatePrompt(description, projectType, screenshots, 
         license, projectLink, isOpenSource, contributors, contactInfo, mustInclude ),
     max_tokens: 3500,
