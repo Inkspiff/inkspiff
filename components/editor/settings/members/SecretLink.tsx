@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { BASE_URL } from '@/config/constants'
 
 interface SecretLinkProps {
     idOfFileOpened: string;
@@ -86,7 +87,7 @@ const SecretLink = ({idOfFileOpened}: SecretLinkProps) => {
   }, [idOfFileOpened])
 
   const handleCopySecret = () => {
-    navigator.clipboard.writeText(`https://inkspiff.com/invite/${secret!.hash}`)
+    navigator.clipboard.writeText(`${BASE_URL}/invite/${secret!.hash}`)
   }
 
 
@@ -124,7 +125,7 @@ const SecretLink = ({idOfFileOpened}: SecretLinkProps) => {
                 <Typography sx={{
                 fontSize: "14px",
                 }}>
-                {`https://inkspiff.com/invite/${secret?.hash}`}
+                {`${BASE_URL}/invite/${secret?.hash}`}
                 
                 </Typography>
             </Paper>

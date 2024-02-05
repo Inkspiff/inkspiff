@@ -6,18 +6,14 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import Link from "next/link"
 import View from "@/components/editor/layout/View";
-import Templates from "@/components/templates-page/Templates";
-import CreateNew from "@/components/create/CreateNew";
 import Navbar from "@/components/editor/layout/Navbar";
 import Box from "@mui/material/Box";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
 import {authOptions} from "@/lib/auth"
-import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router"
 import { styled, useTheme } from '@mui/material/styles';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import LeftSidePanel from "@/components/editor/layout/LeftSidePanel";
 // import { query } from "firebase/firestore";
 import LoginModal from "@/components/auth/login-modal"
@@ -29,6 +25,8 @@ import FeedbackPopup from "@/components/editor/popups/FeedbackPopup";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
+
+  const slug = context.params!['markdown-slug'] as string
   
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
@@ -42,7 +40,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: { 
       session: session,
-    
+        slug: slug,
       providers: providers ?? [] 
     },
   }
@@ -72,9 +70,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 }));
 
 
-export default function App({ session, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function App({ session, slug, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter()
-  const {query} = router
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
   const {viewSettings, markdown, markdownSelected, saveStates,} = app
@@ -86,7 +83,7 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
   useEffect(() => {
     if (session) {
       console.log("query useEffect in [md-id]")
-      const arr = query['markdown-id']!.toString().split("-")
+      const arr = slug.split("-")
       const mdId = arr[arr.length - 1]
 
       if (markdownSelected !== mdId) {
@@ -94,9 +91,6 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
       }
     }
   }, [])
-
-
-  console.log({github})
 
 
   return (
