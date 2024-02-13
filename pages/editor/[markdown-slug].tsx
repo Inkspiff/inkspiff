@@ -85,23 +85,18 @@ export default function App({
   const { viewSettings, markdown, markdownSelected, saveStates } = app;
   const { drawer: open } = viewSettings;
   const { github } = markdown;
-  const pr = query["pr"]!.toString();
   const [diffContent, setDiffContent] = useState("");
 
-  const fetchDiff = async () => {
-    try {
+  if (query.pr && github) {
+    const fetchDiff = async () => {
       const response = await fetch(
-        `/api/github/fetchDiff?github=${github}&pr=${pr}`
+        `/api/github/fetchDiff?github=${github}&pr=${query.pr}`
       );
-      const content = await response.text();
-      setDiffContent(content);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  fetchDiff();
-  console.log("Diff content:", diffContent);
+      setDiffContent(await response.text());
+      console.log("Diff content:", diffContent);
+    };
+    fetchDiff();
+  }
 
   useEffect(() => {
     if (session) {
