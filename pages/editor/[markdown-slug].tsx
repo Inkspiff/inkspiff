@@ -99,11 +99,14 @@ export default function App({
     fetchDiff();
   }
 
-  if (session.user){
-    console.log(session.user);
-    // const repos = getUserRepos(session.user.username);
-    // console.log(repos);`
-    }
+  if (session.user) {
+    const fetchRepos = async () => {
+      // const repos = await getUserRepos("ichristwin");
+      const repos = getUserRepos(session.user.username);
+      console.log(repos);
+    };
+    fetchRepos();
+  }
 
   useEffect(() => {
     if (session) {
