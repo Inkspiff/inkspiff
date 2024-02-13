@@ -4,9 +4,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { github, pr } = req.query;
   const ghContentEndpoint = "https://patch-diff.githubusercontent.com/raw";
-  const prDiffUrl = `${ghContentEndpoint}/${github}/pull/${pr}.diff`;
+  const prDiffUrl = `${ghContentEndpoint}/${req.body.github}/pull/${req.body.pr}.diff`;
 
   try {
     const response = await fetch(prDiffUrl);

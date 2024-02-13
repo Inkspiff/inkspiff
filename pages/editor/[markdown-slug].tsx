@@ -29,7 +29,8 @@ import ImportPopup from "@/components/editor/popups/ImportPopup";
 import ExportPopup from "@/components/editor/popups/ExportPopup";
 import TemplatesPopup from "@/components/editor/templates/TemplatesPopup";
 import FeedbackPopup from "@/components/editor/popups/FeedbackPopup";
-import { getUserRepos } from "@/lib/github/userRepos";
+import { getUserRepos, getFiles, getContent } from "@/lib/github/imports";
+import { GithubData } from "@/lib/github/types";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -86,26 +87,79 @@ export default function App({
   const { viewSettings, markdown, markdownSelected, saveStates } = app;
   const { drawer: open } = viewSettings;
   const { github } = markdown;
+  const [ghRepos, setGhRepos] = useState("");
+  const [mdFiles, setMdFiles] = useState("");
+  const [mdContent, setMdContent] = useState("");
   const [diffContent, setDiffContent] = useState("");
 
-  if (query.pr && github) {
-    const fetchDiff = async () => {
-      const response = await fetch(
-        `/api/github/fetchDiff?github=${github}&pr=${query.pr}`
-      );
-      setDiffContent(await response.text());
-      console.log("Diff content:", diffContent);
+  if (session.user) {
+    const fetchRepos = async (data: object) => {
+      const response = await fetch("/api/github/fetchRepos", {
+        body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      setGhRepos(await response.json());
+      console.log("Github Repos", ghRepos);
     };
-    fetchDiff();
+    fetchRepos({ username: "ichristwin" });
   }
 
-  if (session.user) {
-    const fetchRepos = async () => {
-      // const repos = await getUserRepos("ichristwin");
-      const repos = getUserRepos(session.user.username);
-      console.log(repos);
+  const fetchFiles = async (data: GithubData) => {
+    const response = await fetch("/api/github/fetchFiles", {
+      body: JSON.stringify(data),
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    setMdFiles(await response.json());
+    console.log("Markdown Files", mdFiles);
+  };
+  fetchFiles({
+    repoFullName: "ichristwin/m3ters.js",
+    repoOwner: "ichristwin",
+    repoName: "m3ters.js",
+    gitRef: "main",
+  });
+
+  const fetchFileContent = async (data: GithubData) => {
+    const response = await fetch("/api/github/fetchContent", {
+      body: JSON.stringify(data),
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    setMdContent(await response.text());
+    console.log("Markdown Content", mdContent);
+  };
+  fetchFileContent({
+    repoFullName: "ichristwin/m3ters.js",
+    repoOwner: "ichristwin",
+    repoName: "m3ters.js",
+    gitRef: "979a1e0c5096b8e03c4db8255235f4f38942b488",
+  });
+
+  if (query.pr && github) {
+    const fetchDiff = async (data: object) => {
+      const response = await fetch("/api/github/fetchDiff", {
+        body: JSON.stringify(data),
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      setDiffContent(await response.text());
+      console.log("Diff Content:", diffContent);
     };
-    fetchRepos();
+    fetchDiff({ github, pr: query.pr });
   }
 
   useEffect(() => {
