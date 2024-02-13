@@ -2,9 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import Popover from '@mui/material/Popover';
@@ -170,5 +168,3 @@ const {viewSettings} = app
       
   );
 }
-
-// http://localhost:3000/editor/New-Markdown-KMkTktr2BLriaLIuYVBB

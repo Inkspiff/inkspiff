@@ -26,6 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 
     if (memberAccess === 'remove') { // Remove member
+        console.log({memberID, memberAccess})
         const mdRef = doc(db, "markdowns", mdID);
     
         await updateDoc(mdRef, {

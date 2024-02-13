@@ -27,8 +27,6 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import VerticalSplitOutlinedIcon from '@mui/icons-material/VerticalSplitOutlined';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
-// import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-// import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import More from "@/components/editor/layout/More";
 import Share from "@/components/editor/share/Share"

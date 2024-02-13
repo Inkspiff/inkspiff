@@ -1,10 +1,7 @@
-import React, {useEffect, useState, MouseEvent} from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
+import React, {MouseEvent} from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import { useSelector, useDispatch } from "react-redux";
