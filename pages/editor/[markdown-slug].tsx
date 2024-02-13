@@ -92,75 +92,75 @@ export default function App({
   const [mdContent, setMdContent] = useState("");
   const [diffContent, setDiffContent] = useState("");
 
-  if (session.user) {
-    const fetchRepos = async (data: object) => {
-      const response = await fetch("/api/github/fetchRepos", {
-        body: JSON.stringify(data),
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      setGhRepos(await response.json());
-      console.log("Github Repos", ghRepos);
-    };
-    fetchRepos({ username: "ichristwin" });
-  }
+  // if (session.user) {
+  //   const fetchRepos = async (data: object) => {
+  //     const response = await fetch("/api/github/fetchRepos", {
+  //       body: JSON.stringify(data),
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     setGhRepos(await response.json());
+  //     console.log("Github Repos", ghRepos);
+  //   };
+  //   fetchRepos({ username: "ichristwin" });
+  // }
 
-  const fetchFiles = async (data: GithubData) => {
-    const response = await fetch("/api/github/fetchFiles", {
-      body: JSON.stringify(data),
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-    setMdFiles(await response.json());
-    console.log("Markdown Files", mdFiles);
-  };
-  fetchFiles({
-    repoFullName: "ichristwin/m3ters.js",
-    repoOwner: "ichristwin",
-    repoName: "m3ters.js",
-    gitRef: "main",
-  });
+  // const fetchFiles = async (data: GithubData) => {
+  //   const response = await fetch("/api/github/fetchFiles", {
+  //     body: JSON.stringify(data),
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   setMdFiles(await response.json());
+  //   console.log("Markdown Files", mdFiles);
+  // };
+  // fetchFiles({
+  //   repoFullName: "ichristwin/m3ters.js",
+  //   repoOwner: "ichristwin",
+  //   repoName: "m3ters.js",
+  //   gitRef: "main",
+  // });
 
-  const fetchFileContent = async (data: GithubData) => {
-    const response = await fetch("/api/github/fetchContent", {
-      body: JSON.stringify(data),
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-    setMdContent(await response.text());
-    console.log("Markdown Content", mdContent);
-  };
-  fetchFileContent({
-    repoFullName: "ichristwin/m3ters.js",
-    repoOwner: "ichristwin",
-    repoName: "m3ters.js",
-    gitRef: "979a1e0c5096b8e03c4db8255235f4f38942b488",
-  });
+  // const fetchFileContent = async (data: GithubData) => {
+  //   const response = await fetch("/api/github/fetchContent", {
+  //     body: JSON.stringify(data),
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   setMdContent(await response.text());
+  //   console.log("Markdown Content", mdContent);
+  // };
+  // fetchFileContent({
+  //   repoFullName: "ichristwin/m3ters.js",
+  //   repoOwner: "ichristwin",
+  //   repoName: "m3ters.js",
+  //   gitRef: "979a1e0c5096b8e03c4db8255235f4f38942b488",
+  // });
 
-  if (query.pr && github) {
-    const fetchDiff = async (data: object) => {
-      const response = await fetch("/api/github/fetchDiff", {
-        body: JSON.stringify(data),
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-      setDiffContent(await response.text());
-      console.log("Diff Content:", diffContent);
-    };
-    fetchDiff({ github, pr: query.pr });
-  }
+  // if (query.pr && github) {
+  //   const fetchDiff = async (data: object) => {
+  //     const response = await fetch("/api/github/fetchDiff", {
+  //       body: JSON.stringify(data),
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     setDiffContent(await response.text());
+  //     console.log("Diff Content:", diffContent);
+  //   };
+  //   fetchDiff({ github, pr: query.pr });
+  // }
 
   useEffect(() => {
     if (session) {
