@@ -29,6 +29,7 @@ import ImportPopup from "@/components/editor/popups/ImportPopup";
 import ExportPopup from "@/components/editor/popups/ExportPopup";
 import TemplatesPopup from "@/components/editor/templates/TemplatesPopup";
 import FeedbackPopup from "@/components/editor/popups/FeedbackPopup";
+import { getUserRepos } from "@/lib/github/userRepos";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -97,6 +98,12 @@ export default function App({
     };
     fetchDiff();
   }
+
+  if (session.user){
+    console.log(session.user);
+    // const repos = getUserRepos(session.user.username);
+    // console.log(repos);`
+    }
 
   useEffect(() => {
     if (session) {
