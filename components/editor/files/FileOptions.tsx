@@ -8,17 +8,12 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import ContentCut from '@mui/icons-material/ContentCut';
 import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
-import Cloud from '@mui/icons-material/Cloud';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
 import { useSession, signIn, signOut } from "next-auth/react";
-import EditorModal from '@/components/editor/editor-ui/EditorModal';
-import LoginModal from '@/components/auth/login-modal';
 import EditorDialog from '@/components/editor/editor-ui/EditorDialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -29,7 +24,6 @@ import EditorSnackbar from '@/components/editor/editor-ui/EditorSnackbar';
 import { string } from 'zod';
 import { FileType } from '@/types/editor';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 
 interface propTypes {

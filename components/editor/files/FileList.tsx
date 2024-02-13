@@ -1,27 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
-import Link from "next/link"
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import MailIcon from '@mui/icons-material/Mail';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
-import Button from "@mui/material/Button"
 import { useRouter } from "next/router"
 import { FileType } from '@/types/editor';
 import FileMore from '@/components/editor/files/FileMore';

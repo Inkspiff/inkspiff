@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         access: memberAccess,
     }).then( async (data) => {
         await updateDoc(mdRef, {
-            membersIDs: arrayUnion(memberID),
+            memberIDs: arrayUnion(memberID),
         }).then(() => {
             res.status(200).end()
         })

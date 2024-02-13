@@ -11,8 +11,6 @@ import Editor from "@/components/editor/layout/Editor"
 import SectionEditor from "@/components/editor/sections/SectionEditor"
 import Blocks from "@/components/editor/block-view/Blocks"
 import NoSections from "@/components/editor/sections/NoSections"
-import Render from "@/components/editor/layout/Render"
-import { Typography } from '@mui/material';
 import Loading from '@/components/ui/Loading';
 
 const View = () => {
