@@ -29,18 +29,45 @@ import ImportPopup from "@/components/editor/popups/ImportPopup";
 import ExportPopup from "@/components/editor/popups/ExportPopup";
 import TemplatesPopup from "@/components/editor/templates/TemplatesPopup";
 import FeedbackPopup from "@/components/editor/popups/FeedbackPopup";
-import { getUserRepos, getFiles, getContent } from "@/lib/github/imports";
-import { GithubData } from "@/lib/github/types";
+import { db } from "@/firebase"
+import { DocumentData, QuerySnapshot, collection, query, where, getDocs, orderBy, limit, doc, getDoc } from "firebase/firestore";
+
+
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  const slug = context.params!["markdown-slug"] as string;
+  const slug = context.params!['markdown-slug'] as string
 
+  const arr = slug.split("-")
+  const mdId = arr[arr.length - 1]
+  
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
   if (!session) {
     return { redirect: { destination: "/login" } };
+  } 
+
+  try {
+    // check if slug is valid markdown id
+    
+
+    const mdRef = doc(db, "markdowns", mdId)
+
+    const mdDoc = await getDoc(mdRef)
+
+    if (mdDoc.exists()) {
+      // valid markdown id
+    } else {
+      // invalid markdown id
+      return { redirect: { destination: "/create-new" } };
+    }
+
+
+  } catch (err) {
+    // if slug id not a valid markdown id
+    console.log("Internal Server Error", err)
+    return { redirect: { destination: "/create-new" } };
   }
 
   const providers = await getProviders();
@@ -49,7 +76,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: {
       session: session,
       slug: slug,
-      providers: providers ?? [],
+      markdownId: mdId,
+      providers: providers ?? [] 
     },
   };
 }
@@ -75,105 +103,24 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   }),
 }));
 
-export default function App({
-  session,
-  slug,
-  providers,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-  const { query } = router;
-  const dispatch = useDispatch();
-  const app = useSelector((state: RootState) => state.app);
-  const { viewSettings, markdown, markdownSelected, saveStates } = app;
-  const { drawer: open } = viewSettings;
-  const { github } = markdown;
-  const [ghRepos, setGhRepos] = useState("");
-  const [mdFiles, setMdFiles] = useState("");
-  const [mdContent, setMdContent] = useState("");
-  const [diffContent, setDiffContent] = useState("");
 
-  // if (session.user) {
-  //   const fetchRepos = async (data: object) => {
-  //     const response = await fetch("/api/github/fetchRepos", {
-  //       body: JSON.stringify(data),
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     setGhRepos(await response.json());
-  //     console.log("Github Repos", ghRepos);
-  //   };
-  //   fetchRepos({ username: "ichristwin", installationId: 47309512 });
-  // }
+export default function App({ session, slug, markdownId, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter()
+  const dispatch = useDispatch()
+  const app = useSelector((state: RootState) => state.app)
+  const {viewSettings, markdown, markdownSelected, saveStates,} = app
+  const {drawer: open} = viewSettings
 
-  // const fetchFiles = async (data: GithubData) => {
-  //   const response = await fetch("/api/github/fetchFiles", {
-  //     body: JSON.stringify(data),
-  //     method: "POST",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   setMdFiles(await response.json());
-  //   console.log("Markdown Files", mdFiles);
-  // };
-  // fetchFiles({
-  //   installationId: 47309512,
-  //   repoFullName: "ichristwin/m3ters.js",
-  //   repoOwner: "ichristwin",
-  //   repoName: "m3ters.js",
-  //   gitRef: "main",
-  // });
+  const {github} = markdown
 
-  // const fetchFileContent = async (data: GithubData) => {
-  //   const response = await fetch("/api/github/fetchContent", {
-  //     body: JSON.stringify(data),
-  //     method: "POST",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   setMdContent(await response.text());
-  //   console.log("Markdown Content", mdContent);
-  // };
-  // fetchFileContent({
-  //   installationId: 47309512,
-  //   repoFullName: "ichristwin/m3ters.js",
-  //   repoOwner: "ichristwin",
-  //   repoName: "m3ters.js",
-  //   gitRef: "979a1e0c5096b8e03c4db8255235f4f38942b488",
-  // });
-
-  // if (query.pr && github) {
-  //   const fetchDiff = async (data: object) => {
-  //     const response = await fetch("/api/github/fetchDiff", {
-  //       body: JSON.stringify(data),
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     setDiffContent(await response.text());
-  //     console.log("Diff Content:", diffContent);
-  //   };
-  //   fetchDiff({ github: "inkspiff/inkspiff", pr: query.pr });
-  // }
 
   useEffect(() => {
-    if (session) {
-      const arr = slug.split("-");
-      const mdId = arr[arr.length - 1];
-
-      if (markdownSelected !== mdId) {
-        dispatch(appActions.updateMarkdownSelected(mdId));
+      if (markdownSelected !== markdownId) {
+        dispatch(appActions.updateMarkdownSelected(markdownId))
       }
-    }
-  }, []);
+  }, [])
+
+
 
   return (
     <div>
@@ -195,31 +142,16 @@ export default function App({
         <Navbar />
         <LeftSidePanel />
 
-        <Main
-          open={open}
-          sx={{
-            height: "100%",
-            // border: "3px solid green",
-            width: viewSettings.drawer ? "calc(100% - 240px)" : "100%",
-            display: { xs: "none", sm: "block" },
-          }}
-        >
-          {!session && <Link href="/login">Login</Link>}
-          {session && <View />}
+        <Main open={open} sx={{
+        height: {xs: "auto", sm: "100%"},
+        // border: "3px solid green",
+        width:  {xs: "100%", sm: viewSettings.drawer ? "calc(100% - 240px)" : "100%"},
+        display: {xs: "auto", sm: "block"}
+      }}>
+        {!session && <Link href="/login">Login</Link>}
+        {session && <View />}
         </Main>
-
-        <Box
-          sx={{
-            height: { sm: "calc(100% - 45px)" },
-            // border: "3px solid green",
-            width: "100%",
-            display: { sm: "none" },
-          }}
-        >
-          {!session && <Link href="/login">Login</Link>}
-          {session && <View />}
-        </Box>
-
+        
         <TemplatesPopup />
         <ImportPopup />
         <ExportPopup />

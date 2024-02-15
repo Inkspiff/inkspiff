@@ -62,3 +62,13 @@ export interface BlockViewElementType {
     alt?: string,
 
 }
+
+
+export type UpdateType = {
+    type: "change" | "invite" | "notice" | "update",
+    from: string,
+    to: string,
+    message: string,
+    timestamp: number,
+    
+}

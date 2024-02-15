@@ -8,8 +8,6 @@ import { collection, doc, serverTimestamp, updateDoc, arrayUnion, setDoc, } from
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const data = req.body
 
-    // console.log({data})
-
     const {memberID, memberEmail, memberAccess, mdID } = data
 
     let inputsAreValid = true
@@ -22,17 +20,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const mdRef = doc(db, "markdowns", mdID);
 
-    const membersRef = collection(mdRef, "members")
-
-    await setDoc(doc(membersRef, memberID), {
-        email: memberEmail,
-        access: memberAccess,
-    }).then( async (data) => {
-        await updateDoc(mdRef, {
-            memberIDs: arrayUnion(memberID),
-        }).then(() => {
-            res.status(200).end()
+    await updateDoc(mdRef, {
+        memberIDs: arrayUnion(memberID),
+        members: arrayUnion({
+            email: memberEmail,
+            access: memberAccess,
+            id: memberID,
         })
+    }).then( () => {
+        res.status(200).end()
     }).catch((err) => {
         console.error('Error updating markdown:', err);
         res.status(500).json({ message: 'Internal Server Error' });

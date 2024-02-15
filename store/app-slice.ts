@@ -31,9 +31,9 @@ const initialState: appState = {
     addedSections: [],
     markdown: {
         id: "",
-        title: "New File",
+        title: "",
         content: "",
-        currentLine: 1,
+        currentLine: 0,
         lastEdited: 0,
         admin: "",
         memberIDs: [],
@@ -54,10 +54,7 @@ const initialState: appState = {
         bottomPanel: "",
         popup: "",
     },
-    fileList: [{
-        id: "",
-        title: "New File"
-      }],
+    fileList: [],
     openLoginModal: false,
     editorAction: "",
 }

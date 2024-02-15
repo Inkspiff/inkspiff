@@ -37,11 +37,15 @@ export default async function handler(
     .then((querySnapshot) => {
       const fileList: fileListType[] = [];
 
-      querySnapshot.forEach((templateDoc) => {
+      if (querySnapshot.empty) {
+        res.status(200).json(fileList);
+      }
+
+      querySnapshot.forEach((mdDoc) => {
         
         fileList.push({
-          id: templateDoc.id,
-          title: templateDoc.data().title,
+          id: mdDoc.id,
+          title: mdDoc.data().title,
         });
       });
 
