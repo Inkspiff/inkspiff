@@ -6,10 +6,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const githubData: GithubData = req.body;
-  const files = await getFiles(githubData);
-
   try {
+    const githubData: GithubData = req.body;
+    const files = await getFiles(githubData);
     res.status(200).send(files);
   } catch (error) {
     console.error(error);

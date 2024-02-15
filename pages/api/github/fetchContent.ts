@@ -6,10 +6,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const githubData: GithubData = req.body;
-  const content = await getContent(githubData);
-
   try {
+    const githubData: GithubData = req.body;
+    const content = await getContent(githubData);
     res.status(200).send(content);
   } catch (error) {
     console.error(error);

@@ -1,17 +1,17 @@
-import { Octokit } from "octokit";
+import { octokitApp } from "./octokitApp";
 import { GithubData } from "./types";
 
-const octokit = new Octokit({
-  auth: process.env.GITHUB_SECRET,
-});
-
-export async function getUserRepos(username: string) {
-  const repos = await octokit.request("GET /users/{username}/repos", {
-    headers: { "X-GitHub-Api-Version": "2022-11-28" },
-    sort: "updated",
-    type: "all",
-    username,
-  });
+export async function getUserRepos(username: string, installationId: number) {
+  const octokit = await octokitApp.getInstallationOctokit(installationId)
+  const repos = await octokit.request(
+    "GET /users/{username}/repos",
+    {
+      headers: { "X-GitHub-Api-Version": "2022-11-28" },
+      sort: "updated",
+      type: "all",
+      username,
+    }
+  );
 
   let githubData: GithubData[] = [];
   repos.data.forEach((repo) => {
@@ -20,15 +20,16 @@ export async function getUserRepos(username: string) {
       repoFullName: repo.full_name,
       repoOwner: repo.owner.login,
       repoName: repo.name,
+      installationId
     });
   });
 
   return githubData;
 }
 
-
-let mdFiles: any[] =[]
+let mdFiles: any[] = [];
 export async function getFiles(githubData: GithubData) {
+  const octokit = await octokitApp.getInstallationOctokit(githubData.installationId)
   const tree = await octokit.request(
     "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
     {
@@ -56,6 +57,7 @@ export async function getFiles(githubData: GithubData) {
 }
 
 export async function getContent(githubData: GithubData) {
+  const octokit = await octokitApp.getInstallationOctokit(githubData.installationId)
   const blob = await octokit.request(
     "GET /repos/{owner}/{repo}/git/blobs/{sha}",
     {

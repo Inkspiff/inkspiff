@@ -4,16 +4,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const ghContentEndpoint = "https://patch-diff.githubusercontent.com/raw";
-  const prDiffUrl = `${ghContentEndpoint}/${req.body.github}/pull/${req.body.pr}.diff`;
-
   try {
-    const response = await fetch(prDiffUrl);
-
+    const { github, pr } = await req.body;
+    const response = await fetch(
+      `https://patch-diff.githubusercontent.com/raw/${github}/pull/${pr}.diff`
+    );
     if (!response.ok) {
       throw new Error(`Failed to fetch GitHub PR diff: ${response.statusText}`);
     }
-
     const diffContent = await response.text();
     res.status(200).send(diffContent);
   } catch (error) {

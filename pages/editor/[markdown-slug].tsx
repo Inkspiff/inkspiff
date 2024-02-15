@@ -105,7 +105,7 @@ export default function App({
   //     setGhRepos(await response.json());
   //     console.log("Github Repos", ghRepos);
   //   };
-  //   fetchRepos({ username: "ichristwin" });
+  //   fetchRepos({ username: "ichristwin", installationId: 47309512 });
   // }
 
   // const fetchFiles = async (data: GithubData) => {
@@ -121,6 +121,7 @@ export default function App({
   //   console.log("Markdown Files", mdFiles);
   // };
   // fetchFiles({
+  //   installationId: 47309512,
   //   repoFullName: "ichristwin/m3ters.js",
   //   repoOwner: "ichristwin",
   //   repoName: "m3ters.js",
@@ -140,6 +141,7 @@ export default function App({
   //   console.log("Markdown Content", mdContent);
   // };
   // fetchFileContent({
+  //   installationId: 47309512,
   //   repoFullName: "ichristwin/m3ters.js",
   //   repoOwner: "ichristwin",
   //   repoName: "m3ters.js",
@@ -159,7 +161,7 @@ export default function App({
   //     setDiffContent(await response.text());
   //     console.log("Diff Content:", diffContent);
   //   };
-  //   fetchDiff({ github, pr: query.pr });
+  //   fetchDiff({ github: "inkspiff/inkspiff", pr: query.pr });
   // }
 
   useEffect(() => {
