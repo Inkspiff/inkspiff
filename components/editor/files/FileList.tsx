@@ -38,7 +38,7 @@ export default function FileList() {
       console.log("afore")
       
       router.push({
-        pathname: '/editor/[markdown-id]',
+        pathname: '/editor/',
         query: {
           'markdown-id' : router.query['markdown-id'],
         },
@@ -89,11 +89,11 @@ export default function FileList() {
 
           const files = await response.json()
 
-          if (files.length > 0) {
-            if (markdownSelected !== files[0].id) {
-              dispatch(appActions.updateMarkdownSelected(files[0].id))
-            }
-          }
+          // if (files.length > 0) {
+          //   if (markdownSelected !== files[0].id) {
+          //     dispatch(appActions.updateMarkdownSelected(files[0].id))
+          //   }
+          // }
            
           dispatch(appActions.updateFileList(files))  
             
@@ -110,6 +110,8 @@ export default function FileList() {
       fontSize: "1rem",
     }} />
   }
+
+  console.log({fileList})
 
   if (!loadingFiles && fileList.length === 0) {
     return <Box sx={{
