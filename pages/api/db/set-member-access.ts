@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from "@/firebase"
-import { collection, doc, serverTimestamp, updateDoc, deleteDoc, arrayRemove, } from "firebase/firestore";
+import { collection, doc, serverTimestamp, updateDoc, arrayUnion, arrayRemove, } from "firebase/firestore";
 
 
 
@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // console.log({data})
 
-    const {memberID, memberAccess, mdID } = data
+    const {memberID, memberEmail, memberAccess, mdID } = data
 
     let inputsAreValid = true
     
@@ -20,38 +20,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return
     }
 
-    const membersRef = doc(db, "markdowns", mdID, "members", memberID);
-
-    // console.log({memberID, memberEmail, memberAccess, mdID})
+    const mdRef = doc(db, "markdowns", mdID);
 
 
-    if (memberAccess === 'remove') { // Remove member
-        console.log({memberID, memberAccess})
+    if (memberAccess === 'remove') {
         const mdRef = doc(db, "markdowns", mdID);
     
         await updateDoc(mdRef, {
-            memberIDs: arrayRemove(memberID),
-        }).then( async () => {
-            await deleteDoc(membersRef).then( () => {
-                res.status(200).end()
-            })
+            membersIDs: arrayRemove(memberID),
+            members: arrayRemove({
+                id: memberID,
+                access: memberAccess,
+                email: memberEmail,
+            }),
+        }).then( async (data) => {
+            res.status(200).end()
         }).catch((err) => {
             console.error('Error updating markdown:', err);
             res.status(500).json({ message: 'Internal Server Error' });
         })
-    } else { // Grant member access
-        await updateDoc(membersRef, {
-            access: memberAccess,
-        }).then( () => {
+    } else {
+        await updateDoc(mdRef, {
+            members: arrayUnion({
+                id: memberID,
+                email: memberEmail,
+                access: memberAccess
+            }),
+        }).then( async (data) => {
+
+            // TODO: SEND EMAIL TO NEW MEMBER
             res.status(200).end()
         }).catch((err) => {
             console.error('Error updating markdown:', err);
             res.status(500).json({ message: 'Internal Server Error' });
         });
-    }
-
-   
-    
-        
+    }  
     
 }
+
+
+

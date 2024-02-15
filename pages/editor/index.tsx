@@ -37,16 +37,20 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     console.log({session})
     const mdCollection = collection(db, 'markdowns')
 
-    const q = query(mdCollection, where("userId", "==", session.user.id), orderBy("lastEdited", "desc"), limit(1))
+    
+
+    const q = query(mdCollection, where("memberIDs", "array-contains", session.user.id), orderBy("lastEdited", "desc"), limit(1))
 
     try {
       const querySnapshot = await getDocs(q);
+      
 
       if (!querySnapshot.empty) {
         const mdDoc = querySnapshot.docs[0]
         const mdData = mdDoc.data()
 
-        return { redirect: { destination: `/editor/${mdData.title.trim().split(" ").join("-")}-${mdDoc.id}` } };
+        const markdownSlug = `${mdData.title.trim().split(" ").join("-")}-${mdDoc.id}`
+        return { redirect: { destination: `/editor/${markdownSlug}` } };
 
       } else {
         // No markdown found
@@ -55,7 +59,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       }
 
     } catch (err) {
-      // Internal Server Error
+      // Internal Server Error - No markdowns found
       console.log("Internal Server Error", err)
     }
   }
@@ -104,25 +108,12 @@ export default function App({ session, providers }: InferGetServerSidePropsType<
   const {drawer: open} = viewSettings
 
 
-  // useEffect(() => {
-  //   if (session) {
-  //     console.log("query useEffect in [md-id]")
-  //     const arr = query['markdown-id']!.toString().split("-")
-  //     const mdId = arr[arr.length - 1]
-
-  //     if (markdownSelected !== mdId) {
-  //       dispatch(appActions.updateMarkdownSelected(mdId))
-  //     }
-  //   }
-  // }, [])
-
 
   useEffect(() => {
     if (!session) {
       dispatch(appActions.toggleOpenLoginModal())
     }
   }, [])
-
 
 
   return (

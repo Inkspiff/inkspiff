@@ -12,13 +12,14 @@ import SectionEditor from "@/components/editor/sections/SectionEditor"
 import Blocks from "@/components/editor/block-view/Blocks"
 import NoSections from "@/components/editor/sections/NoSections"
 import Loading from '@/components/ui/Loading';
+import { Typography } from '@mui/material';
 
 const View = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
-  const {markdown, viewSettings, markdownSelected, saveStates, selectedSection } = app
+  const {markdown, viewSettings, markdownSelected, saveStates, fileList, selectedSection } = app
   const {content: doc, currentLine} = markdown
   const {fullscreen, sidebar, blocks: blocksView} = viewSettings
   const [saveTimestamp, setSaveTimestamp] = useState<number>(0)
@@ -83,6 +84,33 @@ const View = () => {
 
   if (loadingMarkdown) {
     return <Loading />
+  }
+
+
+  if (!markdownSelected && (fileList.length === 0)) {
+    return <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100%",
+      width: "100%",
+    }}>
+      <Typography>You've got no markdowns</Typography>
+    </Box>
+  }
+
+
+
+  if (!markdownSelected) {
+    return <Box sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100%",
+      width: "100%",
+    }}>
+      <Typography>No Markdown Selected</Typography>
+    </Box>
   }
 
 

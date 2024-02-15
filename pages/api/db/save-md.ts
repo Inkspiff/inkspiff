@@ -28,13 +28,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         content: mdData.content,
         currentLine: mdData.currentLine,
         lastEdited: serverTimestamp(),
-        admin: mdData.admin,
-        visibility: mdData.visibility,
-        github: "",
-        memberIDs: mdData.memberIDs,
-        members: mdData.members,
-        secret: mdData.secret,
-        invites: mdData.invites
     }
 
     

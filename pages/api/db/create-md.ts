@@ -33,31 +33,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         memberIDs: [creator.id],
         members: [{
             email: creator.email,
-            access: 'owner'
+            access: 'owner',
+            id: creator.id,
         }],
         visibility: "public",
         lastEdited: serverTimestamp(),
+        createdAt: serverTimestamp(),
         secret: {
             hash: generateUniqueString(),
             state: 'active'
         },
-        invites: []
+        invites: [],
+        updates: [],
     }
 
-    // const createDocument = async (data) => {
-    //     const docRef = await addDoc(collection(db, 'markdowns'), data);
-    //     return docRef.id;
-    //   };
     
         await addDoc(mdRef, mdDataToSend).then(async (data) => {
             console.log({data})
-            await setDoc(doc(db, "markdowns", data.id, "members", creator.id), {
-                email: creator.email,
-                access: 'owner'
+            // await setDoc(doc(db, "markdowns", data.id, "members", creator.id), {
+            //     email: creator.email,
+            //     access: 'owner'
+            // })
+            res.status(200).json({
+                id: data.id
             })
-                res.status(200).json({
-                    id: data.id
-                })
         }).catch((err) => {
             console.error('Error creating document:', err);
             res.status(500).json({ error: 'Failed to create document' });

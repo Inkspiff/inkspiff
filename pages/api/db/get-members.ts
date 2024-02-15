@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from "@/firebase"
-import { DocumentData, QuerySnapshot, collection, doc, getDocs } from "firebase/firestore";
+import { DocumentData, QuerySnapshot, collection, doc, getDoc } from "firebase/firestore";
 import { MembersType } from '@/types';
 
 
@@ -10,18 +10,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const {mdID} = mdData
 
-    const membersRef = collection(db, "markdowns", mdID.trim(), "members")
+    const markdownRef = doc(db, "markdowns", mdID)
 
-    await getDocs(membersRef).then( (querySnapshot) => {
+    await getDoc(markdownRef).then( (docSnap) => {
         const members: MembersType[] = [];
-        
-        querySnapshot.forEach((memberDoc) => {
-            members.push({
-                id: memberDoc.id,
-                email: memberDoc.data().email,
-                access: memberDoc.data().access,
+
+        if (docSnap.exists()) {
+            const membersData = docSnap.data().members
+
+            membersData.forEach((m: MembersType) => {
+                members.push(m)
             })
-        }) 
+        } else {
+            res.status(404).json({ message: "No such member!" });
+        }
 
         res.status(200).json(members)
 
