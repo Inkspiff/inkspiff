@@ -86,6 +86,7 @@ const Members = ({fileId, reRun}: MembersProps) => {
       body: JSON.stringify({
         // userId: session!.user.id,
         memberID: membersOfFileOpened[index].id,
+        memberEmail: membersOfFileOpened[index].email,
         memberAccess: newAccess,
         mdID: fileId,
       })

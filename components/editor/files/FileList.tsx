@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -24,18 +25,8 @@ export default function FileList() {
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
-  const {viewSettings, fileList, markdown, markdownSelected} = app
+  const {fileList, markdown, markdownSelected} = app
   const [loadingFiles, setLoadingFiles] = useState(false)
-  const [selectedFile, setSelectedFile] = useState<FileType | null>(null)
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const openOptions = Boolean(anchorEl);
-
-
-
-  const handleCloseOptions = () => {
-    setAnchorEl(null);
-    setSelectedFile(null)
-  };
   
   
 
@@ -87,7 +78,9 @@ export default function FileList() {
           setLoadingFiles(false)
           
           if (!response?.ok) {
+            console.log("failed ok")
             if (response.status === 402) {
+              console.log("failed 402")
               return <>fAILED</>
             }
       
@@ -95,6 +88,12 @@ export default function FileList() {
           }
 
           const files = await response.json()
+
+          if (files.length > 0) {
+            if (markdownSelected !== files[0].id) {
+              dispatch(appActions.updateMarkdownSelected(files[0].id))
+            }
+          }
            
           dispatch(appActions.updateFileList(files))  
             
@@ -105,11 +104,30 @@ export default function FileList() {
       
   }, [])
 
+
   if (loadingFiles) {
     return <Loading innerSx={{
       fontSize: "1rem",
     }} />
   }
+
+  if (!loadingFiles && fileList.length === 0) {
+    return <Box sx={{
+      // border: "4px solid purple",
+      height: "100%",
+      position: "relative",
+      width: "100%",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}>
+      <Typography sx={{
+        textAlign: "center",
+      }}>No files found.</Typography>
+    </Box>
+  }
+
+
 
   
   

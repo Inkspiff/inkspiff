@@ -27,7 +27,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (session) {
 
     const markdownsCollection = collection(db, 'markdowns');
-    const q = query(markdownsCollection, where("allowedUsers", "array-contains", session.user.id), orderBy('lastEdited', 'desc'), limit(1));
+    const q = query(markdownsCollection, where("memberIDs", "array-contains", session.user.id), orderBy('lastEdited', 'desc'), limit(1));
 
     try {
         const querySnapshot = await getDocs(q);

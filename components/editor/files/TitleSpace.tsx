@@ -74,8 +74,8 @@ export default function TitleSpace() {
         title: title
       }))
 
-      router.push({
-        pathname: '/editor/[markdown-id]',
+      router.replace({
+        pathname: '/editor/',
         query: {
           'markdown-id' : router.query['markdown-id'],
         },
