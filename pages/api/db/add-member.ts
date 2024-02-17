@@ -8,7 +8,7 @@ import { collection, doc, serverTimestamp, updateDoc, arrayUnion, setDoc, } from
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const data = req.body
 
-    const {memberID, memberEmail, memberAccess, mdID } = data
+    const {memberID, memberEmail, memberAccess, mdID, userId } = data
 
     let inputsAreValid = true
     
@@ -27,7 +27,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             access: memberAccess,
             id: memberID,
         })
-    }).then( () => {
+    }).then( async() => {
+        await setDoc(doc(db, "updates"), {
+            type: 'invite',
+            sentAt: serverTimestamp(),
+            seen: false,
+            from: userId,
+            to: [memberID],
+            markdownID: mdID,
+            image: "",
+            message: `You have been invited to collaborate on a markdown file.`,
+        }, { merge: true });
         res.status(200).end()
     }).catch((err) => {
         console.error('Error updating markdown:', err);

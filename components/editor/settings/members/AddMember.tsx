@@ -4,7 +4,7 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Input from '@mui/material/Input';
 import { MdOutlineMail } from "react-icons/md";
-
+import { useSession, signIn, signOut } from "next-auth/react";
 import { MembersType } from '@/types'
 import { EMAIL_PATTERN, generateUniqueString } from '@/lib/utils'
 
@@ -14,7 +14,7 @@ interface AddMemberProps {
 
 
 const AddMember = ({fileId}: AddMemberProps) => {
-
+  const { data: session } = useSession();
   const [memberEmailInput, setMemberEmailInput] = useState<string>("")
   const [addingMember, setAddingMember] = useState<boolean>(false)
  
@@ -69,7 +69,7 @@ const AddMember = ({fileId}: AddMemberProps) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // userId: session!.user.id,
+        userId: session!.user.id,
         memberID: searchResultFromDB.id,
         memberEmail: searchResultFromDB.email,
         memberAccess: "edit",
