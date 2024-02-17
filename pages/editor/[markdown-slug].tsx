@@ -115,7 +115,6 @@ export default function App({ session, slug, markdownId, providers }: InferGetSe
 
   const {github} = markdown
 
-
   useEffect(() => {
       if (markdownSelected !== markdownId) {
         dispatch(appActions.updateMarkdownSelected(markdownId))

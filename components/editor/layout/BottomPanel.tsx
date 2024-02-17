@@ -1,28 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
-import Link from "next/link"
+import React from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
-import PlusOneRoundedIcon from '@mui/icons-material/PlusOneRounded';
-import PhotoAlbumIcon from '@mui/icons-material/PhotoAlbum';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
-import { useSession, signIn, signOut } from "next-auth/react";
 import Button from "@mui/material/Button"
-import { useRouter } from "next/router"
-import FileList from "@/components/editor/files/FileList"
-import AccountArea from '@/components/editor/AccountArea';
-import Actions from '@/components/editor/layout/ActionsBottom';
-import useMediaQuery from '@mui/material/useMediaQuery';
-// import { useTheme } from '@mui/material/styles';
 import theme from '@/config/theme';
-import AccountAreaMobile from '../AccountAreaMobile';
-
 import { PiMagicWandBold } from "react-icons/pi";
 import { TbBrandDatabricks } from "react-icons/tb";
 import { TbPhotoSquareRounded } from "react-icons/tb";
@@ -159,8 +145,8 @@ const {bottomPanel} = viewSettings
                 <LuRedo />
             </IconButton>
         </Paper>
-
-        <SwipeableDrawer
+          {/* @ts-expect-error Server Component */}
+          <SwipeableDrawer
         
         onOpen={handleOpenPanel}
         anchor="bottom"
@@ -244,6 +230,7 @@ const {bottomPanel} = viewSettings
                 </Box>}
             
         </SwipeableDrawer>
+        
             </Box>
 }
 
