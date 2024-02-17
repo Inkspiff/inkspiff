@@ -9,6 +9,7 @@ import {
   getDocs,
   query,
   where,
+  orderBy
 } from "firebase/firestore";
 import { FileUpdateType } from "@/types/editor";
 
@@ -25,7 +26,7 @@ export default async function handler(
 
   const updatesRef = collection(db, "updates");
 
-  const q = query(updatesRef, where("to", "array-contains", userId));
+  const q = query(updatesRef, where("to", "array-contains", userId), orderBy("sentAt", "desc"));
 
   await getDocs(q)
     .then((querySnapshot) => {

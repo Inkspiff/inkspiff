@@ -19,14 +19,13 @@ const View = () => {
   const { data: session } = useSession();
   const dispatch = useDispatch()
   const app = useSelector((state: RootState) => state.app)
-  const {markdown, viewSettings, markdownSelected, saveStates, fileList, selectedSection } = app
+  const {markdown, viewSettings, markdownSelected, saveStates, fileList, selectedSection, loadingFile } = app
   const {content: doc, currentLine} = markdown
   const {fullscreen, sidebar, blocks: blocksView} = viewSettings
   const [saveTimestamp, setSaveTimestamp] = useState<number>(0)
   const [saveFailed, setSaveFailed] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
   const [showRender, setShowRender] = useState<boolean>(false)
-  const [loadingMarkdown, setLoadingMarkdown] = useState<boolean>(false)
 
   const handleSwitchView = () => {
     setShowRender(prev => !prev)
@@ -34,7 +33,7 @@ const View = () => {
 
   
   const fetchMarkdown = async (id: string) => {
-    setLoadingMarkdown(true)
+    dispatch(appActions.setLoadingFile(true))
 
     const response = await fetch("/api/db/get-md", {
       method: "POST",
@@ -46,7 +45,7 @@ const View = () => {
       })
     })
 
-    setLoadingMarkdown(false)
+    dispatch(appActions.setLoadingFile(false))
 
     if (!response?.ok) {
 
@@ -82,7 +81,7 @@ const View = () => {
   }, [markdownSelected])
   
 
-  if (loadingMarkdown) {
+  if (loadingFile) {
     return <Loading />
   }
 

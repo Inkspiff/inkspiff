@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from "@/firebase"
-import { collection, doc, serverTimestamp, updateDoc, arrayUnion, setDoc, } from "firebase/firestore";
+import { collection, doc, serverTimestamp, updateDoc, arrayUnion, addDoc, } from "firebase/firestore";
 
 
 
@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             id: memberID,
         })
     }).then( async() => {
-        await setDoc(doc(db, "updates"), {
+        await addDoc(collection(db, "updates"), {
             type: 'invite',
             sentAt: serverTimestamp(),
             seen: false,
@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             markdownID: mdID,
             image: "",
             message: `You have been invited to collaborate on a markdown file.`,
-        }, { merge: true });
+        });
         res.status(200).end()
     }).catch((err) => {
         console.error('Error updating markdown:', err);

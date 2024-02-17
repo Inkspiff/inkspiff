@@ -51,7 +51,7 @@ const Navbar = () => {
   const dispatch = useDispatch()
   
   const app = useSelector((state: RootState) => state.app);
-  const { markdown, viewSettings, saveStates, markdownSelected  } = app;
+  const { markdown, viewSettings, saveStates, markdownSelected, loadingFile  } = app;
   const {drawer: open} = viewSettings
   const {saving, saveFailed} = saveStates
   const [copied, setCopied] = useState<boolean>(false);
@@ -107,6 +107,25 @@ const handleCopy = () => {
       Nothing here
       </Box>
       </AppBar>
+  }
+
+  if (loadingFile) {
+    return <AppBar
+    elevation={0}
+    variant="outlined"
+
+    open={open}
+    sx={{
+      height: "45px",
+      position: "fixed",
+      top: 0,
+      left: 0,
+      borderWidth: "0 0 1px 0",
+      zIndex: 100,
+    }}
+  >
+    <Box>Loading...</Box>
+  </AppBar>
   }
 
   return (
