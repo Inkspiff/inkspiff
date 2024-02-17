@@ -43,10 +43,12 @@ import {
   getDoc,
 } from "firebase/firestore";
 
+import { getUserRepos, getFiles, getContent } from "@/lib/github/imports";
+import { GithubData } from "@/lib/github/types";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  const slug = context.params!["markdown-slug"] as string;
+  const slug = context.params!['markdown-slug'] as string
 
   const arr = slug.split("-");
   const mdId = arr[arr.length - 1];
@@ -56,6 +58,28 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // To avoid an infinite loop!
   if (!session) {
     return { redirect: { destination: "/login" } };
+  } 
+
+  try {
+    // check if slug is valid markdown id
+    
+
+    const mdRef = doc(db, "markdowns", mdId)
+
+    const mdDoc = await getDoc(mdRef)
+
+    if (mdDoc.exists()) {
+      // valid markdown id
+    } else {
+      // invalid markdown id
+      return { redirect: { destination: "/create-new" } };
+    }
+
+
+  } catch (err) {
+    // if slug id not a valid markdown id
+    console.log("Internal Server Error", err)
+    return { redirect: { destination: "/create-new" } };
   }
 
   try {
@@ -84,7 +108,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       session: session,
       slug: slug,
       markdownId: mdId,
-      providers: providers ?? [],
+      providers: providers ?? [] 
     },
   };
 }
@@ -226,23 +250,15 @@ export default function App({
       >
         <Navbar />
         <LeftSidePanel />
-
-        <Main
-          open={open}
-          sx={{
-            height: { xs: "auto", sm: "100%" },
-            // border: "3px solid green",
-            width: {
-              xs: "100%",
-              sm: viewSettings.drawer ? "calc(100% - 240px)" : "100%",
-            },
-            display: { xs: "auto", sm: "block" },
-          }}
-        >
-          {!session && <Link href="/login">Login</Link>}
-          {session && <View />}
-        </Main>
-
+        <Main open={open} sx={{
+        height: {xs: "auto", sm: "100%"},
+        // border: "3px solid green",
+        width:  {xs: "100%", sm: viewSettings.drawer ? "calc(100% - 240px)" : "100%"},
+        display: {xs: "auto", sm: "block"}
+      }}>
+        {!session && <Link href="/login">Login</Link>}
+        {session && <View />}
+        </Main>        
         <TemplatesPopup />
         <ImportPopup />
         <ExportPopup />
