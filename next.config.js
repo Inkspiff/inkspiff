@@ -9,10 +9,6 @@ const nextConfig = {
       "inkspiff.netlify.app",
     ],
   },
-  webpack: (config) => {
-    config.resolve.fallback = { fs: false };
-    return config;
-  },
 };
 
 module.exports = nextConfig;
