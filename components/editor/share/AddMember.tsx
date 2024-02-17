@@ -80,7 +80,7 @@ export default function AddMember({open, onAddingMember, addingMember}: AddMembe
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        // userId: session!.user.id,
+        userId: session!.user.id,
         memberID: searchResultFromDB.id,
         memberEmail: searchResultFromDB.email,
         memberAccess: "edit",

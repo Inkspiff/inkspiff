@@ -64,11 +64,14 @@ export interface BlockViewElementType {
 }
 
 
-export type UpdateType = {
-    type: "change" | "invite" | "notice" | "update",
+export type FileUpdateType = {
+    id: string,
+    type: "change" | "invite" | "notice",
     from: string,
-    to: string,
+    to: string[],
     message: string,
-    timestamp: number,
-    
+    sentAt: number,
+    image?: string,
+    seen: boolean,
+    markdownID: string,
 }

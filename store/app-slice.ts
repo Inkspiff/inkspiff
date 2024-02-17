@@ -1,4 +1,4 @@
-import { BlockType, ViewSettingsType, FileType, BlockSelectItemType, EditorActionType, EditorPopupType } from "@/types/editor";
+import { BlockType, ViewSettingsType, FileType, BlockSelectItemType, EditorActionType, EditorPopupType, FileUpdateType } from "@/types/editor";
 import {MarkdownInterface, TemplateType } from "@/types"
 import { uid } from "@/lib/utils";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -12,6 +12,7 @@ export interface appState {
     selectedSection: null | SectionType,
     addedSections: SectionType[],
     markdown: MarkdownInterface,
+    updates: FileUpdateType[],
     saveStates: {
         saving: boolean,
         saveFailed: boolean,
@@ -40,6 +41,7 @@ const initialState: appState = {
         visibility: "",
         github: "",
     },
+    updates: [],
     saveStates: {
         saving: false,
         saveFailed: false
@@ -64,12 +66,14 @@ const appSlice = createSlice( {
     name: "app",
     initialState,
     reducers: {
+        /**EDITOR ACTIONS */
         changeTheme(state) {
             state.theme = state.theme + 0.1
         },
         setEditorAction(state, action: PayloadAction<EditorActionType>) {
             state.editorAction = action.payload
         },
+
         /** MARKDOWN ACTIONS */
         updateMarkdownSelected(state, action: PayloadAction<string>) {
             state.markdownSelected = action.payload
@@ -114,6 +118,7 @@ const appSlice = createSlice( {
             }
         },
 
+
         /* FILE ACTIONS */
         updateFileList(state, action: PayloadAction<{
             id: string,
@@ -147,13 +152,6 @@ const appSlice = createSlice( {
         },
         addFile(state, action: PayloadAction< FileType>) {
             state.fileList =  [...state.fileList, action.payload]
-        },
-        selectProject(state, action: PayloadAction<{id: string}>) {
-            // state.markdown.text =  
-            // state.markdown.id =
-        },
-        updateTemplates(state, action: PayloadAction<TemplateType[]>) {
-            state.templates = action.payload
         },
 
 
@@ -241,6 +239,18 @@ const appSlice = createSlice( {
             state.selectedSection = {
                 ...newSelectedSection
             }
+        },
+
+
+        /**UPDATE ACTIONS */
+        setUpdates(state, action: PayloadAction<FileUpdateType[]>) {
+            state.updates = action.payload
+        },
+
+
+        /**TEMPLATE ACTIONS */
+        updateTemplates(state, action: PayloadAction<TemplateType[]>) {
+            state.templates = action.payload
         },
 
         /** VIEW ACTIONS */
