@@ -30,6 +30,7 @@ export interface MarkdownInterface {
   currentLine: number,
   currentHead: number,
   lastEdited: number | undefined,
+  lastEditedBy: string,
   admin: string,
   memberIDs: string[],
   visibility: string,

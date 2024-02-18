@@ -38,6 +38,7 @@ const initialState: appState = {
         currentLine: 1,
         currentHead: 0,
         lastEdited: 0,
+        lastEditedBy: "",
         admin: "",
         memberIDs: [],
         visibility: "",

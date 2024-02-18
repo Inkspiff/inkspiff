@@ -36,7 +36,7 @@ const View = () => {
     selectedSection,
     loadingFile,
   } = app;
-  const { content: doc, currentLine } = markdown;
+  const { content: doc, content, lastEditedBy } = markdown;
   const { fullscreen, sidebar, blocks: blocksView } = viewSettings;
 
   const mdRef = markdownSelected
@@ -51,22 +51,26 @@ const View = () => {
   }, [markdownSelected]);
 
   useEffect(() => {
-    if (md) {
+    if (md && session) {
       dispatch(appActions.setLoadingFile(false));
-      dispatch(
-        appActions.updateMarkdown({
-          id: markdownSelected,
-          title: md.title,
-          content: md.content,
-          currentLine: md.currentLine,
-          currentHead: md.currentHead,
-          lastEdited: md.lastEdited ? md.lastEdited.seconds : undefined,
-          admin: md.admin,
-          memberIDs: md.membersIDs,
-          visibility: md.visibility,
-          github: md.github,
-        })
-      );
+      if (md.content !== content) {
+        dispatch(
+          appActions.updateMarkdown({
+            id: markdownSelected,
+            title: md.title,
+            content: md.content,
+            currentLine: md.currentLine,
+            currentHead: md.currentHead,
+            lastEdited: md.lastEdited ? md.lastEdited.seconds : 0,
+            lastEditedBy: md.lastEditedBy || "",
+            admin: md.admin,
+            memberIDs: md.membersIDs,
+            visibility: md.visibility,
+            github: md.github,
+          })
+        );
+      }
+      
     }
   }, [md]);
 

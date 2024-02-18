@@ -41,6 +41,7 @@ const Editor: React.FC<Props> = (props) => {
   const { initialDoc} = props
 
   const saveMd = async (newContent: string, newCurrentLine: number, newCurrentHead: number) => {
+
     dispatch(appActions.updatedSaveStates({
       saving: true,
       saveFailed: false
@@ -79,15 +80,29 @@ const Editor: React.FC<Props> = (props) => {
     }
   }
 
+  const [changeDelay, setChangeDelay] = useState(false)
+
   const handleDocChange = useCallback((newState: EditorState) => {
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
     const newContent = newState.doc.toString()
     const newCurrentHead = newState.selection.ranges[0].head
-    console.log({newCurrentLine, newCurrentHead})
-    saveMd(newContent, newCurrentLine, newCurrentHead)
+    
+
+    if (!changeDelay) {
+        setChangeDelay(true)
+        console.log({newCurrentLine, newCurrentHead})
+        saveMd(newContent, newCurrentLine, newCurrentHead)
+    }
+    
+    
 
   }, [])
 
+  useEffect(() => {
+    setTimeout(() => {
+      setChangeDelay(false)
+    }, 3000)
+  }, [changeDelay])
 
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
     initialDoc: initialDoc,

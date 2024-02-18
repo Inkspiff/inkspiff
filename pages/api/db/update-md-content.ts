@@ -25,6 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             currentLine: currentLine,
             currentHead: currentHead,
             lastEdited: serverTimestamp(),
+            lastEditedBy: userId,
         }).then( async (data) => {
             res.status(200).end(); // Send a response indicating success
         }).catch((err) => {
