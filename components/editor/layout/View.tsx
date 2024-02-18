@@ -15,14 +15,10 @@ import NoSections from "@/components/editor/sections/NoSections";
 import Loading from "@/components/ui/Loading";
 import { Typography } from "@mui/material";
 import {
-  useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import {
-  collection,
   doc as firebaseDoc,
-  query,
-  where,
 } from "firebase/firestore";
 import { db } from "@/firebase";
 

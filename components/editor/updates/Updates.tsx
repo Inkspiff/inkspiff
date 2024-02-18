@@ -1,55 +1,98 @@
 import React, {useEffect} from "react"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
-import Button from "@mui/material/Button"
-import List from "@mui/material/List"
-import IconButton from "@mui/material/IconButton"
 import Divider from "@mui/material/Divider"
+import List from "@mui/material/List"
+// import IconButton from "@mui/material/IconButton"
+import Paper from "@mui/material/Paper"
+import Popover from "@mui/material/Popover"
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { getUpdatesText } from "@/lib/utils"
+import {
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
+import {
+  collection,
+  query,
+  where,
+  limit,
+  orderBy
+} from "firebase/firestore";
+import { db } from "@/firebase";
+import { FileUpdateType } from "@/types/editor"
 
-const UPDATES: {
-    title: string,
-    image: string,
-    note: string
-}[] = []
+interface UpdatesProps {
+  anchorEl: null | HTMLElement,
+  onClose: (event: React.MouseEvent<HTMLElement>) => void
+}
 
- const Updates = () => {
-  const dispatch = useDispatch()
+ const Updates = ({anchorEl, onClose}: UpdatesProps) => {
+  const dispatch = useDispatch();
   const app = useSelector((state: RootState) => state.app);
   const { data: session } = useSession();
 
-  const {updates} = app
+  const open = Boolean(anchorEl)
+
+  const {updates, markdownSelected, viewSettings, } = app
+
+  const {popup} = viewSettings
+
+  const updatesRef = collection(db, "updates")
+  const q = query(updatesRef, where('to', 'array-contains', session?.user.id), orderBy('sentAt', 'desc'), limit(10));
+  const [updatesFromDB] = useCollectionData(q);
+  console.log("updatesFromDB: ", updatesFromDB)
 
   useEffect(() => {
-    const handleGetUpdates = async () => {
-      const response = await fetch("/api/db/get-file-updates", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: session?.user?.id
-        })
-      })
-
-      if (!response?.ok) {
-        return 
-      }
-
-      const updates = await response.json()
-      dispatch(appActions.setUpdates(updates))
-    }
-    handleGetUpdates()
-
-  }, [])
-
+    if (session) {
+      if (updatesFromDB && updatesFromDB.length > 0) {
+        let newUpdates: FileUpdateType[] = []
   
+        updatesFromDB.forEach((update) => {
+          newUpdates.push({
+            type: update.type,
+            from: update.from,
+            to: update.to,
+            message: update.message,
+            sentAt: update.sentAt,
+            image: update.image,
+            seen: update.seen,
+            markdownID: update.markdownID,
+          })
+        })
+  
+        dispatch(appActions.setUpdates(newUpdates))
+      }
+    }
+   
+  }, [updatesFromDB])
 
-    return <Box>
+  const handleClose = (event: React.MouseEvent<HTMLElement>) => {
+    onClose(event)
+  }
+
+
+    return  <Popover id={open ? 'updates-popover' : undefined} open={open} anchorEl={anchorEl}
+    onClose={handleClose}
+    anchorOrigin={{
+     vertical: 'top',
+     horizontal: 'right',
+   }}
+   transformOrigin={{
+     vertical: 'top',
+     horizontal: 'left',
+   }}
+   >
+     <Paper sx={{
+       p: 2,
+       width: "400px",
+       maxWidth: "100%",
+       height: "300px",
+       overflowY: "auto",
+     }}>
+      <Box>
         <Typography variant="body1" component="h2" sx={{
           fontWeight: 700,
           mb: 2,
@@ -81,6 +124,8 @@ const UPDATES: {
             No updates for now.
             </Box>}
     </Box>
+     </Paper>
+   </Popover>
 }
 
 export default Updates

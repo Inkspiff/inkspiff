@@ -15,7 +15,6 @@ import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router"
 import BottomPanel from "@/components/editor/layout/BottomPanel";
 
-
 interface Props {
   initialDoc: string,
   // onChange: (doc: EditorState) => void,
