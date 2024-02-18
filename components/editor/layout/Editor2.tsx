@@ -16,19 +16,21 @@ import { useRouter } from "next/router"
 import BottomPanel from "@/components/editor/layout/BottomPanel";
 
 
+
+
 interface Props {
   initialDoc: string,
   // onChange: (doc: EditorState) => void,
 }
 
-const Editor: React.FC<Props> = (props) => {
+const Editor2: React.FC<Props> = (props) => {
   const router = useRouter();
   const { data: session } = useSession();
   const dispatch = useDispatch()
 
   const app = useSelector((state: RootState) => state.app)
   const {editorAction, markdown, viewSettings, markdownSelected, saveStates, addedSections } = app
-  const {content, currentLine, currentHead, id} = markdown
+  const {content: doc, currentLine, id} = markdown
   const {fullscreen} = viewSettings
    const [selectMenuIsOpen, setSelectMenuIsOpen] = useState<boolean>(false);
   const [selectMenuPosition, setSelectMenuPosition] = useState<{
@@ -39,55 +41,77 @@ const Editor: React.FC<Props> = (props) => {
     y: null,
   });
 
+
+  // const [selectMenuAnchorEl, setSelectMenuAnchorEl] = useState<null | HTMLElement>(null)
+  // const id = open ? 'select-popover' : undefined;
   const { initialDoc} = props
-
-  const saveMd = async (newContent: string, newCurrentLine: number, newCurrentHead: number) => {
-    dispatch(appActions.updatedSaveStates({
-      saving: true,
-      saveFailed: false
-    }))
-
-    console.log("about to fetch save")
-
-    const response = await fetch("/api/db/update-md-content", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: session!.user.id,
-        mdId: id,
-        content: newContent,
-        currentLine: newCurrentLine,
-        currentHead: newCurrentHead
-      })
-    })
-
-    dispatch(appActions.updatedSaveStates({
-      saving: false,
-      saveFailed: false
-    }))
-
-    if (!response?.ok) {
-      dispatch(appActions.updatedSaveStates({
-        saving: false,
-        saveFailed: true
-      }))
-      if (response.status === 402) {
-        return 
-      }
-      return
-    }
-  }
 
   const handleDocChange = useCallback((newState: EditorState) => {
     const newCurrentLine = newState.doc.lineAt(newState.selection.main.head).number
-    const newContent = newState.doc.toString()
-    const newCurrentHead = newState.selection.ranges[0].head
-    console.log({newCurrentLine, newCurrentHead})
-    saveMd(newContent, newCurrentLine, newCurrentHead)
-
+    dispatch(appActions.changeMarkdown({
+      content: newState.doc.toString(),
+      currentLine: newCurrentLine
+    }))
   }, [])
+
+  console.log("goo", doc.split(" ")[1])
+
+ 
+
+  useEffect(() => {
+    const saveMd = async () => {
+      dispatch(appActions.updatedSaveStates({
+        saving: true,
+        saveFailed: false
+      }))
+
+      console.log("about to fetch save")
+
+      const response = await fetch("/api/db/update-md-content", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: session!.user.id,
+          mdId: markdown.id,
+          content: markdown.content,
+          currentLine: markdown.currentLine
+        })
+      })
+
+
+      dispatch(appActions.updatedSaveStates({
+        saving: false,
+        saveFailed: false
+      }))
+
+      if (!response?.ok) {
+        dispatch(appActions.updatedSaveStates({
+          saving: false,
+          saveFailed: true
+        }))
+        if (response.status === 402) {
+          return 
+        }
+        return
+      }
+
+    }
+
+    if (session) {
+      if (markdown.id) {
+        // if (editorView) {
+        //   editorView.setState(EditorState.create({doc}));
+        // } 
+        // updateEditorContent(markdown.content, 0, markdown.content.length - 1)
+          // saveMd()
+      }
+    }
+
+    // updateEditorContent(doc)
+
+  }, [doc])
 
 
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
@@ -97,27 +121,14 @@ const Editor: React.FC<Props> = (props) => {
   })
 
 
-
   useEffect(() => {
     if (editorView) {
-      // Update the editor content when the doc changes
-      const state = editorView.state;
-      const transaction = state.update({
-        changes: {
-          from: 0,
-          to: state.doc.length,
-          insert: content,
-        },
-      });
-      editorView.dispatch(transaction)
-
-      // Set the cursor position
-      const newSelection = EditorSelection.single(currentHead);
-      editorView.dispatch({
-        selection: newSelection,
-      });
+      // Do nothing for now
+      
+    } else {
+      // loading editor
     }
-  }, [content, editorView]);
+  }, [editorView])
 
   const updateEditorContent = useCallback((newContent: string, from: number, to:number) => {
     if (editorView) {
@@ -159,6 +170,7 @@ const Editor: React.FC<Props> = (props) => {
     document.removeEventListener("click", closeSelectMenuHandler);
   }
 
+  // console.log({currentLine: markdown.currentLine})
   
   const blockSelectionHandler = (block: BlockSelectItemType) => {
     // get head
@@ -248,10 +260,18 @@ const Editor: React.FC<Props> = (props) => {
 
   return <Box  sx={{
     position: "relative",
+    // border: "1px solid red"
   }}
+  //  key={markdown.content}
    >
     <Box  component="div" className="Page" sx={{
+    // px: {xs: "8px", sm: "16px", },
+    // py: {xs: "8px", sm: "16px", },
+    // pl: {xs: "calc(16px + 48px)", sm: "calc(32px + 48px)",},
+    // position: "relative",
+    // border: "1px solid red",
   }}
+  // key={markdown.content}
   ref={refContainer}
   
   onKeyUp={ keyUpHandler}>
@@ -271,4 +291,4 @@ const Editor: React.FC<Props> = (props) => {
   </Box>
 }
 
-export default Editor
+export default Editor2

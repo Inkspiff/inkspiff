@@ -1,5 +1,5 @@
 import { TemplateType } from "@/types"
-import { TableType, CodeType, ListType, SectionType } from "@/types/editor"
+import { TableType, CodeType, ListType, SectionType, FileUpdatesTypeType, FileUpdateType } from "@/types/editor"
 
 import { Octokit } from "@octokit/rest";
 
@@ -454,4 +454,16 @@ export const convertToGithubHTML = async (content: string) => {
     })
 
     return htmlContent
+}
+
+
+
+export const getUpdatesText = (update: FileUpdateType) => {
+  const  {type, from} = update
+  switch (type) {
+    case 'invite':
+      return `You were invited to a file`
+    default:
+      return `You were invited to a file`
+  }
 }

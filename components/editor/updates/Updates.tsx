@@ -1,8 +1,15 @@
 import React, {useEffect} from "react"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
+import Button from "@mui/material/Button"
+import List from "@mui/material/List"
+import IconButton from "@mui/material/IconButton"
 import Divider from "@mui/material/Divider"
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { appActions } from "@/store/app-slice";
+import { getUpdatesText } from "@/lib/utils"
 
 const UPDATES: {
     title: string,
@@ -11,7 +18,11 @@ const UPDATES: {
 }[] = []
 
  const Updates = () => {
+  const dispatch = useDispatch()
+  const app = useSelector((state: RootState) => state.app);
   const { data: session } = useSession();
+
+  const {updates} = app
 
   useEffect(() => {
     const handleGetUpdates = async () => {
@@ -30,11 +41,13 @@ const UPDATES: {
       }
 
       const updates = await response.json()
-      console.log({updates})
+      dispatch(appActions.setUpdates(updates))
     }
     handleGetUpdates()
 
   }, [])
+
+  
 
     return <Box>
         <Typography variant="body1" component="h2" sx={{
@@ -45,8 +58,20 @@ const UPDATES: {
           my: 2
         }}/>
 
-        {(UPDATES.length > 0) ? 
-        <Box></Box> : 
+        {(updates.length > 0) ? 
+        <Box>
+          {updates.map((update, index) => {
+            const updateText = getUpdatesText(update)
+
+            return <List key={index}>
+                <Typography>{
+                    updateText
+                  }</Typography>
+            </List>
+          })}
+        </Box> 
+        
+        : 
         <Box sx={{
             m: 2,
             p: 2,

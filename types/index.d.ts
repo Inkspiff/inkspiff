@@ -28,6 +28,7 @@ export interface MarkdownInterface {
   title: string,
   content: string,
   currentLine: number,
+  currentHead: number,
   lastEdited: number | undefined,
   admin: string,
   memberIDs: string[],

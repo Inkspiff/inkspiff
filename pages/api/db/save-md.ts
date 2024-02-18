@@ -23,15 +23,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log("mdId", mdData.id)
     const mdRef = doc(db, "markdowns", mdData.id);
 
-    const mdDataToSend = {
-        title: mdData.title,
-        content: mdData.content,
-        currentLine: mdData.currentLine,
-        lastEdited: serverTimestamp(),
-    }
 
     
-        await updateDoc(mdRef, mdDataToSend).then( async (data) => {
+        await updateDoc(mdRef, {
+            title: mdData.title,
+            content: mdData.content,
+            currentLine: mdData.currentLine,
+            currentHead: mdData.currentHead,
+            lastEdited: serverTimestamp(),
+        }).then( async (data) => {
             res.status(200).end()
         }).catch((err) => {
             console.error('Error updating markdown:', err);
