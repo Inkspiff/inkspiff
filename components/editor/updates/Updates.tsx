@@ -43,7 +43,6 @@ interface UpdatesProps {
   const updatesRef = collection(db, "updates")
   const q = query(updatesRef, where('to', 'array-contains', session?.user.id), orderBy('sentAt', 'desc'), limit(10));
   const [updatesFromDB] = useCollectionData(q);
-  console.log("updatesFromDB: ", updatesFromDB)
 
   useEffect(() => {
     if (session) {
