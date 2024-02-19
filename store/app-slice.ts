@@ -20,6 +20,7 @@ export interface appState {
     markdownSelected: string,
     templates: TemplateType[],
     viewSettings: ViewSettingsType,
+    loadingFile: boolean,
     fileList: FileType[],
     openLoginModal: boolean,
     editorAction: EditorActionType,
@@ -34,8 +35,10 @@ const initialState: appState = {
         id: "",
         title: "",
         content: "",
-        currentLine: 0,
+        currentLine: 1,
+        currentHead: 0,
         lastEdited: 0,
+        lastEditedBy: "",
         admin: "",
         memberIDs: [],
         visibility: "",
@@ -56,6 +59,7 @@ const initialState: appState = {
         bottomPanel: "",
         popup: "",
     },
+    loadingFile: false,
     fileList: [],
     openLoginModal: false,
     editorAction: "",
@@ -120,6 +124,9 @@ const appSlice = createSlice( {
 
 
         /* FILE ACTIONS */
+        setLoadingFile(state, action: PayloadAction<boolean>){
+            state.loadingFile = action.payload
+        },
         updateFileList(state, action: PayloadAction<{
             id: string,
             title: string,

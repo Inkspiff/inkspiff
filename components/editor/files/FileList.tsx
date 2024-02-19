@@ -46,42 +46,37 @@ export default function FileList() {
   };
 
   useEffect(() => {
-    if (session) {
-      const getFileList = async () => {
-        setLoadingFiles(true);
-        const response = await fetch("/api/db/get-user-md-ids", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: session.user.id,
-          }),
-        });
+    const getFileList = async () => {
+      setLoadingFiles(true);
+      const response = await fetch("/api/db/get-user-md-ids", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: session!.user.id,
+        }),
+      });
 
-        setLoadingFiles(false);
+      setLoadingFiles(false);
 
-        if (!response?.ok) {
-          console.log("failed ok");
-          if (response.status === 402) {
-            console.log("failed 402");
-            return <>fAILED</>;
-          }
-
-          return <>Failed</>;
+      if (!response?.ok) {
+        console.log("failed ok");
+        if (response.status === 402) {
+          console.log("failed 402");
+          return <>fAILED</>;
         }
 
-        const files = await response.json();
+        return <>Failed</>;
+      }
 
-        // if (files.length > 0) {
-        //   if (markdownSelected !== files[0].id) {
-        //     dispatch(appActions.updateMarkdownSelected(files[0].id))
-        //   }
-        // }
+      const files = await response.json();
 
-        dispatch(appActions.updateFileList(files));
-      };
+      dispatch(appActions.updateFileList(files));
+    };
 
+    if (session) {
+      
       getFileList();
     }
   }, []);

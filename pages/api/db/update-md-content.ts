@@ -7,8 +7,7 @@ import { collection, doc, serverTimestamp, updateDoc } from "firebase/firestore"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const data = req.body
-
-    const {mdId, content, currentLine } = data
+    const {userId, mdId, content, currentHead, currentLine} = data
 
     let inputsAreValid = true
     
@@ -18,12 +17,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return
     }
 
+    
+
     const mdRef = doc(db, "markdowns", mdId);
 
     
         await updateDoc(mdRef, {
-            content,
-            currentLine,
+            content: content,
+            currentLine: currentLine,
+            currentHead: currentHead,
+            lastEdited: serverTimestamp(),
+            lastEditedBy: userId,
         }).then( async (data) => {
             res.status(200).end(); // Send a response indicating success
         }).catch((err) => {

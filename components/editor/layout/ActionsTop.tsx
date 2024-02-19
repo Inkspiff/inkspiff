@@ -29,8 +29,6 @@ const {viewSettings} = app
  
   const [updatesAnchorEl, setUpdatesAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const openUpdates = Boolean(updatesAnchorEl)
-
 
   const handleCreateNew = () => {
     if (session) {
@@ -91,27 +89,7 @@ const {viewSettings} = app
          </ListItemButton>
          
        </ListItem>
-       <Popover id={openUpdates ? 'updates-popover' : undefined} open={openUpdates} anchorEl={updatesAnchorEl}
-       onClose={handleToggleShowUpdates}
-       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
-      >
-        <Paper sx={{
-          p: 2,
-          width: "400px",
-          maxWidth: "100%",
-          height: "300px",
-          overflowY: "auto",
-        }}>
-          <Updates />
-        </Paper>
-      </Popover>
+      <Updates anchorEl={updatesAnchorEl} onClose={handleToggleShowUpdates} />
 
        <ListItem  disablePadding sx={{
           //  border: "1px solid red",
