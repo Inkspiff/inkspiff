@@ -55,7 +55,7 @@ interface UpdatesProps {
             from: update.from,
             to: update.to,
             message: update.message,
-            sentAt: update.sentAt,
+            sentAt: update.sentAt ? update.sentAt.seconds : 0,
             image: update.image,
             seen: update.seen,
             markdownID: update.markdownID,
