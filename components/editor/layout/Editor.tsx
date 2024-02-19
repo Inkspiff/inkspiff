@@ -129,7 +129,14 @@ const Editor: React.FC<Props> = (props) => {
     
   }, [onDelay]);
 
-  // useEffect(() => {}, [onDelay]);
+  useEffect(() => {
+    // Cleanup the timeout when the component unmounts or when onDelay changes
+    return () => {
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+    };
+  }, [onDelay]);
 
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
     initialDoc: initialDoc,
