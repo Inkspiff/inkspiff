@@ -1,89 +1,59 @@
 "use client"
 
 import * as React from "react"
-// import { useSearchParams } from "next/navigation"
-// import { zodResolver } from "@hookform/resolvers/zod"
+import { useSearchParams } from "next/navigation"
 import { signIn } from "next-auth/react"
-// import { useForm } from "react-hook-form"
-// import * as z from "zod"
 import Button from "@mui/material/Button"
+import Input from "@mui/material/Input"
 import Box from "@mui/material/Box"
-import {FaGithub} from "react-icons/fa"
-
-// import { userAuthSchema } from "@/lib/validations/auth"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { userAuthSchema } from "@/lib/validations/auth"
+import GoogleLoginButton from "./GoogleLoginButton"
+import GithubLoginButton from "./GithubLoginButton"
+import * as z from "zod"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-// type FormData = z.infer<typeof userAuthSchema>
+type FormData = z.infer<typeof userAuthSchema>
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm<FormData>({
-//     resolver: zodResolver(userAuthSchema),
-//   })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(userAuthSchema),
+  })
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false)
-//   const searchParams = useSearchParams()
 
-//   async function onSubmit(data: FormData) {
-//     setIsLoading(true)
+  const onSubmit = async (data: FormData) => {
+    setIsLoading(true)
+    const searchParams = new URLSearchParams(window.location.search)
+    console.log(searchParams)
 
-//     const signInResult = await signIn("email", {
-//       email: data.email.toLowerCase(),
-//       redirect: false,
-//       callbackUrl: searchParams?.get("from") || "/dashboard",
-//     })
+    const signInResult = await signIn("email", {
+      email: data.email.toLowerCase(),
+      redirect: false,
+      callbackUrl: searchParams?.get("from") || "/editor",
+    })
 
-//     setIsLoading(false)
+    setIsLoading(false)
 
-//     if (!signInResult?.ok) {
-//       return <div>
-//        { `
-//         title: "Something went wrong.",
-//         description: "Your sign in request failed. Please try again.",
-//         variant: "destructive",`}
-//       </div>
+    if (!signInResult?.ok) {
+      console.error("Sign in failed", signInResult)
+    }
 
-//     }
+  }
 
-//     return <div>
-//         {`toast({
-//       title: "Check your email",
-//       description: "We sent you a login link. Be sure to check your spam too.",
-//     })`}
-//     </div>
-//   }
+  
 
   return (
     <div {...props}>
-       <Button
-        type="button"
-        onClick={() => {
-          setIsGitHubLoading(true)
-          signIn("github")
-        }}
-        disabled={isLoading || isGitHubLoading}
-        variant="outlined"
-        sx={{
-          my: 2,
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {isGitHubLoading ? (
-          <span>loading spinner</span>
-        ) : (
-            <Box component="span" sx={{
-              display: "inline-block",
-              mr: 1,
-            }}><FaGithub/></Box>
-        )}{" "}
-        Sign In with Github
-      </Button>
-      {/* <div className="relative">
+        <GithubLoginButton />
+        <GoogleLoginButton />
+
+      <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
         </div>
@@ -92,13 +62,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             Or continue with
           </span>
         </div>
-      </div> */}
-      {/* <form onSubmit={handleSubmit(onSubmit)}>
+      </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
+            <label className="sr-only" htmlFor="email">
               Email
-            </Label>
+            </label>
             <Input
               id="email"
               placeholder="name@example.com"
@@ -106,23 +76,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading || isGitHubLoading}
+              disabled={isLoading}
               {...register("email")}
             />
-            {errors?.email && (
-              <p className="px-1 text-xs text-red-600">
-                {errors.email.message}
-              </p>
-            )}
           </div>
-          <button  disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
+          <Button type='submit' disabled={isLoading}>
             Sign In with Email
-          </button>
+          </Button>
         </div>
-      </form> */}
+      </form>
      
     </div>
   )

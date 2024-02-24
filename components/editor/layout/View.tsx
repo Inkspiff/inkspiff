@@ -52,8 +52,7 @@ const View = () => {
     if (mdDoc) {
       dispatch(appActions.setLoadingFile(false));
 
-      if (session && !onDelay) {
-        if (mdDoc.content !== content) {
+      if (session) {
           dispatch(
             appActions.updateMarkdown({
               id: markdownSelected,
@@ -69,7 +68,6 @@ const View = () => {
               github: mdDoc.github,
             })
           );
-        }
       }
     }
   }, [mdDoc]);

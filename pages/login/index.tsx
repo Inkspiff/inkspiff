@@ -13,6 +13,7 @@ import { Session } from 'next-auth';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import LoggedIn from "@/components/auth/LoggedIn";
 
 // Define the type for the session object
 type MySession = Session | null;
@@ -47,7 +48,7 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
   // const { data: session } = useSession();
   const router = useRouter()
 
-  console.log({session})
+  
 
   // if (session) {
   return (
@@ -105,60 +106,7 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
           }}
         >
           {session ? (
-            <Box sx={{
-              textAlign: "center"
-            }}>
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: { xs: "1.25rem", sm: "1.5rem" },
-                  lineHeight: { xs: "1.25rem", sm: "1.5rem" },
-                  mb: 1,
-                }}
-              >
-                Hey, {session.user.name!.split(" ")[0]}{" "}
-              </Typography>
-
-              <Box
-              sx={{
-                width: "80px",
-                height: "80px",
-                position: "relative",
-                mb: 1,
-                borderRadius: "50%",
-                display: "inline-block",
-                overflow: "hidden",
-
-                "& img": {
-                  objectFit: "contain",
-                }
-              }}
-              >
-                <Image alt={`${session.user.name!} github`} src={session.user.image!} fill />
-              </Box>
-
-              <Typography
-                variant="body1"
-                sx={{
-                  mb: 1,
-                }}
-              >
-                You&apos;re already logged in to your account
-              </Typography>
-
-              <Typography
-                variant="body1"
-                sx={{
-                  "& a": {
-                    color: "#121212",
-                  },
-                }}
-              >
-                <Link href="/editor">
-                  Go to Editor
-                </Link>
-              </Typography>
-            </Box>
+            <LoggedIn />
           ) : (
             <>
               <Box>

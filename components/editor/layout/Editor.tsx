@@ -85,8 +85,6 @@ const Editor: React.FC<Props> = (props) => {
         saveFailed: false,
       })
     );
-    
-    setOnDelay(false);
 
     if (!response?.ok) {
       dispatch(
@@ -118,7 +116,7 @@ const Editor: React.FC<Props> = (props) => {
         saveMd(newContent, newCurrentLine, newCurrentHead);
       }, 3000);
     
-  }, [onDelay]);
+  }, []);
 
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
     initialDoc: initialDoc,
@@ -145,7 +143,7 @@ const Editor: React.FC<Props> = (props) => {
         selection: newSelection,
       });
     }
-  }, [content, editorView, onDelay]);
+  }, [content, editorView]);
 
   const updateEditorContent = useCallback(
     (newContent: string, from: number, to: number) => {
