@@ -48,7 +48,7 @@
     "markdown-to-text": "^0.1.1",
     "match-sorter": "^6.3.1",
     "next": "13.4.3",
-    "next-auth": "^4.22.1",
+    "next-auth": "^4.24.6",
     "nodemailer": "^6.9.10",
     "npm": "^10.4.0",
     "octokit": "^3.1.2",
