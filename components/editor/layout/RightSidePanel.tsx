@@ -78,7 +78,6 @@ export default function RightSidePanel() {
               }}/>
             </IconButton>
           
-          {/* @ts-expect-error Server Component */}
           <SwipeableDrawer
             anchor={"right"}
             open={open}

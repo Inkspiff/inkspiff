@@ -145,7 +145,6 @@ const {bottomPanel} = viewSettings
                 <LuRedo />
             </IconButton>
         </Paper>
-          {/* @ts-expect-error Server Component */}
           <SwipeableDrawer
         
         onOpen={handleOpenPanel}

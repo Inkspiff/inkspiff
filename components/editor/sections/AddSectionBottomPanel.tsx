@@ -23,7 +23,6 @@ const AddSectionBottomPanel = () => {
         // border: "1px solid red",
         zIndex: 100,
     }}>
-        {/* @ts-expect-error Server Component */}
         <SwipeableDrawer
         onOpen={() => {}}
         onClose={() => {}}
