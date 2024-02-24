@@ -34,8 +34,6 @@ const View = () => {
   const { content: doc, content, lastEditedBy } = markdown;
   const { fullscreen, sidebar, blocks: blocksView } = viewSettings;
 
-  const [onDelay, setOnDelay] = useState(false);
-
   const mdRef = markdownSelected
     ? firebaseDoc(db, "markdowns", markdownSelected)
     : null;
@@ -47,6 +45,8 @@ const View = () => {
       dispatch(appActions.setLoadingFile(true));
     }
   }, [markdownSelected]);
+
+  
 
   useEffect(() => {
     if (mdDoc) {
@@ -144,7 +144,7 @@ const View = () => {
         )}
         {sidebar && !selectedSection && <NoSections />}
         {!sidebar && !blocksView && (
-          <Editor initialDoc={doc} setOnDelay={setOnDelay} onDelay={onDelay} />
+          <Editor initialDoc={doc}  />
         )}
         {!sidebar && blocksView && <Blocks />}
       </Grid>

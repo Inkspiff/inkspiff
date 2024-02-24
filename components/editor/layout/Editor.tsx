@@ -17,11 +17,10 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useRouter } from "next/router";
 import BottomPanel from "@/components/editor/layout/BottomPanel";
+import { set } from "zod";
 
 interface Props {
   initialDoc: string;
-  onDelay: boolean;
-  setOnDelay: (onDelay: boolean) => void;
   // onChange: (doc: EditorState) => void,
 }
 
@@ -50,7 +49,7 @@ const Editor: React.FC<Props> = (props) => {
     y: null,
   });
 
-  const { initialDoc, onDelay, setOnDelay } = props;
+  const { initialDoc } = props;
 
   const saveMd = async (
     newContent: string,
@@ -86,6 +85,8 @@ const Editor: React.FC<Props> = (props) => {
         saveFailed: false,
       })
     );
+    
+    setOnDelay(false);
 
     if (!response?.ok) {
       dispatch(
@@ -110,33 +111,13 @@ const Editor: React.FC<Props> = (props) => {
     const newContent = newState.doc.toString();
     const newCurrentHead = newState.selection.ranges[0].head;
 
-    if (onDelay) {
-      // If on delay, clear the previous timeout and set a new one
       if (saveTimeout) {
         clearTimeout(saveTimeout);
       }
-
       saveTimeout = setTimeout(() => {
         saveMd(newContent, newCurrentLine, newCurrentHead);
-        setOnDelay(false);
-      }, 1000);
-    } else {
-      // If not on delay, save immediately
-      saveMd(newContent, newCurrentLine, newCurrentHead);
-    }
-
-    setOnDelay(true);
-
+      }, 3000);
     
-  }, [onDelay]);
-
-  useEffect(() => {
-    // Cleanup the timeout when the component unmounts or when onDelay changes
-    return () => {
-      if (saveTimeout) {
-        clearTimeout(saveTimeout);
-      }
-    };
   }, [onDelay]);
 
   const [refContainer, editorView] = useCodeMirror<HTMLDivElement>({
@@ -164,7 +145,7 @@ const Editor: React.FC<Props> = (props) => {
         selection: newSelection,
       });
     }
-  }, [content, editorView]);
+  }, [content, editorView, onDelay]);
 
   const updateEditorContent = useCallback(
     (newContent: string, from: number, to: number) => {
