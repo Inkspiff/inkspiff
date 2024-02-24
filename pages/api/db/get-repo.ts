@@ -15,7 +15,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await getDoc(mdRef).then( (mdDocSnap) => {
         if(mdDocSnap.exists()) {
             const github = mdDocSnap.data().github
-            res.status(200).json(github)
+            res.status(200).json({github})
+        } else {
+            res.status(404).json({message: "Markdown not found"})
         }
       
     }).catch((err) => {

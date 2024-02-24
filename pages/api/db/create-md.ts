@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         title,
         content,
         admin: creator.id,
-        currentLine: content.length - 1,
+        currentLine: content.length,
         currentHead: 0,
         github: "",
         memberIDs: [creator.id],

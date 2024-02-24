@@ -7,6 +7,7 @@ const nextConfig = {
       "github.com",
       "inkspiff.com",
       "inkspiff.netlify.app",
+      "lh3.googleusercontent.com",
     ],
   },
 };

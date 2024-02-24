@@ -39,7 +39,7 @@ const GithubPopup = () => {
     const {palette, } = theme
     const {mode } = palette
 
-    const { markdown: {content, title}, viewSettings } = app
+    const { markdown: {content, title}, viewSettings, markdownSelected } = app
 
     const open = viewSettings.popup === "github"
 
@@ -92,6 +92,8 @@ useEffect(() => {
 
     setFetchingRepo(false)
 
+    
+
     if (!response?.ok) {
       if (response.status === 402) {
         return 
@@ -100,10 +102,12 @@ useEffect(() => {
     }
 
     const repo = await response.json()
-    setRepo(repo)
+    setRepo(repo.github)
   }
 
-  getRepo()
+  if (session && markdownSelected) {
+    getRepo()
+  }
 }, [updating, open])
 
   return (
