@@ -23,7 +23,6 @@ export default function TitleSpace() {
     const app = useSelector((state: RootState) => state.app)
     const {markdown, saveStates, selectedSection, viewSettings} = app
 
-    console.log(markdown)
     const {sidebar} = viewSettings
     const {saving, saveFailed} = saveStates
 

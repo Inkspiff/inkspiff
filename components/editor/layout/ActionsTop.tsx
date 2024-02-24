@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import Popover from '@mui/material/Popover';
+import Badge from '@mui/material/Badge';
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from '@/store/app-slice';
@@ -24,7 +24,9 @@ export default function ActionsTop() {
   const dispatch = useDispatch()
 const app = useSelector((state: RootState) => state.app)
 
-const {viewSettings} = app
+const {viewSettings, updates} = app
+
+const unseeenUpdates = updates.filter((update) => update.seen === false)
 
  
   const [updatesAnchorEl, setUpdatesAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -76,20 +78,28 @@ const {viewSettings} = app
            cursor: "pointer",
            borderRadius: "4px",
          }} onClick={handleToggleShowUpdates}>
-          <AccessTimeRoundedIcon sx={{
+          
+
+            <AccessTimeRoundedIcon sx={{
             mx: 1,
             width: 16,
             height: 16,
           
           }}  /> 
+          <Badge badgeContent={unseeenUpdates.length} color="primary" >
           <Typography variant="body2" sx={{
             fontWeight: 500,
             fontSize: "14px",
            }}>Update</Typography>
+          </Badge>
+          
+
+
+            <Updates anchorEl={updatesAnchorEl} onClose={handleToggleShowUpdates} />
          </ListItemButton>
          
        </ListItem>
-      <Updates anchorEl={updatesAnchorEl} onClose={handleToggleShowUpdates} />
+     
 
        <ListItem  disablePadding sx={{
           //  border: "1px solid red",

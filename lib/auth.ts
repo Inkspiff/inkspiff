@@ -88,10 +88,11 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token, user }) {
 
+      // console.log({session, token, user})
       
       if (user) {
 
-        const emailVerifiedString = user?.emailVerified?.toISOString(); // Adjust this based on your preference
+        const emailVerifiedString = user?.emailVerified ? user?.emailVerified?.toISOString() : null;
 
 
         session.user = {
