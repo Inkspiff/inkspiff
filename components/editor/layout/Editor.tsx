@@ -20,6 +20,8 @@ import BottomPanel from "@/components/editor/layout/BottomPanel";
 
 interface Props {
   initialDoc: string;
+  onDelay: boolean;
+  setOnDelay: (onDelay: boolean) => void;
   // onChange: (doc: EditorState) => void,
 }
 
@@ -48,7 +50,7 @@ const Editor: React.FC<Props> = (props) => {
     y: null,
   });
 
-  const { initialDoc } = props;
+  const { initialDoc, onDelay, setOnDelay } = props;
 
   const saveMd = async (
     newContent: string,
@@ -99,7 +101,6 @@ const Editor: React.FC<Props> = (props) => {
     }
   };
 
-  const [onDelay, setOnDelay] = useState(false);
   let saveTimeout: NodeJS.Timeout | null = null;
 
   const handleDocChange = useCallback((newState: EditorState) => {

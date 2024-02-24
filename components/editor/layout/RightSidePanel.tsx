@@ -77,6 +77,8 @@ export default function RightSidePanel() {
                 // color: "#121212"
               }}/>
             </IconButton>
+          
+          {/* @ts-expect-error Server Component */}
           <SwipeableDrawer
             anchor={"right"}
             open={open}

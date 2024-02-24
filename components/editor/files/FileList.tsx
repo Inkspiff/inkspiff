@@ -28,11 +28,11 @@ export default function FileList() {
 
   const handleOpenFile = (id: string, title: string) => {
     if (markdownSelected !== id) {
-      router.push(
+      router.replace(
         {
-          pathname: "/editor/",
+          pathname: "/editor/[markdown-slug]",
           query: {
-            "markdown-id": router.query["markdown-id"],
+            "markdown-slug": `${title.split(" ").join("-")}-${id}`,
           },
         },
         `/editor/${title.split(" ").join("-")}-${id}`,
@@ -40,7 +40,7 @@ export default function FileList() {
           shallow: true,
         }
       );
-
+      
       dispatch(appActions.updateMarkdownSelected(id));
     }
   };
@@ -155,7 +155,6 @@ export default function FileList() {
                 },
               }}
               onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-                console.log("before");
                 e.stopPropagation();
                 handleOpenFile(file.id, file.title);
               }}

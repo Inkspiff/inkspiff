@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -14,12 +13,8 @@ import Blocks from "@/components/editor/block-view/Blocks";
 import NoSections from "@/components/editor/sections/NoSections";
 import Loading from "@/components/ui/Loading";
 import { Typography } from "@mui/material";
-import {
-  useDocumentData,
-} from "react-firebase-hooks/firestore";
-import {
-  doc as firebaseDoc,
-} from "firebase/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { doc as firebaseDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
 const View = () => {
@@ -39,42 +34,47 @@ const View = () => {
   const { content: doc, content, lastEditedBy } = markdown;
   const { fullscreen, sidebar, blocks: blocksView } = viewSettings;
 
+  const [onDelay, setOnDelay] = useState(false);
+
   const mdRef = markdownSelected
     ? firebaseDoc(db, "markdowns", markdownSelected)
     : null;
-  const [md] = useDocumentData(mdRef);
+  const [mdDoc] = useDocumentData(mdRef);
 
   useEffect(() => {
+    console.log({ markdownSelected });
     if (markdownSelected) {
       dispatch(appActions.setLoadingFile(true));
     }
   }, [markdownSelected]);
 
   useEffect(() => {
-    if (md && session) {
+    if (mdDoc) {
       dispatch(appActions.setLoadingFile(false));
-      if (md.content !== content) {
-        dispatch(
-          appActions.updateMarkdown({
-            id: markdownSelected,
-            title: md.title,
-            content: md.content,
-            currentLine: md.currentLine,
-            currentHead: md.currentHead,
-            lastEdited: md.lastEdited ? md.lastEdited.seconds : 0,
-            lastEditedBy: md.lastEditedBy || "",
-            admin: md.admin,
-            memberIDs: md.membersIDs,
-            visibility: md.visibility,
-            github: md.github,
-          })
-        );
-      }
-      
-    }
-  }, [md]);
 
-  if (loadingFile || !md) {
+      if (session && !onDelay) {
+        if (mdDoc.content !== content) {
+          dispatch(
+            appActions.updateMarkdown({
+              id: markdownSelected,
+              title: mdDoc.title,
+              content: mdDoc.content,
+              currentLine: mdDoc.currentLine,
+              currentHead: mdDoc.currentHead,
+              lastEdited: mdDoc.lastEdited ? mdDoc.lastEdited.seconds : 0,
+              lastEditedBy: mdDoc.lastEditedBy || "",
+              admin: mdDoc.admin,
+              memberIDs: mdDoc.membersIDs,
+              visibility: mdDoc.visibility,
+              github: mdDoc.github,
+            })
+          );
+        }
+      }
+    }
+  }, [mdDoc]);
+
+  if (loadingFile || !mdDoc) {
     return <Loading />;
   }
 
@@ -130,9 +130,12 @@ const View = () => {
         xs={12}
         sm={fullscreen ? 12 : 6}
         sx={{
-          // outline: "2px solid blue",
-          height: { xs: "50%", sm: "100%" },
-          minHeight: { xs: "auto", md: "calc(100vh - 64px)" },
+          // border: "2px solid blue",
+          height: { xs: "50%", sm: fullscreen ? "auto" : "100%" },
+          minHeight: {
+            xs: "auto",
+            sm: fullscreen ? "auto" : "calc(100vh - 64px)",
+          },
           overflowY: { xs: "auto", sm: "scroll" },
         }}
       >
@@ -141,7 +144,7 @@ const View = () => {
         )}
         {sidebar && !selectedSection && <NoSections />}
         {!sidebar && !blocksView && (
-          <Editor initialDoc={doc} />
+          <Editor initialDoc={doc} setOnDelay={setOnDelay} onDelay={onDelay} />
         )}
         {!sidebar && blocksView && <Blocks />}
       </Grid>
@@ -151,8 +154,11 @@ const View = () => {
         sm={fullscreen ? 12 : 6}
         sx={{
           // outline: "2px solid red",
-          height: { xs: "50%", sm: "100%" },
-          // minHeight: "50vh",
+          height: { xs: "50%", sm: fullscreen ? "auto" : "100%" },
+          minHeight: {
+            xs: "auto",
+            sm: fullscreen ? "auto" : "calc(100vh - 64px)",
+          },
           overflowY: { xs: "auto", sm: "scroll" },
         }}
       >
