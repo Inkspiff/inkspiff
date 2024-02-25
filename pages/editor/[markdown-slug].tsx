@@ -121,7 +121,8 @@ const Main = styled("main", {
   const smUp = useTheme().breakpoints.up("sm");
 
   return {
-    width: "100%",
+    flexGrow: 1,
+    // width: "100%",
     padding: 0,
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
@@ -265,7 +266,7 @@ export default function App({
         height: {xs: "calc(100% - 56px)", sm: "100%"},
         // border: "3px solid green",
         width:  {xs: "100%", sm: viewSettings.drawer ? "calc(100% - 240px)" : "100%"},
-        display: {xs: "auto", sm: "block"}
+        display: {xs: "auto", sm: "block"},
       }}>
         {!session && <Link href="/login">Login</Link>}
         {session && <View />}

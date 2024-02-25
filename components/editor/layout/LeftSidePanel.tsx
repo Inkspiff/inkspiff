@@ -48,7 +48,7 @@ export default function LeftSidePanel() {
     <Drawer
 
     sx={{
-      width: {xs: "100%", sm: drawerWidth},
+      width: {xs: open ? "100%" : 0, sm: open ? drawerWidth : 0},
       flexShrink: 0,
       '& .MuiDrawer-paper': {
         width: {xs: "100%", sm: drawerWidth},
