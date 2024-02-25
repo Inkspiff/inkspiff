@@ -114,7 +114,7 @@ const Editor: React.FC<Props> = (props) => {
       }
       saveTimeout = setTimeout(() => {
         saveMd(newContent, newCurrentLine, newCurrentHead);
-      }, 1000);
+      }, 3000);
     
   }, []);
 
