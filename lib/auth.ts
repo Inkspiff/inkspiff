@@ -61,10 +61,10 @@ export const authOptions: NextAuthOptions = {
       const isAllowedToSignIn = true
       if (isAllowedToSignIn) {
         if (account?.provider === 'google') {
-          // console.log({user, account, profile, email, credentials})
+          console.log({user, account, profile, email, credentials})
         }
         if (account?.provider === 'github') {
-          // console.log({user, account, profile, email, credentials})
+          console.log({user, account, profile, email, credentials})
         }
         if (account?.provider === 'email') {
           console.log({user, account, profile, email, credentials})

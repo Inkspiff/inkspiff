@@ -15,10 +15,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LoggedIn from "@/components/auth/LoggedIn";
 
-// Define the type for the session object
-type MySession = Session | null;
-
-
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -27,9 +23,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
-  // if (session) {
-  //   return { redirect: { destination: "/" } };
-  // }
+  if (session) {
+
+    const emailIsVerified = session?.user?.emailVerified;
+
+    if (!emailIsVerified) {
+      return { redirect: { destination: "/login/verify-email" } };
+    }
+
+  }
+
+  
 
   const providers = await getProviders();
   
@@ -47,6 +51,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // const { data: session } = useSession();
   const router = useRouter()
+
 
   
 
