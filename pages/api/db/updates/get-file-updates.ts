@@ -39,7 +39,7 @@ export default async function handler(
       querySnapshot.forEach((updateDoc) => {
         if (updateDoc.data().to.includes(userId)) {
           updates.push({
-            // id: updateDoc.id,
+            id: updateDoc.id,
             type: updateDoc.data().type,
             from: updateDoc.data().from,
             to: updateDoc.data().to,
