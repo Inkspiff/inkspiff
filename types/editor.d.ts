@@ -71,7 +71,7 @@ export interface BlockViewElementType {
 export type FileUpdatesTypeType = "change" | "invite" | "notice";
 
 export type FileUpdateType = {
-//   id: string;
+  id: string;
   type: FileUpdatesTypeType;
   from: string;
   to: string[];

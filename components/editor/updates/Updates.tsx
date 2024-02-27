@@ -12,6 +12,7 @@ import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { getUpdatesText } from "@/lib/utils"
 import {
+  useCollection,
   useCollectionData,
 } from "react-firebase-hooks/firestore";
 import {
@@ -23,6 +24,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import { FileUpdateType } from "@/types/editor"
+import Update from "./Update"
 
 interface UpdatesProps {
   anchorEl: null | HTMLElement,
@@ -42,15 +44,18 @@ interface UpdatesProps {
 
   const updatesRef = collection(db, "updates")
   const q = query(updatesRef, where('to', 'array-contains', session?.user.id), orderBy('sentAt', 'desc'), limit(10));
-  const [updatesFromDB] = useCollectionData(q);
+  const [updatesSnapshot] = useCollection(q);
+
 
   useEffect(() => {
     if (session) {
-      if (updatesFromDB && updatesFromDB.length > 0) {
+      if (updatesSnapshot && !updatesSnapshot.empty) {
         let newUpdates: FileUpdateType[] = []
   
-        updatesFromDB.forEach((update) => {
+        updatesSnapshot.docs.forEach((updateDoc: any) => {
+          const update = updateDoc.data()
           newUpdates.push({
+            id: updateDoc.id,
             type: update.type,
             from: update.from,
             to: update.to,
@@ -66,11 +71,43 @@ interface UpdatesProps {
       }
     }
    
-  }, [updatesFromDB])
+  }, [updatesSnapshot, session, dispatch])
 
   const handleClose = (event: React.MouseEvent<HTMLElement>) => {
     onClose(event)
   }
+
+  useEffect(() => {
+
+    const unseeenUpdates = updates.filter((update) => update.seen === false)
+    
+    const seenUpdates = async () => { 
+      
+      const updateIds = unseeenUpdates.map((update) => update.id)
+
+      await fetch("/api/db/updates/seen-updates", {
+        method: "POST",
+        body: JSON.stringify({
+          updateIds,
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+    }
+
+    
+
+    if (session) {
+      
+      if ((unseeenUpdates.length > 0) && (anchorEl !== null)) {
+        console.log("seen updates")
+        seenUpdates()
+      }
+    } 
+  }, [updates, anchorEl])
+
+  console.log({updates})
 
 
     return  <Popover id={open ? 'updates-popover' : undefined} open={open} anchorEl={anchorEl}
@@ -85,31 +122,32 @@ interface UpdatesProps {
    }}
    >
      <Paper sx={{
-       p: 2,
+      
        width: "400px",
        maxWidth: "100%",
        height: "300px",
        overflowY: "auto",
      }}>
       <Box>
-        <Typography variant="body1" component="h2" sx={{
-          fontWeight: 700,
-          mb: 2,
-        }}>Updates</Typography>
+        <Box sx={{
+          px: 2,
+          py: 1,
+        }}>
+          <Typography variant="body1" component="h2" sx={{
+            fontWeight: 700,
+          }}>Updates</Typography>
+          
+        </Box>
         <Divider sx={{
-          my: 2
-        }}/>
+          }}/>
+        
 
         {(updates.length > 0) ? 
         <Box>
           {updates.map((update, index) => {
-            const updateText = getUpdatesText(update)
 
-            return <List key={index}>
-                <Typography>{
-                    updateText
-                  }</Typography>
-            </List>
+
+            return <Update {...update} />
           })}
         </Box> 
         
