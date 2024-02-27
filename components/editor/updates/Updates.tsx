@@ -147,7 +147,7 @@ interface UpdatesProps {
           {updates.map((update, index) => {
 
 
-            return <Update {...update} />
+            return <Update key={index} {...update} />
           })}
         </Box> 
         
