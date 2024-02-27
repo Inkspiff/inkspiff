@@ -458,8 +458,8 @@ export const convertToGithubHTML = async (content: string) => {
 
 
 
-export const getUpdatesText = (update: FileUpdateType) => {
-  const  {type, from} = update
+export const getUpdatesText = (type: FileUpdatesTypeType) => {
+  
   switch (type) {
     case 'invite':
       return `You were invited to a file`
