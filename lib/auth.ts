@@ -8,6 +8,19 @@ import { db } from "@/firebase"
 import { collection, doc, updateDoc, serverTimestamp, addDoc, getDoc,  } from "firebase/firestore";
 import { cert } from "firebase-admin/app";
 
+import * as admin from 'firebase-admin'
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+    }),
+  })
+}
+
+
 const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY!);
 
 
@@ -37,7 +50,8 @@ export const authOptions: NextAuthOptions = {
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking: true,
     }),
     EmailProvider({
       server: {
@@ -53,21 +67,24 @@ export const authOptions: NextAuthOptions = {
     // ...add more providers here
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials, }) {
+    async signIn({ user, account, profile, email, credentials}) {
       // Check if the email is already associated with another account
       // const existingUser = await findUserByEmail(email);
-      console.log("redirecting to /editor")
-      
+
       const isAllowedToSignIn = true
       if (isAllowedToSignIn) {
         if (account?.provider === 'google') {
-          console.log({user, account, profile, email, credentials})
+          // console.log({user, account, profile, email, credentials})
         }
         if (account?.provider === 'github') {
-          console.log({user, account, profile, email, credentials})
+          // console.log({user, account, profile, email, credentials})
+          
+
+
+
         }
         if (account?.provider === 'email') {
-          console.log({user, account, profile, email, credentials})
+          // console.log({user, account, profile, email, credentials})
         }
         return true
 
@@ -78,6 +95,9 @@ export const authOptions: NextAuthOptions = {
         // return '/unauthorized'
       }
     },
+    // async redirect({ url, baseUrl }) {
+    //   return baseUrl
+    // },
     async jwt({ token, account, profile }) {
       // console.log({token, account, profile})
       // Persist the OAuth access_token to the token right after signin
@@ -86,14 +106,18 @@ export const authOptions: NextAuthOptions = {
       }
       return token
     },
-    async session({ session, token, user }) {
+    async session({ session, token, user,  }) {
 
-      // console.log({session, token, user})
-      
+      // console.log("----\n\n\n", {session, token, user}, "----\n\n\n")
+
       if (user) {
-
+        
+        if (user.id) {
+          const firebaseToken = await admin.auth().createCustomToken(user.id)
+          session.firebaseToken = firebaseToken
+        }
+      
         const emailVerifiedString = user?.emailVerified ? user?.emailVerified?.toISOString() : null;
-
 
         session.user = {
           ...user,
@@ -104,5 +128,6 @@ export const authOptions: NextAuthOptions = {
       return session
     }
   },
-  secret: process.env.JWT_SECRET as string
+  secret: process.env.JWT_SECRET as string,
+  // debug: process.env.NODE_ENV !== 'production',
 }

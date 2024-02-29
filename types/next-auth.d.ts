@@ -7,14 +7,23 @@ type UserId = string
 declare module "next-auth/jwt" {
   interface JWT {
     id: UserId
+    sub: UserId
   }
 }
 
 declare module "next-auth" {
   interface Session {
+    firebaseToken: string
     user: User & any
   }
 }
+
+declare module "next-auth/adapters" {
+  interface AdapterUser {
+    id: UserId
+  }
+}
+
 
 // declare module "next-auth" {
 //   interface Session {

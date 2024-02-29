@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,6 +15,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import LoggedIn from "@/components/auth/LoggedIn";
 
+import Login from "@/components/auth/Login";
+import { syncFirebaseAuth } from "@/firebase";
+
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -23,7 +26,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
+
+  // syncFirebaseAuth(session)
+
   if (session) {
+
+    console.log("email checker", {session})
 
     const emailIsVerified = session?.user?.emailVerified;
 
@@ -48,11 +56,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 
 
-const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const LoginPage = ({ session, providers }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   // const { data: session } = useSession();
   const router = useRouter()
 
-
+  // useEffect(() => {
+  //   syncFirebaseAuth(session)
+  //   console.log("---\n\n\nfirebase auth wrapper")
+  // }, [session])
   
 
   // if (session) {
@@ -113,45 +124,7 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
           {session ? (
             <LoggedIn />
           ) : (
-            <>
-              <Box>
-                
-              <Typography variant="h1" sx={{
-                mb: "16px",
-                maxWidth: "540px",
-
-              }}>Login to your account </Typography>
-
-                <Typography
-                  variant="body1"
-                  sx={{
-                    mb: 1,
-                  }}
-                >
-                  Use Github to sign in to your account
-                </Typography>
-              </Box>
-
-              <UserAuthForm />
-
-              <Typography
-                variant="body1"
-                sx={{
-                  "& a": {
-                    color: "#121212",
-                  },
-                 
-                }}
-              >
-                <Link href="/register">
-                  Don&apos;t have an account? <Box component="span" sx={{
-                   "&:hover": {
-                    textDecoration: "underline",
-                  },
-                  }}>Sign Up</Box>
-                </Link>
-              </Typography>
-            </>
+            <Login />
           )}
         </Box>
       </Box>
@@ -159,4 +132,4 @@ const Login = ({ session, providers }: InferGetServerSidePropsType<typeof getSer
   );
 };
 
-export default Login;
+export default LoginPage;

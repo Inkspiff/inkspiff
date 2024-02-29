@@ -4,8 +4,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const requestData = JSON.parse(req.body)
-
-    
     try {
        
     } catch (error: any) {

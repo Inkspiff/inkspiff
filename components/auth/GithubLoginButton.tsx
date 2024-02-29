@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { FaGithub } from "react-icons/fa";
@@ -9,15 +9,19 @@ import { FaGithub } from "react-icons/fa";
 interface GithubLoginButtonProps {}
 
 export default function GithubLoginButton({}: GithubLoginButtonProps) {
+  
   const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false);
+
+  const handleLogin = async () => { 
+    setIsGitHubLoading(true);
+    await signIn("github");
+    // await syncFirebaseAuth()
+  }
 
   return (
     <Button
       type="button"
-      onClick={() => {
-        setIsGitHubLoading(true);
-        signIn("github");
-      }}
+      onClick={handleLogin}
       disabled={isGitHubLoading}
       variant="outlined"
       sx={{
