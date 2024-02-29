@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { FaGithub } from "react-icons/fa";
@@ -15,7 +15,6 @@ export default function GithubLoginButton({}: GithubLoginButtonProps) {
   const handleLogin = async () => { 
     setIsGitHubLoading(true);
     await signIn("github");
-    // await syncFirebaseAuth()
   }
 
   return (

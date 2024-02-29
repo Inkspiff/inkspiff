@@ -41,7 +41,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         return { redirect: { destination: "/" } };
     }
 
-    // http://localhost:3000/login/verify-email?token=7yw0p6idne215p07wzcxtb
+    // eg. http://localhost:3000/login/verify-email?token=7yw0p6idne215p07wzcxtb
     const token = context.query.token;
 
     console.log({emailIsVerified, query: context.query, token})

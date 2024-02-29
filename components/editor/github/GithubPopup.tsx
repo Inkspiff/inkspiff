@@ -19,6 +19,7 @@ import { popupBaseStyle } from '@/config/editor';
 import { set } from 'react-hook-form';
 import Preview from '../layout/Preview';
 import Input from "@mui/material/Input"
+import GithubUsername from './GithubUsername';
 
 
 const GithubPopup = () => {
@@ -136,6 +137,7 @@ useEffect(() => {
         p: 2,
       
       }}>
+        <GithubUsername />
         {fetchingRepo ? <Typography variant="body1" sx={{
           fontWeight: 700,
           mb: 1,
