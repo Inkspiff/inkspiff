@@ -8,6 +8,11 @@ import { db } from "@/firebase"
 import { collection, doc, updateDoc, serverTimestamp, addDoc, getDoc,  } from "firebase/firestore";
 import { cert } from "firebase-admin/app";
 
+
+
+const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY!);
+
+
 import * as admin from 'firebase-admin'
 
 if (!admin.apps.length) {
@@ -15,13 +20,11 @@ if (!admin.apps.length) {
     credential: admin.credential.cert({
       projectId: process.env.FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY,
+      privateKey,
     }),
   })
 }
 
-
-const { privateKey } = JSON.parse(process.env.FIREBASE_PRIVATE_KEY!);
 
 
 

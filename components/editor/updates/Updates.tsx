@@ -107,8 +107,6 @@ interface UpdatesProps {
     } 
   }, [updates, anchorEl])
 
-  console.log({updates})
-
 
     return  <Popover id={open ? 'updates-popover' : undefined} open={open} anchorEl={anchorEl}
     onClose={handleClose}
