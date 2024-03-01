@@ -43,7 +43,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-import { getUserRepos, getFiles, getContent } from "@/lib/github/imports";
+import { getUser, getUserRepos, getFiles, getContent } from "@/lib/github/imports";
 import { GithubData } from "@/lib/github/types";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -163,6 +163,16 @@ export default function App({
   const [mdContent, setMdContent] = useState("");
   const [diffContent, setDiffContent] = useState("");
 
+  // const fetchUser = async () => {
+  //   try {
+  //     const user = await getUser("ichristwin", 47944306);
+  //     console.log(user)
+  //   } catch (error) {
+  //     console.error(error);
+  //   }  
+  // }
+  // fetchUser();
+
   // if (session.user) {
   //   const fetchRepos = async (data: object) => {
   //     const response = await fetch("http://localhost:3000/api/github/fetch-repos", {
@@ -199,7 +209,6 @@ export default function App({
   //   gitRef: "main",
   // });
 
-  // const fetchFiles = async (data: GithubData) => {
 
   // const fetchFileContent = async (data: GithubData) => {
   //   const response = await fetch("http://localhost:3000/api/github/fetch-content", {

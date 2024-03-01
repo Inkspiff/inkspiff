@@ -75,3 +75,20 @@ export async function getContent(githubData: GithubData) {
 
   return atob(blob.data.content);
 }
+
+export async function getUser(username: string, installationId: number) {
+  const octokit = await octokitApp.getInstallationOctokit(
+    installationId
+  );
+  const user = await octokit.request(
+    "GET /users/{owner}",
+    {
+      owner: username,
+      headers: {
+        "X-GitHub-Api-Version": "2022-11-28",
+      },
+    }
+  );
+    console.log(user)
+  return user;
+}
