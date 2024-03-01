@@ -9,15 +9,18 @@ import { FaGithub } from "react-icons/fa";
 interface GithubLoginButtonProps {}
 
 export default function GithubLoginButton({}: GithubLoginButtonProps) {
+  
   const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false);
+
+  const handleLogin = async () => { 
+    setIsGitHubLoading(true);
+    await signIn("github");
+  }
 
   return (
     <Button
       type="button"
-      onClick={() => {
-        setIsGitHubLoading(true);
-        signIn("github");
-      }}
+      onClick={handleLogin}
       disabled={isGitHubLoading}
       variant="outlined"
       sx={{

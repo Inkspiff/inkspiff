@@ -19,7 +19,7 @@ import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 import More from "@/components/editor/layout/More";
 import Share from "@/components/editor/share/Share"
 import { AiFillGithub } from "react-icons/ai";
-import GithubPopup from "../popups/GithubPopup";
+import GithubPopup from "../github/GithubPopup";
 
 const drawerWidth = 240;
 

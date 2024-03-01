@@ -12,6 +12,7 @@ import store from "@/store/index";
 import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react";
 import "@/styles/render.css";
+import FirebaseAuthWrapper from "@/components/auth/FirebaseAuthWrapper";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -39,7 +40,6 @@ export const ThemeContextAdderCompForMui = ({
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
   return (
      <CacheProvider value={emotionCache}>
       <Head>
@@ -49,7 +49,10 @@ export default function MyApp(props: MyAppProps) {
         <Provider store={store}>
           <SessionProvider session={pageProps.session}>
             <ThemeContextAdderCompForMui>
-              <Component {...pageProps} />
+              <FirebaseAuthWrapper >
+                  
+                    <Component {...pageProps} />
+              </FirebaseAuthWrapper>
             </ThemeContextAdderCompForMui>
           </SessionProvider>
         </Provider>

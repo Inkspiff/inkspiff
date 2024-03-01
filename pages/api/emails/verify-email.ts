@@ -37,7 +37,7 @@ export default async function handler(
       Math.random().toString(36).substring(2, 15) +
       Math.random().toString(36).substring(2, 15);
 
-    console.log({ userEmail });
+    // console.log({ userEmail });
 
     const response = await addDoc(veryRef, {
       token: token,
@@ -45,7 +45,7 @@ export default async function handler(
       expires: serverTimestamp(),
     });
 
-    console.log({ response });
+    // console.log({ response });
 
     // send mail with defined transport object with html
     let info = await transporter.sendMail({
@@ -56,7 +56,7 @@ export default async function handler(
       html: `<a href="${process.env.NEXT_PUBLIC_SITE_URL}/login/verify-email?token=${token}">Click here to verify your email</a>`, // html body
     });
 
-    console.log("Message sent: %s", info.messageId);
+    // console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
     res.status(200).end();
   } catch (error) {
