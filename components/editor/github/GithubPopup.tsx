@@ -30,6 +30,7 @@ const GithubPopup = () => {
     const { toggleTheme, theme} = useContext(ThemeContext);
 
     const {markdown} = app
+    const [ghRepos, setGhRepos] = useState("");
 
     const [repo, setRepo] = useState("")
     const [fetchingRepo, setFetchingRepo] = useState(false)
@@ -76,6 +77,30 @@ const GithubPopup = () => {
       return 
     }
 }
+
+  const fetchRepos = async () => {
+    if (session!.user.githubUsername && session!.user.ghInstallationId) {
+      const data = {
+        username: session!.user.githubUsername,
+        installationId: session!.user.ghInstallationId,
+      };
+      console.log(data);
+
+      const response = await fetch(
+        "http://localhost:3000/api/github/fetch-repos",
+        {
+          body: JSON.stringify(data),
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setGhRepos(await response.json());
+      console.log("Github Repos", ghRepos);
+    }
+  };
 
 useEffect(() => {
 
@@ -137,6 +162,12 @@ useEffect(() => {
         p: 2,
       
       }}>
+        <Button href={`https://github.com/apps/inkspiff-github-agent/installations/new?state=${session!.user.id}`}>Connect GitHub</Button>
+        <Button onClick={fetchRepos}>Fetch GH Repos</Button>
+        <div>
+          {ghRepos}
+        </div>
+
         <GithubUsername />
         {fetchingRepo ? <Typography variant="body1" sx={{
           fontWeight: 700,
