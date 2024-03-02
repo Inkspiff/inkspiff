@@ -21,8 +21,9 @@ export default async function handler(
     ghSessionCode: ghInstall.code,
   })
     .then(() => {
-      res.status(200).json({ message: "Github installation id saved" });
-    })
+      const redirectUrl = `/editor/${markdownId}?github=${true}`;
+      res.redirect(redirectUrl);
+  })
     .catch((err) => {
       res.status(500).json(err);
     });
