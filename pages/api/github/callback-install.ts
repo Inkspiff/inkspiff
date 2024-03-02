@@ -13,7 +13,8 @@ export default async function handler(
   }
   const _installation: Partial<GithubInstallation> = await req.query;
   const ghInstall: GithubInstallation = _installation as GithubInstallation;
-  const userRef = doc(db, "users", ghInstall.state);
+  const [userId, markdownId] = ghInstall.state.split("__")
+  const userRef = doc(db, "users", userId);
 
   await updateDoc(userRef, {
     ghInstallationId: ghInstall.installation_id,

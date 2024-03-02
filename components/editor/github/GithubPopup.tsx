@@ -162,7 +162,7 @@ useEffect(() => {
         p: 2,
       
       }}>
-        <Button href={`https://github.com/apps/inkspiff-github-agent/installations/new?state=${session!.user.id}`}>Connect GitHub</Button>
+        <Button href={`https://github.com/apps/inkspiff-github-agent/installations/new?state=${session!.user.id}__${markdownSelected}`}>Connect GitHub</Button>
         <Button onClick={fetchRepos}>Fetch GH Repos</Button>
         <div>
           {ghRepos}
