@@ -20,6 +20,9 @@ import { set } from 'react-hook-form';
 import Preview from '../layout/Preview';
 import Input from "@mui/material/Input"
 import GithubUsername from './GithubUsername';
+import AddGithubRepo from './AddGithubRepo';
+import GithubInstall from './GithubInstall';
+
 
 
 const GithubPopup = () => {
@@ -27,89 +30,26 @@ const GithubPopup = () => {
     const { data: session } = useSession();
     const router = useRouter()
     const app = useSelector((state: RootState) => state.app)
-    const { toggleTheme, theme} = useContext(ThemeContext);
 
-    const {markdown} = app
+    const {markdown: {automation}} = app
 
-    const [repo, setRepo] = useState("")
-    const [fetchingRepo, setFetchingRepo] = useState(false)
-
-    const [repoInput, setRepoInput] = useState("")
-    const [updating, setUpdating] = useState(false)
-
-    const {palette, } = theme
-    const {mode } = palette
-
-    const { markdown: {content, title}, viewSettings, markdownSelected } = app
+    const { viewSettings, markdownSelected } = app
 
     const open = viewSettings.popup === "github"
+
+
 
     const handleClose = () => {
         dispatch(appActions.setPopup(""))
     };
 
-  const handleRepoInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRepoInput(event.target.value)
-  }
-  
-  const handleUpdateRepo = async () => {
-    setUpdating(true)
-    const response = await fetch("/api/db/update-repo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: session!.user.id,
-        mdId: markdown.id,
-        repo: repoInput
-      })
-    })
+    console.log({automation})
 
-    setUpdating(false)
-        
-    if (!response?.ok) {
-      if (response.status === 402) {
-        // set updating as failed
-        return 
-      }
-      return 
-    }
-}
+    console.log(session?.user?.githubUsername)
 
-useEffect(() => {
 
-  const getRepo = async () => {
-    setFetchingRepo(true)
-    const response = await fetch("/api/db/get-repo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mdID: markdown.id,
-      })
-    })
 
-    setFetchingRepo(false)
 
-    
-
-    if (!response?.ok) {
-      if (response.status === 402) {
-        return 
-      }
-      return
-    }
-
-    const repo = await response.json()
-    setRepo(repo.github)
-  }
-
-  if (session && markdownSelected) {
-    getRepo()
-  }
-}, [updating, open])
 
   return (
     <>
@@ -138,26 +78,8 @@ useEffect(() => {
       
       }}>
         <GithubUsername />
-        {fetchingRepo ? <Typography variant="body1" sx={{
-          fontWeight: 700,
-          mb: 1,
-        }}>Fetching</Typography> :  <Typography variant="body1" sx={{
-          fontWeight: 700,
-          mb: 1,
-        }}>{repo || "None Found"}</Typography>}
-
-        <Typography variant="h2" component="h3" sx={{
-          fontWeight: 700,
-          mb: 1,
-        }}>Select Repo</Typography>
-        
-        <Input
-        onChange={handleRepoInputChange}
-        />
-
-        <Button onClick={handleUpdateRepo}>Update</Button>
-
-        {updating && <Typography variant="caption">Updating...</Typography>}
+       <AddGithubRepo />
+       {!automation && <GithubInstall />}
       </Box>
 
       

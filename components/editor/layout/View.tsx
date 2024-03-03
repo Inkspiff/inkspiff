@@ -65,7 +65,13 @@ const View = () => {
               admin: mdDoc.admin,
               memberIDs: mdDoc.membersIDs,
               visibility: mdDoc.visibility,
-              github: mdDoc.github,
+              automation: mdDoc.automation ? {
+                provider: mdDoc.automation.provider,
+                type: mdDoc.type,
+                repo: mdDoc.repo,
+                updateEvery: mdDoc.updateEvery.seconds,
+
+              } : null,
             })
           );
       }

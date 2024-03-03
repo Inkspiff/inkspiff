@@ -13,7 +13,7 @@ declare module "next-auth/jwt" {
 
 declare module "next-auth" {
   interface Session {
-    firebaseToken: string
+    firebaseToken: string,
     user: User & any
   }
 }
