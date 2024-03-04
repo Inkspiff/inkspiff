@@ -87,7 +87,7 @@ const GithubPopup = () => {
       console.log(data);
 
       const response = await fetch(
-        "http://localhost:3000/api/github/fetch-repos",
+        "/api/github/fetch-repos",
         {
           body: JSON.stringify(data),
           method: "POST",
