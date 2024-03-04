@@ -43,7 +43,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-import { getUserRepos, getFiles, getContent } from "@/lib/github/imports";
+import { getUser, getUserRepos, getFiles, getContent } from "@/lib/github/imports";
 import { GithubData } from "@/lib/github/types";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -158,26 +158,10 @@ export default function App({
   const { viewSettings, markdown, markdownSelected, saveStates } = app;
   const { drawer: open } = viewSettings;
   const { github } = markdown;
-  const [ghRepos, setGhRepos] = useState("");
   const [mdFiles, setMdFiles] = useState("");
   const [mdContent, setMdContent] = useState("");
   const [diffContent, setDiffContent] = useState("");
 
-  // if (session.user) {
-  //   const fetchRepos = async (data: object) => {
-  //     const response = await fetch("http://localhost:3000/api/github/fetch-repos", {
-  //       body: JSON.stringify(data),
-  //       method: "POST",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
-  //     setGhRepos(await response.json());
-  //     console.log("Github Repos", ghRepos);
-  //   };
-  //   fetchRepos({ username: "ichristwin", installationId: 47417747 });
-  // }
 
   // const fetchFiles = async (data: GithubData) => {
   //   const response = await fetch("http://localhost:3000/api/github/fetch-files", {
@@ -192,14 +176,13 @@ export default function App({
   //   console.log("Markdown Files", mdFiles);
   // };
   // fetchFiles({
-  //   installationId: 47417747,
+  //   installationId: 47944306,
   //   repoFullName: "ichristwin/m3ters.js",
   //   repoOwner: "ichristwin",
   //   repoName: "m3ters.js",
   //   gitRef: "main",
   // });
 
-  // const fetchFiles = async (data: GithubData) => {
 
   // const fetchFileContent = async (data: GithubData) => {
   //   const response = await fetch("http://localhost:3000/api/github/fetch-content", {
@@ -214,7 +197,7 @@ export default function App({
   //   console.log("Markdown Content", mdContent);
   // };
   // fetchFileContent({
-  //   installationId: 47417747,
+  //   installationId: 47944306,
   //   repoFullName: "ichristwin/m3ters.js",
   //   repoOwner: "ichristwin",
   //   repoName: "m3ters.js",
