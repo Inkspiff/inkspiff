@@ -30,6 +30,21 @@ const GithubPopup = () => {
     const { data: session } = useSession();
     const router = useRouter()
     const app = useSelector((state: RootState) => state.app)
+    const { toggleTheme, theme} = useContext(ThemeContext);
+
+    const {markdown} = app
+    const [ghRepos, setGhRepos] = useState("");
+
+    const [repo, setRepo] = useState("")
+    const [fetchingRepo, setFetchingRepo] = useState(false)
+
+    const [repoInput, setRepoInput] = useState("")
+    const [updating, setUpdating] = useState(false)
+
+    const {palette, } = theme
+    const {mode } = palette
+
+    const { markdown: {content, title}, viewSettings, markdownSelected } = app
 
     const {markdown: {automation}} = app
 
@@ -43,6 +58,92 @@ const GithubPopup = () => {
         dispatch(appActions.setPopup(""))
     };
 
+  const handleRepoInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRepoInput(event.target.value)
+  }
+  
+  const handleUpdateRepo = async () => {
+    setUpdating(true)
+    const response = await fetch("/api/db/update-repo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: session!.user.id,
+        mdId: markdown.id,
+        repo: repoInput
+      })
+    })
+
+    setUpdating(false)
+        
+    if (!response?.ok) {
+      if (response.status === 402) {
+        // set updating as failed
+        return 
+      }
+      return 
+    }
+}
+
+  const fetchRepos = async () => {
+    if (session!.user.githubUsername && session!.user.ghInstallationId) {
+      const data = {
+        username: session!.user.githubUsername,
+        installationId: session!.user.ghInstallationId,
+      };
+      console.log(data);
+
+      const response = await fetch(
+        "/api/github/fetch-repos",
+        {
+          body: JSON.stringify(data),
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setGhRepos(await response.json());
+      console.log("Github Repos", ghRepos);
+    }
+  };
+
+useEffect(() => {
+
+  const getRepo = async () => {
+    setFetchingRepo(true)
+    const response = await fetch("/api/db/get-repo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mdID: markdown.id,
+      })
+    })
+
+    setFetchingRepo(false)
+
+    
+
+    if (!response?.ok) {
+      if (response.status === 402) {
+        return 
+      }
+      return
+    }
+
+    const repo = await response.json()
+    setRepo(repo.github)
+  }
+
+  if (session && markdownSelected) {
+    getRepo()
+  }
+}, [updating, open])
     console.log({automation})
 
     console.log(session?.user?.githubUsername)
@@ -77,6 +178,12 @@ const GithubPopup = () => {
         p: 2,
       
       }}>
+        <Button href={`https://github.com/apps/inkspiff-github-agent/installations/new?state=${session!.user.id}__${markdownSelected}`}>Connect GitHub</Button>
+        <Button onClick={fetchRepos}>Fetch GH Repos</Button>
+        <div>
+          {ghRepos}
+        </div>
+
         <GithubUsername />
        <AddGithubRepo />
        {!automation && <GithubInstall />}
