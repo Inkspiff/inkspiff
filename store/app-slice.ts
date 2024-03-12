@@ -42,7 +42,7 @@ const initialState: appState = {
         admin: "",
         memberIDs: [],
         visibility: "",
-        github: "",
+        automation: null,
     },
     updates: [],
     saveStates: {

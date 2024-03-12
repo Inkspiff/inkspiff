@@ -1,147 +1,177 @@
-import React, {MouseEvent} from 'react';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
+import React, { MouseEvent } from "react";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
-import { appActions } from '@/store/app-slice';
+import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useRouter } from "next/router"
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import Divider from "@mui/material/Divider"
-import Logo from '../../ui/Logo';
+import { useRouter } from "next/router";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import Divider from "@mui/material/Divider";
+import Logo from "../../ui/Logo";
 
 export default function ActionsBottom() {
   const router = useRouter();
   const { data: session } = useSession();
-  const dispatch = useDispatch()
-  const app = useSelector((state: RootState) => state.app)
-
-
-
+  const dispatch = useDispatch();
+  const app = useSelector((state: RootState) => state.app);
 
   const handleOpenImportPopup = () => {
-  if (session) {
-      dispatch(appActions.setPopup("import"))
+    if (session) {
+      dispatch(appActions.setPopup("import"));
     } else {
-    dispatch(appActions.toggleOpenLoginModal())
+      dispatch(appActions.toggleOpenLoginModal());
     }
-  }
-
+  };
 
   const handleOpenExportPopup = () => {
     if (session) {
-      dispatch(appActions.setPopup("export"))
-      } else {
-      dispatch(appActions.toggleOpenLoginModal())
-      }
+      dispatch(appActions.setPopup("export"));
+    } else {
+      dispatch(appActions.toggleOpenLoginModal());
     }
-  
+  };
 
   const handleGiveFeedback = () => {
-    dispatch(appActions.setPopup("feedback"))
-    }
-
+    dispatch(appActions.setPopup("feedback"));
+  };
 
   const handleOpenTemplatesPopup = (e: MouseEvent<HTMLElement>) => {
-     if (session) {
-      dispatch(appActions.setPopup("templates"))
+    if (session) {
+      dispatch(appActions.setPopup("templates"));
     } else {
-    dispatch(appActions.toggleOpenLoginModal())
+      dispatch(appActions.toggleOpenLoginModal());
     }
-  }
-
+  };
 
   return (
-    
-      <List sx={{
+    <List
+      sx={{
         display: "flex",
-        flexDirection: "column"
-      }}>
-        <Divider sx={{
-          mb: 2
-        }} />
-        <ListItem  disablePadding sx={{
-            //  border: "1px solid red",
-            p: 0,
-            m: 0,
-        }}>
-          <ListItemButton sx={{
+        flexDirection: "column",
+      }}
+    >
+      <Divider
+        sx={{
+          mb: 2,
+        }}
+      />
+      <ListItem
+        disablePadding
+        sx={{
+          //  border: "1px solid red",
+          p: 0,
+          m: 0,
+        }}
+      >
+        <ListItemButton
+          sx={{
             //  border: "1px solid blue",
             p: "4px",
             cursor: "pointer",
             borderRadius: "4px",
-          }} onClick={handleOpenTemplatesPopup}>
-            <SettingsOutlinedIcon sx={{
+          }}
+          onClick={handleOpenTemplatesPopup}
+        >
+          <SettingsOutlinedIcon
+            sx={{
               mx: 1,
               width: 16,
               height: 16,
-            }} /> 
-            
-            <Typography variant="body2" sx={{
+            }}
+          />
+
+          <Typography
+            variant="body2"
+            sx={{
               fontWeight: 500,
               fontSize: "14px",
-            }}>Templates</Typography>
-          </ListItemButton>
-        </ListItem>
+            }}
+          >
+            Templates
+          </Typography>
+        </ListItemButton>
+      </ListItem>
 
-        
-
-        <ListItem  disablePadding sx={{
-            //  border: "1px solid red",
-            p: 0,
-            m: 0,
-        }}>
-          <ListItemButton sx={{
+      <ListItem
+        disablePadding
+        sx={{
+          //  border: "1px solid red",
+          p: 0,
+          m: 0,
+        }}
+      >
+        <ListItemButton
+          sx={{
             //  border: "1px solid blue",
             p: "4px",
             cursor: "pointer",
             borderRadius: "4px",
-          }} onClick={handleOpenImportPopup}>
-            <SettingsOutlinedIcon sx={{
+          }}
+          onClick={handleOpenImportPopup}
+        >
+          <SettingsOutlinedIcon
+            sx={{
               mx: 1,
               width: 16,
               height: 16,
-            }} /> 
-            
-            <Typography variant="body2" sx={{
+            }}
+          />
+
+          <Typography
+            variant="body2"
+            sx={{
               fontWeight: 500,
               fontSize: "14px",
-            }}>Import</Typography>
-          </ListItemButton>
-        </ListItem>
+            }}
+          >
+            Import
+          </Typography>
+        </ListItemButton>
+      </ListItem>
 
-        
-
-        <ListItem  disablePadding sx={{
-            //  border: "1px solid red",
-            p: 0,
-            m: 0,
-        }}>
-          <ListItemButton sx={{
+      <ListItem
+        disablePadding
+        sx={{
+          //  border: "1px solid red",
+          p: 0,
+          m: 0,
+        }}
+      >
+        <ListItemButton
+          sx={{
             //  border: "1px solid blue",
             p: "4px",
             cursor: "pointer",
             borderRadius: "4px",
-          }} onClick={handleOpenExportPopup}>
-            <AddCircleOutlineOutlinedIcon sx={{
+          }}
+          onClick={handleOpenExportPopup}
+        >
+          <AddCircleOutlineOutlinedIcon
+            sx={{
               mx: 1,
               width: 16,
               height: 16,
-            }} /> 
-            
-            <Typography variant="body2" sx={{
+            }}
+          />
+
+          <Typography
+            variant="body2"
+            sx={{
               fontWeight: 500,
               fontSize: "14px",
-            }}>Export</Typography>
-          </ListItemButton>
-        </ListItem>
+            }}
+          >
+            Export
+          </Typography>
+        </ListItemButton>
+      </ListItem>
 
-        
-        {/* <ListItem  disablePadding sx={{
+      {/* <ListItem  disablePadding sx={{
             //  border: "1px solid red",
             p: 0,
             m: 0,
@@ -165,19 +195,22 @@ export default function ActionsBottom() {
           </ListItemButton>
         </ListItem> */}
 
-
-        <Box sx={{
+      <Box
+        sx={{
           py: 1,
           px: 2,
           // alignSelf: "center",
-        }}>
-            <Logo type="image" sx={{
-              transform: "translateX(-8px) translateY(12px)"
-            }}/>
-            
-        </Box>
-      </List>
+        }}
+      >
+        <Logo
+          type="image"
+          sx={{
+            transform: "translateX(-8px) translateY(12px)",
+          }}
+        />
+      </Box>
+    </List>
   );
 }
 
-// http://localhost:3000/editor/New-Markdown-KMkTktr2BLriaLIuYVBB
+// http://:3000/editor/New-Markdown-KMkTktr2BLriaLIuYVBB

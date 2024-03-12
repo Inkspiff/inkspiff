@@ -21,9 +21,15 @@ export interface MembersType {
   access: string,
 }
 
+export interface AutomationType {
+  provider: string,
+  repo: string,
+  type: 'automatic' | 'timed' | 'manual' | 'none',
+  updateEvery: number | null,
+}
+
 
 export interface MarkdownInterface {
-  
   id: string,
   title: string,
   content: string,
@@ -34,7 +40,7 @@ export interface MarkdownInterface {
   admin: string,
   memberIDs: string[],
   visibility: string,
-  github: string,
+  automation: AutomationType | null, 
 }
 
 export type TemplateType =  {

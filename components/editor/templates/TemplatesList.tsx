@@ -31,10 +31,30 @@ interface propTypes {
 const TemplateList = ({templates}: propTypes) => {
     const dispatch = useDispatch()
   const router = useRouter()
-  const app = useSelector((state: RootState) => state.app)
-
+  const app = useSelector((state: RootState) => state.app) 
+  const [loading, setLoading] = useState(false)
   
+  useEffect(() => {
+    const getTemplates = async () => {
+      setLoading(true)
+      const response = await fetch("/api/db/get-templates", {
+        method: "GET"
+      })
+      setLoading(false)
 
+      if (!response?.ok) {
+        // handle wahalas
+      } 
+  
+      const temps = await response.json()   
+      dispatch(appActions.updateTemplates(temps))
+    }
+
+    if (templates.length === 0) {
+      console.log("grabbing templates")
+      getTemplates()
+    }
+  }, [templates])
   
 
   if (!templates) {

@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
-import {authOptions} from "@/lib/auth"
+import {getAuthOptions} from "@/lib/auth"
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router"
 import { styled, useTheme } from '@mui/material/styles';
@@ -30,7 +30,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, getAuthOptions());
   const slug = context.params!['random-slug'] as string
 
   if (!session) {

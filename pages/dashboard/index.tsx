@@ -12,7 +12,7 @@ import Navbar from "@/components/editor/layout/Navbar";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
-import {authOptions} from "@/lib/auth"
+import {getAuthOptions} from "@/lib/auth"
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router"
 import LeftSidePanel from "@/components/editor/layout/RightSidePanel"
@@ -22,7 +22,7 @@ import Grid from "@mui/material/Grid";
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, getAuthOptions());
   
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page

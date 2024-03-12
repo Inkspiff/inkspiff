@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         admin: creator.id,
         currentLine: content.length,
         currentHead: 0,
-        github: "",
+        automation: null,
         memberIDs: [creator.id],
         members: [{
             email: creator.email,

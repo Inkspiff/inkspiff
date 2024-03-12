@@ -109,5 +109,3 @@ export default function LeftSidePanel() {
   </Drawer>
   );
 }
-
-// http://localhost:3000/editor/New-Markdown-KMkTktr2BLriaLIuYVBB

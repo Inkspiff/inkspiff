@@ -14,7 +14,7 @@ import PaddedContainer from "@/components/layout/PaddedContainer"
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
-import {authOptions} from "@/lib/auth"
+import {getAuthOptions} from "@/lib/auth"
 
 import ViewTemplate from "@/components/templates-page/ViewTemplate";
 import TemplatesList from "@/components/editor/templates/TemplatesList";
@@ -27,7 +27,7 @@ import { TemplateType } from "@/types";
 // get params
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, getAuthOptions());
   
   const { params } = context;
 

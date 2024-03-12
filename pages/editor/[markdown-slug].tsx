@@ -17,7 +17,7 @@ import type {
 } from "next";
 import { getServerSession } from "next-auth/next";
 import { getProviders } from "next-auth/react";
-import { authOptions } from "@/lib/auth";
+import { getAuthOptions } from "@/lib/auth";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { styled, useTheme } from "@mui/material/styles";
@@ -47,7 +47,7 @@ import { getUser, getUserRepos, getFiles, getContent } from "@/lib/github/import
 import { GithubData } from "@/lib/github/types";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, getAuthOptions());
   const slug = context.params!['markdown-slug'] as string
 
   const arr = slug.split("-");
@@ -157,7 +157,7 @@ export default function App({
   const app = useSelector((state: RootState) => state.app);
   const { viewSettings, markdown, markdownSelected, saveStates } = app;
   const { drawer: open } = viewSettings;
-  const { github } = markdown;
+  const { automation } = markdown;
   const [mdFiles, setMdFiles] = useState("");
   const [mdContent, setMdContent] = useState("");
   const [diffContent, setDiffContent] = useState("");
