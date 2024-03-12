@@ -19,11 +19,11 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
-import {authOptions} from "@/lib/auth"
+import {getAuthOptions} from "@/lib/auth"
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, getAuthOptions());
   
 
   

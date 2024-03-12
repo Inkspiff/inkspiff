@@ -3,12 +3,12 @@ import Head from "next/head";
 import Box from "@mui/material/Box";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
-import {authOptions} from "@/lib/auth"
+import {getAuthOptions} from "@/lib/auth"
 import { db } from "@/firebase"
 import { doc, getDocs, collection, where, query, updateDoc, getDoc } from "firebase/firestore";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, getAuthOptions());
   const hash = context.params!['secret-hash'] as string
   
   if (!session) {

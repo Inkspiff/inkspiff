@@ -1,156 +1,60 @@
-import React, {useContext, useState, ChangeEvent, useEffect} from 'react'
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
+import React, { useContext, useState, ChangeEvent, useEffect } from "react";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ThemeContext } from '@/context/ThemeContext';
-import { popupBaseStyle } from '@/config/editor';
-import { set } from 'react-hook-form';
-import Preview from '../layout/Preview';
-import Input from "@mui/material/Input"
-import GithubUsername from './GithubUsername';
-import AddGithubRepo from './AddGithubRepo';
-import GithubInstall from './GithubInstall';
-
-
+import { ThemeContext } from "@/context/ThemeContext";
+import { popupBaseStyle } from "@/config/editor";
+import { set } from "react-hook-form";
+import Preview from "../layout/Preview";
+import Input from "@mui/material/Input";
+import GithubUsername from "./GithubUsername";
+import AddGithubRepo from "./AddGithubRepo";
+import GithubInstall from "./GithubInstall";
+import ConnectGithub from "./ConnectGithub";
+import Repos from "./Repos";
 
 const GithubPopup = () => {
-    const dispatch = useDispatch()
-    const { data: session } = useSession();
-    const router = useRouter()
-    const app = useSelector((state: RootState) => state.app)
-    const { toggleTheme, theme} = useContext(ThemeContext);
+  const dispatch = useDispatch();
+  const { data: session } = useSession();
+  const router = useRouter();
+  const app = useSelector((state: RootState) => state.app);
+  const { toggleTheme, theme } = useContext(ThemeContext);
 
-    const {markdown} = app
-    const [ghRepos, setGhRepos] = useState("");
+  const { markdown } = app;
+  const [ghRepos, setGhRepos] = useState("");
 
-    const [repo, setRepo] = useState("")
-    const [fetchingRepo, setFetchingRepo] = useState(false)
+  const { palette } = theme;
+  const { mode } = palette;
 
-    const [repoInput, setRepoInput] = useState("")
-    const [updating, setUpdating] = useState(false)
+  const {
+    markdown: { content, title, automation },
+    viewSettings,
+    markdownSelected,
+  } = app;
 
-    const {palette, } = theme
-    const {mode } = palette
+  const open = viewSettings.popup === "github";
 
-    const { markdown: {content, title}, viewSettings, markdownSelected } = app
-
-    const {markdown: {automation}} = app
-
-    const { viewSettings, markdownSelected } = app
-
-    const open = viewSettings.popup === "github"
-
-
-
-    const handleClose = () => {
-        dispatch(appActions.setPopup(""))
-    };
-
-  const handleRepoInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRepoInput(event.target.value)
-  }
-  
-  const handleUpdateRepo = async () => {
-    setUpdating(true)
-    const response = await fetch("/api/db/update-repo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: session!.user.id,
-        mdId: markdown.id,
-        repo: repoInput
-      })
-    })
-
-    setUpdating(false)
-        
-    if (!response?.ok) {
-      if (response.status === 402) {
-        // set updating as failed
-        return 
-      }
-      return 
-    }
-}
-
-  const fetchRepos = async () => {
-    if (session!.user.githubUsername && session!.user.ghInstallationId) {
-      const data = {
-        username: session!.user.githubUsername,
-        installationId: session!.user.ghInstallationId,
-      };
-      console.log(data);
-
-      const response = await fetch(
-        "/api/github/fetch-repos",
-        {
-          body: JSON.stringify(data),
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setGhRepos(await response.json());
-      console.log("Github Repos", ghRepos);
-    }
+  const handleClose = () => {
+    dispatch(appActions.setPopup(""));
   };
 
-useEffect(() => {
+  console.log({ automation });
 
-  const getRepo = async () => {
-    setFetchingRepo(true)
-    const response = await fetch("/api/db/get-repo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mdID: markdown.id,
-      })
-    })
+  console.log({GithubUsername: session?.user?.githubUsername});
 
-    setFetchingRepo(false)
-
-    
-
-    if (!response?.ok) {
-      if (response.status === 402) {
-        return 
-      }
-      return
-    }
-
-    const repo = await response.json()
-    setRepo(repo.github)
-  }
-
-  if (session && markdownSelected) {
-    getRepo()
-  }
-}, [updating, open])
-    console.log({automation})
-
-    console.log(session?.user?.githubUsername)
-
-
-
-
+  console.log({session})
 
   return (
     <>
@@ -161,39 +65,31 @@ useEffect(() => {
         aria-labelledby="keep-mounted-modal-title"
         aria-describedby="keep-mounted-modal-description"
       >
-        <Paper sx={{
+        <Paper
+          sx={{
             ...popupBaseStyle,
-        }}>
-          
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+              width: "100%",
+              p: 2,
+            }}
+          >
 
-          
+            <ConnectGithub />
 
-     <Box sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%",
-        width: "100%",
-        p: 2,
-      
-      }}>
-        <Button href={`https://github.com/apps/inkspiff-github-agent/installations/new?state=${session!.user.id}__${markdownSelected}`}>Connect GitHub</Button>
-        <Button onClick={fetchRepos}>Fetch GH Repos</Button>
-        <div>
-          {ghRepos}
-        </div>
-
-        <GithubUsername />
-       <AddGithubRepo />
-       {!automation && <GithubInstall />}
-      </Box>
-
-      
+            <Repos />
+          </Box>
         </Paper>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default GithubPopup
+export default GithubPopup;

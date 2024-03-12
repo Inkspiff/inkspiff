@@ -8,7 +8,7 @@ import { UserAuthForm } from "@/components/auth/user-auth-form";
 import type { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { getServerSession } from "next-auth/next"
 import { getProviders } from "next-auth/react"
-import {authOptions} from "@/lib/auth"
+import {getAuthOptions} from "@/lib/auth"
 import { Session } from 'next-auth';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import Box from "@mui/material/Box";
@@ -19,7 +19,7 @@ import { collection, doc, serverTimestamp, updateDoc, arrayUnion, addDoc, setDoc
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, getAuthOptions());
   
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
