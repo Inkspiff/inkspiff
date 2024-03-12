@@ -69,7 +69,7 @@ const View = () => {
                 provider: mdDoc.automation.provider,
                 type: mdDoc.type,
                 repo: mdDoc.repo,
-                updateEvery: mdDoc.updateEvery.seconds,
+                updateEvery: mdDoc.updateEvery ? mdDoc.updateEvery.seconds : null,
 
               } : null,
             })

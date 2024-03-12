@@ -4,16 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { UserAuthForm } from "@/components/auth/user-auth-form";
-import type {
-  InferGetServerSidePropsType,
-  GetServerSideProps,
-  GetServerSidePropsContext,
-} from "next";
-import { getServerSession } from "next-auth/next";
-import { getProviders } from "next-auth/react";
-import { authOptions } from "@/lib/auth";
-import { Session } from "next-auth";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
@@ -95,10 +85,6 @@ const LoggedIn = () => {
       >
         <Link href="/editor">Go to Editor</Link>
       </Typography>
-
-      <ConnectGithub />
-
-      <Button onClick={() => signOut()}>Sign out</Button>
     </Box>
   );
 };

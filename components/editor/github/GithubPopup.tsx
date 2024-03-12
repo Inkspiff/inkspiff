@@ -1,48 +1,38 @@
-import React, { useContext, useState, ChangeEvent, useEffect } from "react";
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store";
 import { appActions } from "@/store/app-slice";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ThemeContext } from "@/context/ThemeContext";
 import { popupBaseStyle } from "@/config/editor";
-import { set } from "react-hook-form";
-import Preview from "../layout/Preview";
-import Input from "@mui/material/Input";
-import GithubUsername from "./GithubUsername";
-import AddGithubRepo from "./AddGithubRepo";
-import GithubInstall from "./GithubInstall";
 import ConnectGithub from "./ConnectGithub";
-import Repos from "./Repos";
+import GithubRepos from "./GithubRepos";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { doc } from "firebase/firestore";
+import { db } from "@/firebase";
+import GithubInstall from "./GithubInstall";
+import { useEffect, useMemo, useState } from "react";
+import { Typography } from "@mui/material";
 
 const GithubPopup = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const router = useRouter();
   const app = useSelector((state: RootState) => state.app);
-  const { toggleTheme, theme } = useContext(ThemeContext);
 
-  const { markdown } = app;
-  const [ghRepos, setGhRepos] = useState("");
+  const [showRepos, setShowRepos] = useState(false);
 
-  const { palette } = theme;
-  const { mode } = palette;
+  const { markdownSelected, viewSettings } = app;
 
-  const {
-    markdown: { content, title, automation },
-    viewSettings,
-    markdownSelected,
-  } = app;
+  const userRef = session ? doc(db, "users", session.user.id) : null;
+  const mdRef = markdownSelected
+    ? doc(db, "markdowns", markdownSelected)
+    : null;
+
+  const [userDoc] = useDocumentData(userRef);
+  const [mdDoc] = useDocumentData(mdRef);
 
   const open = viewSettings.popup === "github";
 
@@ -50,11 +40,19 @@ const GithubPopup = () => {
     dispatch(appActions.setPopup(""));
   };
 
-  console.log({ automation });
+  useEffect(() => {
+    if (mdDoc?.automation) {
+      setShowRepos(false);
+    } else {
+      setShowRepos(true);
+    }
+  }, [mdDoc]);
 
-  console.log({GithubUsername: session?.user?.githubUsername});
+  const handleChangeRepo = () => {
+    setShowRepos(true);
+  };
 
-  console.log({session})
+  console.log(mdDoc);
 
   return (
     <>
@@ -81,10 +79,25 @@ const GithubPopup = () => {
               p: 2,
             }}
           >
+            {!userDoc?.githubUsername && <ConnectGithub />}
 
-            <ConnectGithub />
+            {!userDoc?.ghInstallationId && userDoc?.githubUsername && (
+              <GithubInstall
+                userID={session?.user.id}
+                markdownID={markdownSelected}
+              />
+            )}
 
-            <Repos />
+            {userDoc?.ghInstallationId && showRepos && (
+              <GithubRepos userDoc={userDoc} onSetRepo={setShowRepos} />
+            )}
+
+            {mdDoc?.automation && !showRepos && (
+              <Box sx={{ textAlign: "center" }}>
+                We are in! ha ha ha
+                <Typography>repo: {mdDoc?.automation.repo}</Typography>
+              </Box>
+            )}
           </Box>
         </Paper>
       </Modal>

@@ -1,14 +1,23 @@
-import Box from '@mui/material/Box'
-import Link from 'next/link'
+import Button from '@mui/material/Button'
 import React from 'react'
 
-const GithubInstall = () => {
+interface GithubInstallProps {
+  userID: string,
+  markdownID: string
+}
+
+const GithubInstall = ({userID, markdownID}:GithubInstallProps) => {
   return (
-    <Box>
-        <Link href="https://github.com/apps/inkspiff-github-agent/installations/new?state=USER_ID__FILE_ID">
-          Install the Inkspiff GitHub Agent
-        </Link>
-    </Box>
+    <>
+        <Button
+          href={`https://github.com/apps/inkspiff-github-agent/installations/new?state=${
+            userID
+          }__${markdownID}`}
+        >
+          Install App
+        </Button>
+        
+    </>
   )
 }
 

@@ -44,7 +44,6 @@ export const getAuthOptions = (
   req?: GetAuthOptionsProp["req"],
   res?: GetAuthOptionsProp["res"]
 ): NextAuthOptions => {
-
   let activeUserId: string | null = null;
   let callbackUrl: string | undefined = undefined;
 
@@ -78,7 +77,7 @@ export const getAuthOptions = (
       GithubProvider({
         clientId: process.env.GITHUB_ID as string,
         clientSecret: process.env.GITHUB_SECRET as string,
-        allowDangerousEmailAccountLinking: true,
+        // allowDangerousEmailAccountLinking: true,
         // https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
         // @ts-ignore
         //   scope: 'repo', // Request access to user's repositories
@@ -87,16 +86,6 @@ export const getAuthOptions = (
         clientId: process.env.GOOGLE_CLIENT_ID as string,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         allowDangerousEmailAccountLinking: true,
-        // authorization: {
-        //   params: {
-        //     params: {
-        //       access_type: "offline",
-        //       prompt: "consent",
-        //       // request_type: "code",
-        //       // userId: user.id,
-        //     }
-        //   }
-        // }
       }),
       EmailProvider({
         server: {
